@@ -1,6 +1,8 @@
+interface props {
+    name: string;
+}
 
-const LoginPage = (props) => {
-
+const LoginPage = (props: props) => {
     return (
         <div className="container mx-auto px-4">
             <div className="bg-green-500 text-sm text-white rounded-md p-4" role="alert">
@@ -8,7 +10,7 @@ const LoginPage = (props) => {
             </div>
             <h3>Login</h3>
         </div>
-    )
-}
+    );
+};
 
 export default LoginPage;
