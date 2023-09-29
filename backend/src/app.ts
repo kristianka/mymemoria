@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { PORT } from "./utils/config";
 import { connectToMongo } from "./utils/mongoConnection";
+import { errorHandler } from "./utils/middlewares";
 
 import notesRouter from "./controllers/notes";
 import userRouter from "./controllers/user";
@@ -11,6 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 connectToMongo();
+
+app.use(errorHandler);
 
 app.get("/", (_req, res) => {
     res.send("Hello world!");

@@ -1,7 +1,6 @@
 import Express from "express";
-import { Note } from "../models/note";
 import { User } from "../models/user";
-import { Location } from "../models/location";
+import bcrypt from "bcrypt";
 
 const userRouter = Express.Router();
 
@@ -10,41 +9,23 @@ userRouter.get("/", async (_req, res) => {
     res.json(users);
 });
 
-userRouter.post("/", async (req, res) => {
+userRouter.post("/", async (req, res, next) => {
     try {
-        const { title, content, location } = req.body;
-        const user = await User.findOne({ username: "testuser" });
+        const { username, name, password } = req.body;
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
-
-        const loc = new Location({
-            name: location.name,
-            address: location.address,
-            city: location.city,
-            postalCode: location.postalCode,
-            country: location.country
+        const user = new User({
+            username,
+            name,
+            passwordHash
         });
 
-        const savedLocation = await loc.save();
-        await user.save();
-
-        const note = new Note({
-            title,
-            content,
-            location: (savedLocation as any)._id,
-            user: user._id
-        });
-
-        const savedNote = await note.save();
-        user.notes.push(savedNote._id);
-        await user.save();
-        console.log(`Added note ${savedNote.title} to user ${user.username}`);
-        return res.status(201).json(savedNote);
+        const savedUser = await user.save();
+        return res.status(201).json(savedUser);
     } catch (error: any) {
         console.log(error.message);
-        return res.status(400).json({ error: error.message });
+        return next(error);
     }
 });
 
