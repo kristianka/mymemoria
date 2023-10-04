@@ -1,12 +1,35 @@
 import Express from "express";
 import { User } from "../models/user";
 import bcrypt from "bcrypt";
+import { getUserFromReq } from "../utils/middlewares";
+import { Request } from "express";
 
 const userRouter = Express.Router();
+
+interface AuthRequest extends Request {
+    token?: string;
+    // TODO: add user type
+    user?: any;
+}
 
 userRouter.get("/", async (_req, res) => {
     const users = await User.find({}).populate("notes");
     res.json(users);
+});
+
+userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res) => {
+    try {
+        if (req.user.id !== req.params.id) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+        const user = await User.findById(req.user.id)
+            .populate("notes")
+            .populate("favouriteLocations");
+        return res.json(user);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: error });
+    }
 });
 
 userRouter.post("/", async (req, res, next) => {

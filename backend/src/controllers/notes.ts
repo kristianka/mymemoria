@@ -6,6 +6,7 @@ import { Location } from "../models/location";
 const notesRouter = Express.Router();
 
 notesRouter.get("/", async (_req, res) => {
+    // TO DO
     // fetch *EVERY* note from the backend.
     // need to change this to only fetch the notes for the user.
     // needs to be also removed from backend
@@ -17,6 +18,15 @@ notesRouter.get("/", async (_req, res) => {
         })
         .populate("location", {});
     res.json(notes);
+});
+
+notesRouter.get("/:id", async (req, res) => {
+    const note = await Note.findById(req.params.id);
+    if (note) {
+        return res.json(note);
+    } else {
+        return res.status(404).end();
+    }
 });
 
 notesRouter.post("/", async (req, res) => {
