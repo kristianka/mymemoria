@@ -17,9 +17,9 @@ const LandingPage = () => {
                     >
                         Login
                     </Link>
-                    <a href="#" className="text-sm font-semibold text-gray-900">
+                    <Link to="/register" className="text-sm font-semibold text-gray-900">
                         Create account <span aria-hidden="true">&rarr;</span>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

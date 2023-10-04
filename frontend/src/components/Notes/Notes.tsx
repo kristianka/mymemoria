@@ -9,6 +9,9 @@ const Notes = (props: props) => {
 
     return (
         <div>
+            {notes.length === 1 ? (
+                <span className="loading loading-spinner loading-md"></span>
+            ) : null}
             <h1>There are {notes.length} note(s)</h1>
             {notes.length === 0 && <p>No notes to show</p>}
             {notes.map((note) => (

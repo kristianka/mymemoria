@@ -5,3 +5,10 @@ export interface Note {
     location: string;
     user: string;
 }
+
+export interface UserInterface {
+    _id: string;
+    username: string;
+    name: string;
+    passwordHash: string;
+}
