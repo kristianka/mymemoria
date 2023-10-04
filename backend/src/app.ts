@@ -6,6 +6,7 @@ import { errorHandler } from "./utils/middlewares";
 
 import notesRouter from "./controllers/notes";
 import userRouter from "./controllers/user";
+import loginRouter from "./controllers/login";
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ app.get("/", (_req, res) => {
 
 app.use("/api/notes", notesRouter);
 app.use("/api/users", userRouter);
+app.use("/api/login", loginRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port localhost:${PORT}`);
