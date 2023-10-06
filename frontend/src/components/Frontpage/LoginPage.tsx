@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserInterface } from "../../types";
 
 interface props {
+    user: UserInterface | undefined;
     setUser: (user: UserInterface | undefined) => void;
 }
 
@@ -33,6 +34,10 @@ const LoginPage = (props: props) => {
             console.log(error);
         }
     };
+
+    if (props.user) {
+        navigate("/");
+    }
 
     return (
         <div className="container mx-auto px-4 align-content: center">

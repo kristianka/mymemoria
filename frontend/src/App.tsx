@@ -9,6 +9,8 @@ import NavBar from "./components/NavBar";
 import LandingPage from "./components/Frontpage/LandingPage";
 import LoginPage from "./components/Frontpage/LoginPage";
 import RegisterPage from "./components/Frontpage/RegisterPage";
+import SettingsPage from "./components/SettingsPage";
+import ProfilePage from "./components/ProfilePage";
 
 import Notes from "./components/Notes/Notes";
 
@@ -19,6 +21,8 @@ import { Note, UserInterface } from "./types";
 const App = () => {
     const [notes, setNotes] = useState<Note[]>([]);
     const [user, setUser] = useState<UserInterface>();
+    // to reduce the flashing when refreshing page
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         // fetch *EVERY* note from the backend.
@@ -32,10 +36,15 @@ const App = () => {
             const user = JSON.parse(savedUser);
             setUser(user);
         }
+        setLoading(false);
     }, []);
 
     console.log(notes);
     console.log("user from app", user);
+
+    if (loading) {
+        return null;
+    }
 
     return (
         <div>
@@ -48,9 +57,14 @@ const App = () => {
                 ) : (
                     <Route path="/" element={<LandingPage />} />
                 )}
-                <Route path="/login" element={<LoginPage setUser={setUser} />} />
+                <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
                 <Route path="/notes" element={<Notes notes={notes} />} />
-                <Route path="/register" element={<RegisterPage />}></Route>
+                <Route path="/profile" element={<ProfilePage />}></Route>
+                <Route path="/settings" element={<SettingsPage />}></Route>
+                <Route
+                    path="/register"
+                    element={<RegisterPage user={user} setUser={setUser} />}
+                ></Route>
             </Routes>
         </div>
     );

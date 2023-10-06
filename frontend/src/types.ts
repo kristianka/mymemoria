@@ -12,3 +12,9 @@ export interface UserInterface {
     name: string;
     passwordHash: string;
 }
+
+export interface RegisterCredentials {
+    username: string;
+    name: string;
+    password: string;
+}

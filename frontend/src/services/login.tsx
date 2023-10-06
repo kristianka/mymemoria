@@ -1,12 +1,12 @@
 import axios from "axios";
 const baseUrl = "/api/login";
 
-interface credentials {
+interface LoginCredentials {
     username: string;
     password: string;
 }
 
-const login = async (credentials: credentials) => {
+const login = async (credentials: LoginCredentials) => {
     const res = await axios.post(baseUrl, credentials);
     return res.data;
 };

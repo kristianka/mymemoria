@@ -1,9 +1,19 @@
 import { useState } from "react";
+import userService from "../../services/user";
+import loginService from "../../services/login";
+import { UserInterface } from "../../types";
+import { useNavigate } from "react-router-dom";
 
-const RegisterPage = () => {
+interface props {
+    user: UserInterface | undefined;
+    setUser: (user: UserInterface | undefined) => void;
+}
+
+const RegisterPage = (props: props) => {
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -17,9 +27,24 @@ const RegisterPage = () => {
         setPassword(e.target.value);
     };
 
-    console.log("username", username);
-    console.log("name", name);
-    console.log("password", password);
+    const register = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        try {
+            e.preventDefault();
+            const response = await userService.register({ username, name, password });
+            console.log(response);
+            const loginResponse = await loginService.login({ username, password });
+            props.setUser(loginResponse);
+            window.localStorage.setItem("LoggedUser", JSON.stringify(loginResponse));
+            navigate("/");
+        } catch (error) {
+            console.log("Hey! Error while registering");
+            console.log(error);
+        }
+    };
+
+    if (props.user) {
+        navigate("/");
+    }
 
     return (
         <div className="container mx-auto">
@@ -60,7 +85,9 @@ const RegisterPage = () => {
                     className="input input-bordered w-full max-w-xs"
                 />
             </div>
-            <button className="btn">Register</button>
+            <button className="btn" onClick={register}>
+                Register
+            </button>
         </div>
     );
 };
