@@ -2,15 +2,9 @@ import Express from "express";
 import { User } from "../models/user";
 import bcrypt from "bcrypt";
 import { getUserFromReq } from "../utils/middlewares";
-import { Request } from "express";
+import { AuthRequest } from "../types";
 
 const userRouter = Express.Router();
-
-interface AuthRequest extends Request {
-    token?: string;
-    // TODO: add user type
-    user?: any;
-}
 
 userRouter.get("/", async (_req, res) => {
     const users = await User.find({}).populate("notes");
@@ -22,9 +16,7 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res) => {
         if (req.user.id !== req.params.id) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        const user = await User.findById(req.user.id)
-            .populate("notes")
-            .populate("favouriteLocations");
+        const user = await User.findById(req.user.id).populate("favouriteLocations");
         return res.json(user);
     } catch (error) {
         console.log(error);
@@ -34,6 +26,7 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res) => {
 
 userRouter.post("/", async (req, res, next) => {
     try {
+        console.log("POST /api/users");
         const { username, name, password } = req.body;
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);

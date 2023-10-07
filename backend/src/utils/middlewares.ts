@@ -8,11 +8,10 @@ const errorHandler = (
     res: Response,
     next: NextFunction
 ) => {
-    console.log("in errorHandler");
     if (process.env.NODE_ENV !== "test") {
         console.error(error.message);
     }
-
+    console.log("error is", error);
     if (error instanceof mongoError && "code" in error) {
         if (error.name === "MongoConnectionException") {
             return res.status(500).json({ error: "Server error. Please try again later" });

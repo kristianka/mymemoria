@@ -4,3 +4,10 @@ export interface UserInterface {
     name: string;
     passwordHash: string;
 }
+
+import { Request } from "express";
+export interface AuthRequest extends Request {
+    token?: string;
+    // TODO: add user type
+    user?: any;
+}

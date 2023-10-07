@@ -2,22 +2,22 @@ import Express from "express";
 import { Note } from "../models/note";
 import { User } from "../models/user";
 import { Location } from "../models/location";
+import { getUserFromReq } from "../utils/middlewares";
+import { AuthRequest } from "../types";
 
 const notesRouter = Express.Router();
 
-notesRouter.get("/", async (_req, res) => {
-    // TO DO
-    // fetch *EVERY* note from the backend.
-    // need to change this to only fetch the notes for the user.
-    // needs to be also removed from backend
-    const notes = await Note.find({})
-        .populate("user", {
-            id: 1,
-            username: 1,
-            name: 1
-        })
-        .populate("location", {});
-    res.json(notes);
+notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate("notes");
+        if (req.user.id !== user?.id) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+        return res.json(user?.notes);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: error });
+    }
 });
 
 notesRouter.get("/:id", async (req, res) => {
@@ -29,11 +29,14 @@ notesRouter.get("/:id", async (req, res) => {
     }
 });
 
-notesRouter.post("/", async (req, res) => {
+notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res) => {
     try {
         const { title, content, location } = req.body;
-        const user = await User.findOne({ username: "testuser" });
+        if (!title || !content || !location) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
 
+        const user = await User.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -62,7 +65,7 @@ notesRouter.post("/", async (req, res) => {
         console.log(`Added note ${savedNote.title} to user ${user.username}`);
         return res.status(201).json(savedNote);
     } catch (error: any) {
-        console.log(error.message);
+        console.log(error);
         return res.status(400).json({ error: error.message });
     }
 });
