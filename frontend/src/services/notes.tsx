@@ -1,14 +1,17 @@
 import axios from "axios";
 const baseUrl = "/api/notes";
 
-let token: string | null = null;
+let token: string | null;
 
 const setToken = (newToken: string) => {
     token = `Bearer ${newToken}`;
 };
 
 const getAll = () => {
-    return axios.get(baseUrl);
+    const config = {
+        headers: { Authorization: token }
+    };
+    return axios.get(baseUrl, config);
 };
 
 const create = (newObject: string) => {

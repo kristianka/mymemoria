@@ -9,6 +9,7 @@ const Notes = (props: props) => {
 
     return (
         <div>
+            <h1>hello</h1>
             {notes.length === 0 ? (
                 <span className="loading loading-spinner loading-md"></span>
             ) : null}
@@ -18,6 +19,11 @@ const Notes = (props: props) => {
                     {note.title}: {note.content}
                 </li>
             ))}
+            <div className="flex justify-start ...">
+                <div>01</div>
+                <div>02</div>
+                <div>03</div>
+            </div>
         </div>
     );
 };

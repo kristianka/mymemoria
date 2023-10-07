@@ -21,17 +21,19 @@ const NavBar = (props: props) => {
             </div>
             {props.user ? (
                 <div className="flex-none">
-                    <label tabIndex={0} className="btn btn-ghost btn-circle">
-                        <div className="add">+</div>
+                    <Link to="/notes/add/">
+                        <label tabIndex={0} className="btn btn-ghost btn-circle">
+                            +
+                        </label>
+                    </Link>
+                    <label className="" htmlFor="">
+                        {props.user.name}
                     </label>
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
                                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&w=1000&q=80" />
                             </div>
-                        </label>
-                        <label className="" htmlFor="">
-                            Username {props.user.name}
                         </label>
                         <ul
                             tabIndex={0}

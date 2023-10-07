@@ -2,6 +2,7 @@ import { useState } from "react";
 import loginService from "../../services/login";
 import { useNavigate } from "react-router-dom";
 import { UserInterface } from "../../types";
+import notesService from "../../services/notes";
 
 interface props {
     user: UserInterface | undefined;
@@ -28,6 +29,7 @@ const LoginPage = (props: props) => {
             console.log(response);
             props.setUser(response);
             window.localStorage.setItem("LoggedUser", JSON.stringify(response));
+            notesService.setToken(response.token);
             navigate("/");
         } catch (error) {
             console.log("Hey! Error while logging in");
