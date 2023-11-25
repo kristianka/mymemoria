@@ -12,6 +12,9 @@
 |6.10.2023|2|Improve frontend|
 |7.10.2023|3|Fix bugs on frontend|
 |8.10.2023|1|Change notes get req in backend|
+|23.11.2023|5|Add map to frontpage|
+|24.11.2023|5|Add ability to add notes with drag n drop to map|
+|25.11.2023|3|Fix bugs|
 
-Total: 40 hours
+Total: 53 hours
 Format for dates is DD/MM/YYYY
