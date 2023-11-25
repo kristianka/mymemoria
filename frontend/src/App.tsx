@@ -67,7 +67,10 @@ const App = () => {
                 )}
                 <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
                 <Route path="/notes" element={<Notes notes={notes} />} />
-                <Route path="/notes/add" element={<AddNote></AddNote>}></Route>
+                <Route
+                    path="/notes/add"
+                    element={<AddNote user={user} setUser={setUser}></AddNote>}
+                ></Route>
                 <Route path="/profile" element={<ProfilePage />}></Route>
                 <Route path="/settings" element={<SettingsPage />}></Route>
                 <Route

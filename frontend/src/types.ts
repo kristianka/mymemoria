@@ -6,6 +6,15 @@ export interface Note {
     user: string;
 }
 
+export interface NoteInterface {
+    title: string;
+    content: string;
+    location: {
+        lat: number;
+        lng: number;
+    };
+}
+
 export interface UserInterface {
     _id: string;
     username: string;

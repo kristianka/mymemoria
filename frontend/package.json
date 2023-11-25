@@ -10,17 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.1",
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@material/web": "^1.0.0",
     "axios": "^1.5.1",
     "cypress": "^13.3.0",
+    "mapbox-gl": "^2.15.0",
     "preline": "^1.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
+    "@types/mapbox__mapbox-gl-geocoder": "^4.7.7",
+    "@types/mapbox-gl": "^2.7.15",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

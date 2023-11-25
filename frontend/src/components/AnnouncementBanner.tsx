@@ -6,7 +6,8 @@ const AnnouncementBanner = () => {
                     <div className="text-center md:text-left">
                         {/* <p className="text-xs text-white/[.8] uppercase tracking-wider">INFO</p> */}
                         <p className="mt-1 text-white font-medium">
-                            Welcome! We are currently in beta and bugs are to be expected.
+                            Welcome! We are currently in beta and this site is not intended for
+                            real-world usage.
                         </p>
                     </div>
 
