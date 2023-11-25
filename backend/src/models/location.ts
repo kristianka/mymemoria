@@ -3,23 +3,27 @@ import mongoose from "mongoose";
 const locationSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: false
     },
     address: {
         type: String,
-        required: true
+        required: false
     },
     city: {
         type: String,
-        required: true
+        required: false
     },
     postalCode: {
         type: String,
-        required: true
+        required: false
     },
     country: {
         type: String,
-        required: true
+        required: false
+    },
+    coordinates: {
+        type: [Number], // [longitude, latitude]
+        index: "2dsphere" // create a geospatial index
     }
 });
 
