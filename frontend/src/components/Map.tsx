@@ -15,6 +15,7 @@ const Map = (props: props) => {
     const mapContainer = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
     const { notes } = props;
+    console.log("notes in map", notes);
 
     useEffect(() => {
         const initializeMap = async () => {
@@ -29,59 +30,70 @@ const Map = (props: props) => {
 
             setMap(mapInstance);
 
-            // Add geocoder
-            const geocoder = new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken as string,
-                mapboxgl: mapboxgl
-            });
+            mapInstance.on("load", () => {
+                // Add geocoder
+                const geocoder = new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken as string,
+                    mapboxgl: mapboxgl
+                });
 
-            geocoder.on("result", (e) => {
-                // Get the coordinates from the geocoding result
-                const coordinates: LngLat = e.result.center;
+                geocoder.on("result", (e) => {
+                    // Get the coordinates from the geocoding result
+                    const coordinates: LngLat = e.result.center;
 
-                // Create a popup
-                const popup = new mapboxgl.Popup().setHTML(
-                    `<h3>${e.result.text}</h3>` // Use the geocoding result's text as the popup title
-                );
+                    // Create a popup
+                    const popup = new mapboxgl.Popup().setHTML(
+                        `<h3>${e.result.text}</h3>` // Use the geocoding result's text as the popup title
+                    );
 
-                // Add a marker with a popup
-                new mapboxgl.Marker().setLngLat(coordinates).setPopup(popup).addTo(mapInstance);
-            });
+                    // Add a marker with a popup
+                    new mapboxgl.Marker().setLngLat(coordinates).setPopup(popup).addTo(mapInstance);
+                });
 
-            mapInstance.addControl(geocoder);
+                mapInstance.addControl(geocoder);
 
-            // Add markers for existing notes
-            if (notes.length > 0) {
-                for (const note of notes) {
-                    if (note.location && note.location.coordinates) {
-                        const coordinates: LngLat = note.location.coordinates;
+                // Add markers for existing notes
 
-                        // Create a popup for each existing note
-                        const popup = new mapboxgl.Popup().setHTML(
-                            `<h3>${note.title}</h3><p>${note.content}</p>`
-                        );
+                if (notes.length > 0) {
+                    for (const note of notes) {
+                        if (note.location && note.location.coordinates) {
+                            const coordinates: LngLat = note.location.coordinates;
 
-                        // Add a marker with a popup
-                        new mapboxgl.Marker()
-                            .setLngLat(coordinates)
-                            .setPopup(popup)
-                            .addTo(mapInstance);
+                            // Create a popup for each existing note
+                            const popup = new mapboxgl.Popup().setHTML(
+                                `<h3>${note.title}</h3><p>${note.content}</p>`
+                            );
+
+                            // Add a marker with a popup
+                            new mapboxgl.Marker()
+                                .setLngLat(coordinates)
+                                .setPopup(popup)
+                                .addTo(mapInstance);
+                        }
                     }
                 }
-            }
+            });
         };
 
-        // Check if the map is not already initialized
-        if (!map) {
+        if (!map && notes.length > 0) {
             initializeMap();
         }
-
-        return () => {
-            // Cleanup logic if needed
-        };
     }, [map, notes]);
 
-    return <div ref={mapContainer} style={{ height: "400px" }} />;
+    return (
+        <div>
+            {notes.length === 0 ? (
+                <div>
+                    <h2>
+                        No notes? Create one by pressing that + next to your name on the up-right
+                        corner!
+                    </h2>
+                    <span className="loading loading-spinner loading-md"></span>
+                </div>
+            ) : null}
+            <div ref={mapContainer} style={{ height: "400px" }} />
+        </div>
+    );
 };
 
 export default Map;

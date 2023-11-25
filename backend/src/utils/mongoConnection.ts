@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { MONGODB_URI } from "./config";
 
 const connectToMongo = () => {
-    console.log("in connect mongo");
+    console.log("Connecting to MongoDB...");
     mongoose
         .connect(MONGODB_URI)
         .then((_res) => {

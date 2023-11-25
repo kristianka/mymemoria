@@ -35,7 +35,7 @@ const App = () => {
             notesService.setToken(user.token);
         }
         setLoading(false);
-        console.log("useEffect");
+        console.log("checking if user is logged in");
     }, []);
 
     // fetch notes when user is logged in
@@ -45,7 +45,7 @@ const App = () => {
                 setNotes(response.data);
             });
         }
-        console.log("useEffect2");
+        console.log("fetching notes");
     }, [user]);
 
     console.log("notes", notes);
