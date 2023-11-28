@@ -1,4 +1,4 @@
-<h2>Hours spent on the project</h2>
+<h1>Hours spent on the project</h1>
   
 | Date | Hours | Comment |
 |:--:|:--:|:--|	
@@ -17,6 +17,8 @@
 |25.11.2023|3|Fix bugs|
 |26.11.2023|6|Struggle with React Query|
 |27.11.2023|5|Fix bugs with React Query, improve types|
+|28.11.2023|6|Improve UI, add notifications|
 
-Total: 64 hours
-Format for dates is DD/MM/YYYY
+<h2>Total: 70 hours</h2>
+
+<h3>Format for dates is DD/MM/YYYY</h3>
