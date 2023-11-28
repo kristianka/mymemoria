@@ -7,9 +7,11 @@ import notesService from "../../services/notes";
 interface props {
     user: LoggedInUser | null;
     setUser: (user: LoggedInUser | null) => void;
+    setNotificationContent: (content: string | null) => void;
+    setNotificationType: (type: string | null) => void;
 }
 
-const LoginPage = ({ user, setUser }: props) => {
+const LoginPage = ({ user, setUser, setNotificationContent, setNotificationType }: props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -30,6 +32,12 @@ const LoginPage = ({ user, setUser }: props) => {
             notesService.setToken(data.token);
             setUser(data);
             navigate("/");
+            setNotificationContent("Welcome back, " + data.name + " 👋");
+            setNotificationType("login");
+            setTimeout(() => {
+                setNotificationContent(null);
+                setNotificationType(null);
+            }, 5000);
         } catch (error) {
             console.log("Hey! Error while logging in");
             console.log(error);

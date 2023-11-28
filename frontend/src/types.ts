@@ -34,6 +34,8 @@ export interface LoggedInUser {
     name: string;
     username: string;
     token: string;
+    givenAt: Date;
+    expiresAt: Date;
 }
 
 export interface LoginResponse {

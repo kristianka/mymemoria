@@ -18,21 +18,40 @@ import notesService from "./services/notes";
 
 import { LoggedInUser } from "./types";
 import AddNote from "./components/Notes/AddNote";
+import Notification from "./components/Notification";
 
 const App = () => {
     // to reduce the flashing when refreshing page
     const [loading, setLoading] = useState<boolean>(true);
     const [user, setUser] = useState<LoggedInUser | null>(null);
+    const [notificationContent, setNotificationContent] = useState<string | null>(null);
+    const [notificationType, setNotificationType] = useState<string | null>(null);
 
     useEffect(() => {
         console.log("App useEffect");
         const savedUser = window.localStorage.getItem("LoggedUser");
         if (savedUser) {
+            const expiresAtString = JSON.parse(savedUser).expiresAt;
+            const expiresAt = new Date(expiresAtString);
+            if (expiresAt < new Date()) {
+                console.log("token expired");
+                window.localStorage.removeItem("LoggedUser");
+                setUser(null);
+                setLoading(false);
+                setNotificationContent("You have been logged out due to inactivity.");
+                setNotificationType("error");
+                setTimeout(() => {
+                    setNotificationContent(null);
+                    setNotificationType(null);
+                }, 10000);
+                return;
+            }
             notesService.setToken(JSON.parse(savedUser).token);
             setUser(JSON.parse(savedUser));
         }
         setLoading(false);
     }, []);
+
     if (loading) {
         return null;
     }
@@ -43,13 +62,26 @@ const App = () => {
         <div>
             <AnnouncementBanner></AnnouncementBanner>
             <NavBar user={user} setUser={setUser}></NavBar>
+            <div className="notification">
+                <Notification content={notificationContent} type={notificationType}></Notification>
+            </div>
             <Routes>
                 {user ? (
                     <Route path="/" element={<Notes user={user} />} />
                 ) : (
                     <Route path="/" element={<LandingPage />} />
                 )}
-                <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
+                <Route
+                    path="/login"
+                    element={
+                        <LoginPage
+                            user={user}
+                            setUser={setUser}
+                            setNotificationContent={setNotificationContent}
+                            setNotificationType={setNotificationType}
+                        />
+                    }
+                />
                 <Route path="/notes" element={<Notes user={user} />} />
                 <Route path="/notes/add" element={<AddNote user={user}></AddNote>}></Route>
                 <Route path="/profile" element={<ProfilePage />}></Route>
