@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
-import { UserInterface } from "../types";
+import { useQueryClient } from "@tanstack/react-query";
+import { LoggedInUser } from "../types";
 
 interface props {
-    user: UserInterface | undefined;
-    setUser: (user: UserInterface | undefined) => void;
+    user: LoggedInUser | null;
+    setUser: (user: LoggedInUser | null) => void;
 }
 
-const NavBar = (props: props) => {
+const NavBar = ({ user, setUser }: props) => {
+    const queryClient = useQueryClient();
+
     const logout = () => {
         window.localStorage.removeItem("LoggedUser");
-        props.setUser(undefined);
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+        setUser(null);
     };
 
     return (
@@ -19,7 +23,7 @@ const NavBar = (props: props) => {
                     Notes
                 </Link>
             </div>
-            {props.user ? (
+            {user ? (
                 <div className="flex-none">
                     <Link to="/notes/add/">
                         <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -27,7 +31,7 @@ const NavBar = (props: props) => {
                         </label>
                     </Link>
                     <label className="" htmlFor="">
-                        {props.user.name}
+                        {user.name}
                     </label>
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">

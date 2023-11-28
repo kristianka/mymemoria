@@ -1,25 +1,31 @@
-import { Note } from "../../types";
+// import { Note } from "../../types";
 import Map from "../Map";
+import useNotes from "../../hooks/useNotes";
+import { LoggedInUser, NoteInterface } from "../../types";
 
 interface props {
-    notes: Note[];
+    user: LoggedInUser | null;
 }
 
-const Notes = (props: props) => {
-    const { notes } = props;
+const Notes = ({ user }: props) => {
+    const { data: notes, status: notesStatus } = useNotes(user);
 
+    if (notesStatus === "pending") {
+        return <span className="loading loading-spinner loading-md"></span>;
+    }
+
+    if (notesStatus === "error") {
+        return <div>Something went wrong, please try again later</div>;
+    }
     return (
         <div>
-            {notes.length === 0 ? (
-                <span className="loading loading-spinner loading-md"></span>
-            ) : null}
-            <h1>There are {notes.length} note(s)</h1>
-            {notes.map((note) => (
+            <h1>There are {notes?.length} note(s)</h1>
+            {notes?.map((note: NoteInterface) => (
                 <li key={note.id}>
                     {note.title}: {note.content}
                 </li>
             ))}
-            <Map notes={notes}></Map>
+            <Map user={user}></Map>
         </div>
     );
 };

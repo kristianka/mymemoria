@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import loginService from "../../services/login";
 import { useNavigate } from "react-router-dom";
-import { UserInterface } from "../../types";
+import { LoggedInUser } from "../../types";
 import notesService from "../../services/notes";
 
 interface props {
-    user: UserInterface | undefined;
-    setUser: (user: UserInterface | undefined) => void;
+    user: LoggedInUser | null;
+    setUser: (user: LoggedInUser | null) => void;
 }
 
-const LoginPage = (props: props) => {
+const LoginPage = ({ user, setUser }: props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -25,11 +25,10 @@ const LoginPage = (props: props) => {
     const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
         try {
             e.preventDefault();
-            const response = await loginService.login({ username, password });
-            console.log(response);
-            props.setUser(response);
-            window.localStorage.setItem("LoggedUser", JSON.stringify(response));
-            notesService.setToken(response.token);
+            const data = await loginService.login({ username, password });
+            window.localStorage.setItem("LoggedUser", JSON.stringify(data));
+            notesService.setToken(data.token);
+            setUser(data);
             navigate("/");
         } catch (error) {
             console.log("Hey! Error while logging in");
@@ -37,9 +36,11 @@ const LoginPage = (props: props) => {
         }
     };
 
-    if (props.user) {
-        navigate("/");
-    }
+    useEffect(() => {
+        if (user) {
+            navigate("/");
+        }
+    }, [navigate, user]);
 
     return (
         <div className="container mx-auto px-4 align-content: center">

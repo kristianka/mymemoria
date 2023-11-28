@@ -1,20 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { NoteInterface } from "../types";
+import { LoggedInUser } from "../types";
+import useNotes from "../hooks/useNotes";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
 interface props {
-    notes: NoteInterface[];
+    user: LoggedInUser | null;
 }
 
 const Map = (props: props) => {
+    const { data: notes, status: notesStatus } = useNotes(props.user);
     const mapContainer = useRef<HTMLDivElement>(null);
-    const [map, setMap] = useState<mapboxgl.Map | null>(null);
-    const { notes } = props;
     console.log("notes in map", notes);
 
     useEffect(() => {
@@ -28,8 +28,6 @@ const Map = (props: props) => {
                 zoom: 12
             });
 
-            setMap(mapInstance);
-
             mapInstance.on("load", () => {
                 // Add geocoder
                 const geocoder = new MapboxGeocoder({
@@ -38,33 +36,25 @@ const Map = (props: props) => {
                 });
 
                 geocoder.on("result", (e) => {
-                    // Get the coordinates from the geocoding result
                     const coordinates: LngLat = e.result.center;
 
                     // Create a popup
-                    const popup = new mapboxgl.Popup().setHTML(
-                        `<h3>${e.result.text}</h3>` // Use the geocoding result's text as the popup title
-                    );
+                    const popup = new mapboxgl.Popup().setHTML(`<h3>${e.result.text}</h3>`);
 
-                    // Add a marker with a popup
                     new mapboxgl.Marker().setLngLat(coordinates).setPopup(popup).addTo(mapInstance);
                 });
 
                 mapInstance.addControl(geocoder);
-
-                // Add markers for existing notes
 
                 if (notes.length > 0) {
                     for (const note of notes) {
                         if (note.location && note.location.coordinates) {
                             const coordinates: LngLat = note.location.coordinates;
 
-                            // Create a popup for each existing note
                             const popup = new mapboxgl.Popup().setHTML(
                                 `<h3>${note.title}</h3><p>${note.content}</p>`
                             );
 
-                            // Add a marker with a popup
                             new mapboxgl.Marker()
                                 .setLngLat(coordinates)
                                 .setPopup(popup)
@@ -74,11 +64,16 @@ const Map = (props: props) => {
                 }
             });
         };
+        initializeMap();
+    }, [notes]);
 
-        if (!map && notes.length > 0) {
-            initializeMap();
-        }
-    }, [map, notes]);
+    if (!notes) {
+        return null;
+    }
+
+    if (notesStatus === "pending") {
+        return <span className="loading loading-spinner loading-md"></span>;
+    }
 
     return (
         <div>
@@ -90,8 +85,9 @@ const Map = (props: props) => {
                     </h2>
                     <span className="loading loading-spinner loading-md"></span>
                 </div>
-            ) : null}
-            <div ref={mapContainer} style={{ height: "400px" }} />
+            ) : (
+                <div ref={mapContainer} style={{ height: "400px" }} />
+            )}
         </div>
     );
 };

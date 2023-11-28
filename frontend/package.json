@@ -15,6 +15,8 @@
     "@heroicons/react": "^2.0.18",
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@material/web": "^1.0.0",
+    "@tanstack/react-query": "^5.8.7",
+    "@tanstack/react-query-devtools": "^5.8.8",
     "axios": "^1.5.1",
     "cypress": "^13.3.0",
     "mapbox-gl": "^2.15.0",

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import userService from "../../services/user";
 import loginService from "../../services/login";
-import { UserInterface } from "../../types";
+import { LoggedInUser } from "../../types";
 import { useNavigate } from "react-router-dom";
 
 interface props {
-    user: UserInterface | undefined;
-    setUser: (user: UserInterface | undefined) => void;
+    user: LoggedInUser | null;
+    setUser: (user: LoggedInUser | null) => void;
 }
 
 const RegisterPage = (props: props) => {

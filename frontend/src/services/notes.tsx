@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseUrl = "/api/notes";
-import { NoteInterface } from "../types";
+import { CreateNoteInterface } from "../types";
 
 let token: string | null;
 
@@ -12,10 +12,10 @@ const getAll = () => {
     const config = {
         headers: { Authorization: token }
     };
-    return axios.get(baseUrl, config);
+    return axios.get(baseUrl, config).then((response) => response.data);
 };
 
-const create = (newObject: NoteInterface) => {
+const create = (newObject: CreateNoteInterface) => {
     const config = {
         headers: { Authorization: token }
     };
