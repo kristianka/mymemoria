@@ -15,6 +15,8 @@
 |23.11.2023|5|Add map to frontpage|
 |24.11.2023|5|Add ability to add notes with drag n drop to map|
 |25.11.2023|3|Fix bugs|
+|26.11.2023|6|Struggle with React Query|
+|27.11.2023|5|Fix bugs with React Query, improve types|
 
-Total: 53 hours
+Total: 64 hours
 Format for dates is DD/MM/YYYY
