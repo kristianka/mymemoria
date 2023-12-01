@@ -33,6 +33,8 @@ const errorHandler = (
             return res.status(401).json({ error: "Token expired" });
         } else if (error.name.includes("SyntaxError")) {
             return res.status(400).json({ error: "Bad request" });
+        } else if (error.name === "TypeError") {
+            return res.status(400).json({ error: "Bad request" });
         }
     }
 

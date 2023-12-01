@@ -26,12 +26,23 @@ notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res) => {
     }
 });
 
-notesRouter.get("/:id", async (req, res) => {
-    const note = await Note.findById(req.params.id);
-    if (note) {
-        return res.json(note);
-    } else {
-        return res.status(404).end();
+notesRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const note = await Note.findById(req.params.id);
+
+        if (req.user.id !== user?.id) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        if (note) {
+            return res.json(note);
+        } else {
+            return res.status(404).end();
+        }
+    } catch (error) {
+        return next(error);
+        // return res.status(400).json({ error: error });
     }
 });
 

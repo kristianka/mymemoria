@@ -7,11 +7,12 @@ import { AuthRequest } from "../types";
 const userRouter = Express.Router();
 
 userRouter.get("/", async (_req, res) => {
-    const users = await User.find({}).populate("notes");
-    res.json(users);
+    // const users = await User.find({}).populate("notes");
+    // res.json(users);
+    res.json("Hello.");
 });
 
-userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res) => {
+userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         if (req.user.id !== req.params.id) {
             return res.status(401).json({ error: "Unauthorized" });
@@ -20,7 +21,8 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res) => {
         return res.json(user);
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ error: error });
+        // return res.status(400).json({ error: error });
+        return next(error);
     }
 });
 
