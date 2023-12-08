@@ -34,7 +34,7 @@ const errorHandler = (
         } else if (error.name.includes("SyntaxError")) {
             return res.status(400).json({ error: "Bad request" });
         } else if (error.name === "TypeError") {
-            return res.status(400).json({ error: "Bad request" });
+            return res.status(400).json({ error: "Bad request. Missing token?" });
         }
     }
 

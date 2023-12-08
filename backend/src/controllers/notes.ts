@@ -16,6 +16,7 @@ notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res) => {
                 model: Location
             }
         });
+
         if (req.user.id !== user?.id) {
             return res.status(401).json({ error: "Unauthorized" });
         }

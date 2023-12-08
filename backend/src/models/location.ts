@@ -1,26 +1,8 @@
 import mongoose from "mongoose";
 
 const locationSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: false
-    },
-    address: {
-        type: String,
-        required: false
-    },
-    city: {
-        type: String,
-        required: false
-    },
-    postalCode: {
-        type: String,
-        required: false
-    },
-    country: {
-        type: String,
-        required: false
-    },
+    // sadly can't prefetch address, city etc due to mapbox api terms
+    // need to request them on get request every time on frontend
     coordinates: {
         type: [Number], // [longitude, latitude]
         index: "2dsphere" // create a geospatial index
