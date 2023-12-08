@@ -27,7 +27,7 @@ const AddingNoteMap = (props: props) => {
 
             const mapInstance = new mapboxgl.Map({
                 container: mapContainer.current,
-                style: "mapbox://styles/mapbox/streets-v11",
+                style: "mapbox://styles/mapbox/outdoors-v12",
                 center: [23.761, 61.4978], // Tampere, Finland
                 zoom: 12
             });

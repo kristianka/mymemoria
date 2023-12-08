@@ -2,6 +2,8 @@
 import Map from "../Map";
 import useNotes from "../../hooks/useNotes";
 import { LoggedInUser, NoteInterface } from "../../types";
+import { Link } from "react-router-dom";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 
 interface props {
     user: LoggedInUser | null;
@@ -27,10 +29,13 @@ const Notes = ({ user }: props) => {
                             <div key={note.id} className="rounded-lg">
                                 <li className="collapse collapse-arrow border" key={note.id}>
                                     <input type="checkbox" />
-                                    <div className="collapse-title text-xl font-medium">
-                                        {note.title}
+                                    <div className="collapse-title text-xl">{note.title}</div>
+                                    <div className="collapse-content">
+                                        {note.content}
+                                        <Link to={`/notes/${note.id}`}>
+                                            <ChevronRightIcon className="h-10 w-10 text-blue-500" />
+                                        </Link>
                                     </div>
-                                    <div className="collapse-content">{note.content} </div>
                                 </li>
                             </div>
                         ))}

@@ -11,6 +11,7 @@ import LoginPage from "./components/Frontpage/LoginPage";
 import RegisterPage from "./components/Frontpage/RegisterPage";
 import SettingsPage from "./components/SettingsPage";
 import ProfilePage from "./components/ProfilePage";
+import SingleNote from "./components/Notes/SingleNote";
 
 import Notes from "./components/Notes/Notes";
 
@@ -83,6 +84,16 @@ const App = () => {
                     }
                 />
                 <Route path="/notes" element={<Notes user={user} />} />
+                <Route
+                    path="/notes/:id"
+                    element={
+                        <SingleNote
+                            user={user}
+                            setNotificationContent={setNotificationContent}
+                            setNotificationType={setNotificationType}
+                        />
+                    }
+                ></Route>
                 <Route path="/notes/add" element={<AddNote user={user}></AddNote>}></Route>
                 <Route path="/profile" element={<ProfilePage />}></Route>
                 <Route path="/settings" element={<SettingsPage />}></Route>
