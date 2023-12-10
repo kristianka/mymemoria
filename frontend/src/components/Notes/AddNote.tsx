@@ -82,7 +82,7 @@ const AddNote = (user: AddNoteProps) => {
                     <label className="label">
                         <span className="label-text">Content</span>
                     </label>
-                    <input
+                    <textarea
                         onChange={handleContentChange}
                         value={content}
                         type="text"
