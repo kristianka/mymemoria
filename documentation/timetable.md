@@ -23,8 +23,8 @@
 |1.12.2023|3|Research and expirent on how to translate the app|
 |8.12.2023|9|Add route for invidual note|
 |9.12.2023|5|Add 404 page, fix bugs, update frontend|
-|10.12.2023|4|Update login page's UI|
+|10.12.2023|12|Update login page's UI, expirement with firebase to handle auth|
 
-<h2>Total: 108 hours</h2>
+<h2>Total: 116 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
