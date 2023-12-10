@@ -22,8 +22,9 @@
 |30.11.2023|7|Revert changes and research alternative libraries|
 |1.12.2023|3|Research and expirent on how to translate the app|
 |8.12.2023|9|Add route for invidual note|
-9.12.2023|1|Add 404 page and fix bugs|
+|9.12.2023|5|Add 404 page, fix bugs, update frontend|
+|10.12.2023|4|Update login page's UI|
 
-<h2>Total: 100 hours</h2>
+<h2>Total: 108 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
