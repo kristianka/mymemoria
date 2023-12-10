@@ -20,36 +20,50 @@ import notesService from "./services/notes";
 import { LoggedInUser } from "./types";
 import AddNote from "./components/Notes/AddNote";
 import Notification from "./components/Notification";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 const App = () => {
     // to reduce the flashing when refreshing page
     const [loading, setLoading] = useState<boolean>(true);
-    const [user, setUser] = useState<LoggedInUser | null>(null);
+    const [user, setUser] = useState<unknown | null>(null);
     const [notificationContent, setNotificationContent] = useState<string | null>(null);
     const [notificationType, setNotificationType] = useState<string | null>(null);
 
+    // useEffect(() => {
+    //     console.log("App useEffect");
+    //     const savedUser = window.localStorage.getItem("LoggedUser");
+    //     if (savedUser) {
+    //         const expiresAtString = JSON.parse(savedUser).expiresAt;
+    //         const expiresAt = new Date(expiresAtString);
+    //         if (expiresAt < new Date()) {
+    //             console.log("token expired");
+    //             window.localStorage.removeItem("LoggedUser");
+    //             setUser(null);
+    //             setLoading(false);
+    //             setNotificationContent("You have been logged out due to inactivity.");
+    //             setNotificationType("error");
+    //             setTimeout(() => {
+    //                 setNotificationContent(null);
+    //                 setNotificationType(null);
+    //             }, 10000);
+    //             return;
+    //         }
+    //         notesService.setToken(JSON.parse(savedUser).token);
+    //         setUser(JSON.parse(savedUser));
+    //     }
+    //     setLoading(false);
+    // }, []);
+
     useEffect(() => {
-        console.log("App useEffect");
-        const savedUser = window.localStorage.getItem("LoggedUser");
-        if (savedUser) {
-            const expiresAtString = JSON.parse(savedUser).expiresAt;
-            const expiresAt = new Date(expiresAtString);
-            if (expiresAt < new Date()) {
-                console.log("token expired");
-                window.localStorage.removeItem("LoggedUser");
-                setUser(null);
-                setLoading(false);
-                setNotificationContent("You have been logged out due to inactivity.");
-                setNotificationType("error");
-                setTimeout(() => {
-                    setNotificationContent(null);
-                    setNotificationType(null);
-                }, 10000);
-                return;
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("user", user);
+                setUser(user);
+            } else {
+                console.log("user is logged out");
             }
-            notesService.setToken(JSON.parse(savedUser).token);
-            setUser(JSON.parse(savedUser));
-        }
+        });
         setLoading(false);
     }, []);
 
