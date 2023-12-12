@@ -1,6 +1,5 @@
 import Express from "express";
 import { User } from "../models/user";
-import bcrypt from "bcrypt";
 import { getUserFromReq } from "../utils/middlewares";
 import { AuthRequest } from "../types";
 
@@ -29,14 +28,11 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 userRouter.post("/", async (req, res, next) => {
     try {
         console.log("POST /api/users");
-        const { username, name, password } = req.body;
-        const saltRounds = 10;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
+        const { name, uid } = req.body;
 
         const user = new User({
-            username,
-            name,
-            passwordHash
+            fireBaseUid: uid,
+            name
         });
 
         const savedUser = await user.save();

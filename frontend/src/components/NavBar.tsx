@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { LoggedInUser } from "../types";
+import { auth } from "../firebase";
 
 interface props {
     user: LoggedInUser | null;
@@ -8,12 +8,17 @@ interface props {
 }
 
 const NavBar = ({ user, setUser }: props) => {
-    const queryClient = useQueryClient();
-
     const logout = () => {
-        window.localStorage.removeItem("LoggedUser");
-        queryClient.invalidateQueries({ queryKey: ["user"] });
-        setUser(null);
+        const handleLogout = async () => {
+            try {
+                await auth.signOut();
+                console.log("User logged out");
+                setUser(null);
+            } catch (error) {
+                console.error("Error logging out", error);
+            }
+        };
+        handleLogout();
     };
 
     return (

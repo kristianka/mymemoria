@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { PORT } from "./utils/config";
 import { connectToMongo } from "./utils/mongoConnection";
+import { connectToFirebase } from "./utils/firebaseConnection";
 import { errorHandler, getTokenFromReq, unknownEndpoint } from "./utils/middlewares";
 
 import notesRouter from "./controllers/notes";
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 connectToMongo();
+connectToFirebase();
 
 app.use(errorHandler);
 

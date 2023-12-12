@@ -17,10 +17,8 @@ import Notes from "./components/Notes/Notes";
 
 import notesService from "./services/notes";
 
-import { LoggedInUser } from "./types";
 import AddNote from "./components/Notes/AddNote";
 import Notification from "./components/Notification";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
 const App = () => {
@@ -30,41 +28,34 @@ const App = () => {
     const [notificationContent, setNotificationContent] = useState<string | null>(null);
     const [notificationType, setNotificationType] = useState<string | null>(null);
 
-    // useEffect(() => {
-    //     console.log("App useEffect");
-    //     const savedUser = window.localStorage.getItem("LoggedUser");
-    //     if (savedUser) {
-    //         const expiresAtString = JSON.parse(savedUser).expiresAt;
-    //         const expiresAt = new Date(expiresAtString);
-    //         if (expiresAt < new Date()) {
-    //             console.log("token expired");
-    //             window.localStorage.removeItem("LoggedUser");
-    //             setUser(null);
-    //             setLoading(false);
-    //             setNotificationContent("You have been logged out due to inactivity.");
-    //             setNotificationType("error");
-    //             setTimeout(() => {
-    //                 setNotificationContent(null);
-    //                 setNotificationType(null);
-    //             }, 10000);
-    //             return;
-    //         }
-    //         notesService.setToken(JSON.parse(savedUser).token);
-    //         setUser(JSON.parse(savedUser));
-    //     }
-    //     setLoading(false);
-    // }, []);
-
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("user", user);
-                setUser(user);
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                // User is signed in, only get these values
+                const { uid, displayName, email } = authUser;
+                setUser({
+                    uid,
+                    displayName,
+                    email
+                });
+                authUser
+                    .getIdToken()
+                    .then((token) => {
+                        notesService.setToken(token);
+                    })
+                    .catch((error) => {
+                        console.error("Error getting Firebase ID token:", error);
+                    });
+                setLoading(false);
             } else {
-                console.log("user is logged out");
+                // User is signed out
+                setUser(null);
+                setLoading(false);
             }
         });
-        setLoading(false);
+
+        // Cleanup the observer when the component unmounts
+        return () => unsubscribe();
     }, []);
 
     if (loading) {

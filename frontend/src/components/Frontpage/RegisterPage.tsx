@@ -1,6 +1,5 @@
 import { useState } from "react";
 import userService from "../../services/user";
-import loginService from "../../services/login";
 import { LoggedInUser } from "../../types";
 import { useNavigate } from "react-router-dom";
 
@@ -35,8 +34,18 @@ const RegisterPage = (props: props) => {
             e.preventDefault();
 
             await createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then(async (userCredential) => {
                     const user = userCredential.user;
+                    const uid = user.uid;
+
+                    // Store only Firebase Auth UID and name in MongoDB
+                    const response = await userService.register({
+                        name,
+                        uid
+                    });
+
+                    console.log(response);
+
                     console.log(user);
                     navigate("/login");
                 })
