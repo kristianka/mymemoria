@@ -24,7 +24,9 @@
 |8.12.2023|9|Add route for invidual note|
 |9.12.2023|5|Add 404 page, fix bugs, update frontend|
 |10.12.2023|12|Update login page's UI, expirement with firebase to handle auth|
+|11.12.2023|11|Work on Firebase Auth (firebase-auth branch)|
+|12.12.2023|3|Fix bugs with Firebase Auth (firebase-auth branch)|
 
-<h2>Total: 116 hours</h2>
+<h2>Total: 130 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
