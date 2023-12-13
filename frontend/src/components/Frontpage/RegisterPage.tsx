@@ -1,17 +1,15 @@
 import { useState } from "react";
 import userService from "../../services/user";
-import { LoggedInUser } from "../../types";
 import { useNavigate } from "react-router-dom";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 
 interface props {
-    user: LoggedInUser | null;
-    setUser: (user: LoggedInUser | null) => void;
+    firebaseAuth: object | null;
 }
 
-const RegisterPage = (props: props) => {
+const RegisterPage = ({ firebaseAuth }: props) => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -33,40 +31,34 @@ const RegisterPage = (props: props) => {
         try {
             e.preventDefault();
 
-            await createUserWithEmailAndPassword(auth, email, password)
-                .then(async (userCredential) => {
-                    const user = userCredential.user;
-                    const uid = user.uid;
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            const uid = user.uid;
 
-                    // Store only Firebase Auth UID and name in MongoDB
-                    const response = await userService.register({
-                        name,
-                        uid
-                    });
+            // Store only Firebase Auth UID and name in MongoDB
+            const response = await userService.register({
+                name,
+                uid
+            });
 
-                    console.log(response);
-
-                    console.log(user);
-                    navigate("/login");
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
+            console.log(response);
+            console.log(user);
             navigate("/login");
-            // const response = await userService.register({ username, name, password });
-            // console.log(response);
-            // const loginResponse = await loginService.login({ username, password });
-            // props.setUser(loginResponse);
-            // window.localStorage.setItem("LoggedUser", JSON.stringify(loginResponse));
-            // navigate("/");
         } catch (error) {
-            console.log("Hey! Error while registering");
+            console.log("Error while registering");
             console.log(error);
+
+            // If there's an error during registration, delete the user in Firebase Authentication
+            if (auth.currentUser) {
+                await auth.currentUser.delete();
+                console.log("User deleted from Firebase Authentication due to backend error");
+            }
+
+            // TO DO: Show error msg
         }
     };
 
-    if (props.user) {
+    if (firebaseAuth) {
         navigate("/");
     }
 

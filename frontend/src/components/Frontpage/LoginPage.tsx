@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
-import loginService from "../../services/login";
 import { useNavigate } from "react-router-dom";
-import { LoggedInUser } from "../../types";
-import notesService from "../../services/notes";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 
+import { toast } from "react-toastify";
+
 interface props {
-    user: LoggedInUser | null;
-    setUser: (user: LoggedInUser | null) => void;
-    setNotificationContent: (content: string | null) => void;
-    setNotificationType: (type: string | null) => void;
+    firebaseAuth: object | null;
+    setFirebaseAuth: (firebaseAuth: object | null) => void;
 }
 
-const LoginPage = ({ user, setUser, setNotificationContent, setNotificationType }: props) => {
+const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -31,41 +28,22 @@ const LoginPage = ({ user, setUser, setNotificationContent, setNotificationType 
         try {
             e.preventDefault();
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    navigate("/notes");
-                    console.log(user);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorCode, errorMessage);
-                });
-
-            // const data = await loginService.login({ username, password });
-            // window.localStorage.setItem("LoggedUser", JSON.stringify(data));
-            // notesService.setToken(data.token);
-            // setUser(data);
-            // navigate("/");
-            // setNotificationContent("Welcome back, " + data.name + " 👋");
-            // setNotificationType("login");
-            // setTimeout(() => {
-            //     setNotificationContent(null);
-            //     setNotificationType(null);
-            // }, 5000);
+            const res = await signInWithEmailAndPassword(auth, email, password);
+            const user = res.user;
+            console.log(user);
+            setFirebaseAuth(user);
+            toast.success("Logged in successfully! 😃");
+            navigate("/");
         } catch (error) {
-            console.log("Hey! Error while logging in");
             console.log(error);
         }
     };
 
     useEffect(() => {
-        if (user) {
+        if (firebaseAuth) {
             navigate("/");
         }
-    }, [navigate, user]);
+    }, [navigate, firebaseAuth]);
 
     return (
         <div>

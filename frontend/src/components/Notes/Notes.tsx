@@ -1,16 +1,23 @@
 // import { Note } from "../../types";
 import Map from "../Map";
 import useNotes from "../../hooks/useNotes";
-import { LoggedInUser, NoteInterface } from "../../types";
-import { Link } from "react-router-dom";
+import { NoteInterface } from "../../types";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import useUser from "../../hooks/useUser";
 
 interface props {
-    user: LoggedInUser | null;
+    firebaseAuth: object | null;
 }
 
-const Notes = ({ user }: props) => {
+const Notes = ({ firebaseAuth }: props) => {
+    const { data: user, status: userStatus } = useUser(firebaseAuth);
     const { data: notes, status: notesStatus } = useNotes(user);
+    const navigate = useNavigate();
+    console.log("user in notes");
+    if (!user) {
+        navigate("/");
+    }
 
     if (notesStatus === "pending") {
         return <span className="loading loading-spinner loading-md"></span>;

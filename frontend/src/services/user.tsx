@@ -1,8 +1,19 @@
 import axios from "axios";
 const baseUrl = "/api/users/";
 
+let token: string | null;
+
+const setToken = (newToken: string) => {
+    token = `Bearer ${newToken}`;
+};
+
+// TO DO:
+// MAKE RETURN USER DATA FROM BACKEND: NAME & PROFILE PICTURE
 const getAll = () => {
-    return axios.get(baseUrl);
+    const config = {
+        headers: { Authorization: token }
+    };
+    return axios.get(baseUrl, config).then((response) => response.data);
 };
 
 const getById = (id: string) => {
@@ -14,4 +25,4 @@ const register = async (credentials: { name: string; uid: string }) => {
     return res.data;
 };
 
-export default { getAll, getById, register };
+export default { setToken, getAll, getById, register };
