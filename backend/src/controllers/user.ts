@@ -5,10 +5,20 @@ import { AuthRequest } from "../types";
 
 const userRouter = Express.Router();
 
-userRouter.get("/", async (_req, res) => {
-    // const users = await User.find({}).populate("notes");
-    // res.json(users);
-    res.json("Hello.");
+userRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
+    try {
+        const userId = req.user.user_id;
+        const user = await User.findOne({ fireBaseUid: userId }).populate("favouriteLocations");
+
+        if (!user || userId !== user.fireBaseUid) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+        return res.json(user);
+    } catch (error) {
+        console.log(error);
+        // return res.status(400).json({ error: error });
+        return next(error);
+    }
 });
 
 userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
@@ -29,10 +39,15 @@ userRouter.post("/", async (req, res, next) => {
     try {
         console.log("POST /api/users");
         const { name, uid } = req.body;
+        console.log("name", name, "uid", uid);
+
+        if (!name || !uid) {
+            return res.status(400).json({ error: "Missing name or uid" });
+        }
 
         const user = new User({
             fireBaseUid: uid,
-            name
+            name: name
         });
 
         const savedUser = await user.save();

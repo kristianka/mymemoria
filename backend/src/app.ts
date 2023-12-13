@@ -8,6 +8,7 @@ import { errorHandler, getTokenFromReq, unknownEndpoint } from "./utils/middlewa
 import notesRouter from "./controllers/notes";
 import userRouter from "./controllers/user";
 import loginRouter from "./controllers/login";
+import infoRouter from "./controllers/info";
 
 const app = express();
 app.use(cors());
@@ -26,6 +27,7 @@ app.use(getTokenFromReq);
 app.use("/api/notes", notesRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/info", infoRouter);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
