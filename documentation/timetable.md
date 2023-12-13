@@ -25,8 +25,9 @@
 |9.12.2023|5|Add 404 page, fix bugs, update frontend|
 |10.12.2023|12|Update login page's UI, expirement with firebase to handle auth|
 |11.12.2023|11|Work on Firebase Auth (firebase-auth branch)|
-|12.12.2023|3|Fix bugs with Firebase Auth (firebase-auth branch)|
+|12.12.2023|10|Fix bugs with Firebase Auth (firebase-auth branch)|
+|13.12.2023|7|Add react toastify, improve component prop passing, fix bugs (firebase-auth branch)|
 
-<h2>Total: 130 hours</h2>
+<h2>Total: 144 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
