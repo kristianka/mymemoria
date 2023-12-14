@@ -28,10 +28,8 @@ const App = () => {
     const [loading, setLoading] = useState<boolean>(true);
     // user hook
     const { data: user, status: userStatus } = useUser(firebaseAuth);
-
+    // auth hook
     useAuthEffect(setFirebaseAuth, setLoading);
-
-    console.log(user);
 
     if (loading) {
         return (
@@ -44,7 +42,6 @@ const App = () => {
         );
     }
 
-    console.log("in app");
     return (
         <div>
             <AnnouncementBanner></AnnouncementBanner>

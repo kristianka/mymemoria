@@ -16,4 +16,9 @@ const getUser = async () => {
     return res.data;
 };
 
-export default { setToken, getUser };
+const register = async (newUser: object) => {
+    const res = await axios.post(baseUrl, newUser);
+    return res.data;
+};
+
+export default { setToken, getUser, register };

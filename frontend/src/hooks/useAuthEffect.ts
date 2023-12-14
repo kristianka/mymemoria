@@ -10,7 +10,6 @@ const useAuthEffect = (
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     useEffect(() => {
-        console.log("RUNNING USE EFFECT");
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
                 // checks server health and displays a toast if server is down

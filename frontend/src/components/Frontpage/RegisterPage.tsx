@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import userService from "../../services/user";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import { FirebaseError } from "firebase/app";
 
 interface props {
     firebaseAuth: object | null;
@@ -43,24 +45,49 @@ const RegisterPage = ({ firebaseAuth }: props) => {
 
             console.log(response);
             console.log(user);
+            toast.success("Registered successfully! Please check your email for verification.");
             navigate("/login");
         } catch (error) {
+            // Handle form errors. First, Firebase errors
+            if (error instanceof FirebaseError) {
+                if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
+                    toast.error("Please fill in all the fields.");
+                    return;
+                }
+                if (error.code === "auth/email-already-in-use") {
+                    toast.error("Email already in use. Please try again with a different email.");
+                    return;
+                }
+
+                if (error.code === "auth/invalid-email") {
+                    toast.error("Invalid email. Please try again.");
+                    return;
+                }
+
+                if (error.code === "auth/weak-password") {
+                    toast.error("Weak password. Please try again.");
+                    return;
+                }
+            }
+
+            // If you get here, the problem is with the custom backend and not Firebase
             console.log("Error while registering");
             console.log(error);
-
+            toast.error("Error while registering, please try again later.");
             // If there's an error during registration, delete the user in Firebase Authentication
             if (auth.currentUser) {
                 await auth.currentUser.delete();
                 console.log("User deleted from Firebase Authentication due to backend error");
             }
-
-            // TO DO: Show error msg
         }
     };
 
-    if (firebaseAuth) {
-        navigate("/");
-    }
+    // if user is already logged in, redirect to home page
+    useEffect(() => {
+        if (firebaseAuth) {
+            navigate("/");
+        }
+    }, [navigate, firebaseAuth]);
 
     return (
         <div className="container mx-auto">
