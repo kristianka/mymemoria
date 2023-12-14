@@ -1,26 +1,26 @@
-import { LoggedInUser, NoteInterface } from "../../types";
+import { NoteInterface } from "../../types";
 import useNotes from "../../hooks/useNotes";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../NotFound";
+import useUser from "../../hooks/useUser";
 
 interface props {
-    user: LoggedInUser | null;
-    setNotificationContent: (content: string | null) => void;
-    setNotificationType: (type: string | null) => void;
+    firebaseAuth: object | null;
 }
 
-const SingleNote = ({ user, setNotificationContent, setNotificationType }: props) => {
+const SingleNote = ({ firebaseAuth }: props) => {
     const { id } = useParams();
+    const { data: user, status: userStatus } = useUser(firebaseAuth);
     const { data: notes, status: notesStatus } = useNotes(user);
     const navigate = useNavigate();
 
     if (!user) {
-        setNotificationContent("You need to be logged in to do that!");
-        setNotificationType("error");
-        setTimeout(() => {
-            setNotificationContent(null);
-            setNotificationType(null);
-        }, 10000);
+        // setNotificationContent("You need to be logged in to do that!");
+        // setNotificationType("error");
+        // setTimeout(() => {
+        //     setNotificationContent(null);
+        //     setNotificationType(null);
+        // }, 10000);
         navigate("/");
     }
 

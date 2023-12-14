@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
@@ -15,91 +15,60 @@ import SingleNote from "./components/Notes/SingleNote";
 
 import Notes from "./components/Notes/Notes";
 
-import notesService from "./services/notes";
-
-import { LoggedInUser } from "./types";
 import AddNote from "./components/Notes/AddNote";
-import Notification from "./components/Notification";
+
+import useUser from "./hooks/useUser";
+
+import { FireBaseUserInterface } from "./types";
+import useAuthEffect from "./hooks/useAuthEffect";
 
 const App = () => {
-    // to reduce the flashing when refreshing page
+    const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
+    // avoids flickering landing page
     const [loading, setLoading] = useState<boolean>(true);
-    const [user, setUser] = useState<LoggedInUser | null>(null);
-    const [notificationContent, setNotificationContent] = useState<string | null>(null);
-    const [notificationType, setNotificationType] = useState<string | null>(null);
-
-    useEffect(() => {
-        console.log("App useEffect");
-        const savedUser = window.localStorage.getItem("LoggedUser");
-        if (savedUser) {
-            const expiresAtString = JSON.parse(savedUser).expiresAt;
-            const expiresAt = new Date(expiresAtString);
-            if (expiresAt < new Date()) {
-                console.log("token expired");
-                window.localStorage.removeItem("LoggedUser");
-                setUser(null);
-                setLoading(false);
-                setNotificationContent("You have been logged out due to inactivity.");
-                setNotificationType("error");
-                setTimeout(() => {
-                    setNotificationContent(null);
-                    setNotificationType(null);
-                }, 10000);
-                return;
-            }
-            notesService.setToken(JSON.parse(savedUser).token);
-            setUser(JSON.parse(savedUser));
-        }
-        setLoading(false);
-    }, []);
+    // user hook
+    const { data: user, status: userStatus } = useUser(firebaseAuth);
+    // auth hook
+    useAuthEffect(setFirebaseAuth, setLoading);
 
     if (loading) {
-        return null;
+        return (
+            <div>
+                <AnnouncementBanner></AnnouncementBanner>
+                <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
+                <span className="loading loading-spinner loading-md"></span>
+                <p>loading</p>
+            </div>
+        );
     }
-
-    console.log("user", user);
 
     return (
         <div>
             <AnnouncementBanner></AnnouncementBanner>
-            <NavBar user={user} setUser={setUser}></NavBar>
-            <div className="notification">
-                <Notification content={notificationContent} type={notificationType}></Notification>
-            </div>
+            <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
             <Routes>
-                {user ? (
-                    <Route path="/" element={<Notes user={user} />} />
+                {firebaseAuth && user && userStatus === "success" && !loading ? (
+                    <Route path="/" element={<Notes firebaseAuth={firebaseAuth} />} />
                 ) : (
                     <Route path="/" element={<LandingPage />} />
                 )}
                 <Route
                     path="/login"
                     element={
-                        <LoginPage
-                            user={user}
-                            setUser={setUser}
-                            setNotificationContent={setNotificationContent}
-                            setNotificationType={setNotificationType}
-                        />
+                        <LoginPage firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth} />
                     }
                 />
-                <Route path="/notes" element={<Notes user={user} />} />
+                <Route path="/notes" element={<Notes firebaseAuth={firebaseAuth} />} />
                 <Route
                     path="/notes/:id"
-                    element={
-                        <SingleNote
-                            user={user}
-                            setNotificationContent={setNotificationContent}
-                            setNotificationType={setNotificationType}
-                        />
-                    }
+                    element={<SingleNote firebaseAuth={firebaseAuth} />}
                 ></Route>
                 <Route path="/notes/add" element={<AddNote user={user}></AddNote>}></Route>
                 <Route path="/profile" element={<ProfilePage />}></Route>
                 <Route path="/settings" element={<SettingsPage />}></Route>
                 <Route
                     path="/register"
-                    element={<RegisterPage user={user} setUser={setUser} />}
+                    element={<RegisterPage firebaseAuth={firebaseAuth} />}
                 ></Route>
             </Routes>
             {/* <Footer></Footer> */}

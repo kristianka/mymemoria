@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import userService from "../../services/user";
-import loginService from "../../services/login";
-import { LoggedInUser } from "../../types";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+import { FirebaseError } from "firebase/app";
 
 interface props {
-    user: LoggedInUser | null;
-    setUser: (user: LoggedInUser | null) => void;
+    firebaseAuth: object | null;
 }
 
-const RegisterPage = (props: props) => {
-    const [username, setUsername] = useState("");
+const RegisterPage = ({ firebaseAuth }: props) => {
+    const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
     };
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,34 +32,75 @@ const RegisterPage = (props: props) => {
     const register = async (e: React.MouseEvent<HTMLButtonElement>) => {
         try {
             e.preventDefault();
-            const response = await userService.register({ username, name, password });
+
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            const uid = user.uid;
+
+            // Store only Firebase Auth UID and name in MongoDB
+            const response = await userService.register({
+                name,
+                uid
+            });
+
             console.log(response);
-            const loginResponse = await loginService.login({ username, password });
-            props.setUser(loginResponse);
-            window.localStorage.setItem("LoggedUser", JSON.stringify(loginResponse));
-            navigate("/");
+            console.log(user);
+            toast.success("Registered successfully! Please check your email for verification.");
+            navigate("/login");
         } catch (error) {
-            console.log("Hey! Error while registering");
+            // Handle form errors. First, Firebase errors
+            if (error instanceof FirebaseError) {
+                if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
+                    toast.error("Please fill in all the fields.");
+                    return;
+                }
+                if (error.code === "auth/email-already-in-use") {
+                    toast.error("Email already in use. Please try again with a different email.");
+                    return;
+                }
+
+                if (error.code === "auth/invalid-email") {
+                    toast.error("Invalid email. Please try again.");
+                    return;
+                }
+
+                if (error.code === "auth/weak-password") {
+                    toast.error("Weak password. Please try again.");
+                    return;
+                }
+            }
+
+            // If you get here, the problem is with the custom backend and not Firebase
+            console.log("Error while registering");
             console.log(error);
+            toast.error("Error while registering, please try again later.");
+            // If there's an error during registration, delete the user in Firebase Authentication
+            if (auth.currentUser) {
+                await auth.currentUser.delete();
+                console.log("User deleted from Firebase Authentication due to backend error");
+            }
         }
     };
 
-    if (props.user) {
-        navigate("/");
-    }
+    // if user is already logged in, redirect to home page
+    useEffect(() => {
+        if (firebaseAuth) {
+            navigate("/");
+        }
+    }, [navigate, firebaseAuth]);
 
     return (
         <div className="container mx-auto">
             <h1>Register</h1>
             <div className="form-control w-full max-w-xs">
                 <label className="label">
-                    <span className="label-text">Username</span>
+                    <span className="label-text">Email</span>
                 </label>
                 <input
-                    onChange={handleUsernameChange}
-                    value={username}
-                    type="text"
-                    placeholder="Username"
+                    onChange={handleEmailChange}
+                    value={email}
+                    type="email"
+                    placeholder="Email"
                     className="input input-bordered w-full max-w-xs"
                 />
             </div>

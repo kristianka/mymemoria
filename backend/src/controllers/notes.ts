@@ -7,20 +7,22 @@ import { AuthRequest } from "../types";
 
 const notesRouter = Express.Router();
 
-notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res) => {
+notesRouter.get("/", getUserFromReq, async (req: any, res) => {
     try {
-        const user = await User.findById(req.user.id).populate({
+        const userId = req.user.user_id;
+        const user = await User.findOne({ fireBaseUid: userId }).populate({
             path: "notes",
             populate: {
                 path: "location",
                 model: Location
             }
         });
-
-        if (req.user.id !== user?.id) {
+        console.log("USER ID IS", userId);
+        if (!user || userId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        return res.json(user?.notes);
+        console.log(user.notes);
+        return res.json(user.notes);
     } catch (error) {
         console.log(error);
         return res.status(400).json({ error: error });
@@ -53,8 +55,7 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res) => {
         if (!title || !content || !location) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-
-        const user = await User.findById(req.user.id);
+        const user = await User.findOne({ fireBaseUid: req.user.uid });
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -78,7 +79,7 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res) => {
         user.notes.push(savedNote._id);
         await user.save();
         // remove before production
-        console.log(`Added note ${savedNote.title} to user ${user.username}`);
+        console.log(`Added note ${savedNote.title} to user ${user.name}`);
         return res.status(201).json(savedNote);
     } catch (error: any) {
         console.log(error);

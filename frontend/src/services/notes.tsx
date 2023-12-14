@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseUrl = "/api/notes";
-import { CreateNoteInterface } from "../types";
+import { CreateNoteInterface, NoteInterface } from "../types";
 
 let token: string | null;
 
@@ -8,11 +8,12 @@ const setToken = (newToken: string) => {
     token = `Bearer ${newToken}`;
 };
 
-const getAll = () => {
+const getAll = async () => {
     const config = {
         headers: { Authorization: token }
     };
-    return axios.get(baseUrl, config).then((response) => response.data);
+    const res = await axios.get<NoteInterface[]>(baseUrl, config);
+    return res.data;
 };
 
 const create = (newObject: CreateNoteInterface) => {

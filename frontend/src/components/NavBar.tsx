@@ -1,20 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+import useUser from "../hooks/useUser";
+
 import { useQueryClient } from "@tanstack/react-query";
-import { LoggedInUser } from "../types";
+import { FireBaseUserInterface } from "../types";
 
 interface props {
-    user: LoggedInUser | null;
-    setUser: (user: LoggedInUser | null) => void;
+    firebaseAuth: FireBaseUserInterface | null;
+    setFirebaseAuth: (firebaseAuth: FireBaseUserInterface | null) => void;
 }
 
-const NavBar = ({ user, setUser }: props) => {
+const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
+    const { data: user, status: userStatus } = useUser(firebaseAuth);
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     const logout = () => {
-        window.localStorage.removeItem("LoggedUser");
-        queryClient.invalidateQueries({ queryKey: ["user"] });
-        setUser(null);
+        const handleLogout = async () => {
+            try {
+                await auth.signOut();
+                console.log("User logged out");
+                setFirebaseAuth(null);
+                window.localStorage.removeItem("userData");
+                queryClient.clear();
+                navigate("/");
+            } catch (error) {
+                console.error("Error logging out", error);
+            }
+        };
+        handleLogout();
     };
+
+    if (userStatus === "pending") {
+        return (
+            <div className="navbar bg-base-100">
+                <div className="flex-1">
+                    <Link to="/" className="btn btn-ghost normal-case text-xl">
+                        Notes
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="navbar bg-base-100">

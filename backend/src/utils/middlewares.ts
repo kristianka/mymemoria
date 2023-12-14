@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Error as mongoError } from "mongoose";
-import jwt from "jsonwebtoken";
+import { getAdminInstance } from "./firebaseConnection";
 
 const errorHandler = (
     error: Error | mongoError,
@@ -57,15 +57,16 @@ const getTokenFromReq = (req: AuthRequest, _res: Response, next: NextFunction) =
     next();
 };
 
-const getUserFromReq = (req: AuthRequest, _res: Response, next: NextFunction) => {
+const getUserFromReq = async (req: any, _res: Response, next: NextFunction) => {
     if (!req.token || !process.env.SECRET) {
         req.user = undefined;
         return next();
     }
-    const decodedToken = jwt.verify(req.token, process.env.SECRET);
-    if (typeof decodedToken === "object") {
-        req.user = decodedToken;
-    } else {
+    const admin = getAdminInstance();
+    try {
+        const decodedUser = await admin.auth().verifyIdToken(req.token);
+        req.user = decodedUser;
+    } catch (error) {
         req.user = undefined;
     }
     next();
