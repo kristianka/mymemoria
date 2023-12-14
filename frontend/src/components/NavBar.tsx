@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import useUser from "../hooks/useUser";
 
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useQueryClient } from "@tanstack/react-query";
+import { FireBaseUserInterface } from "../types";
 
 interface props {
-    firebaseAuth: object | null;
-    setFirebaseAuth: (firebaseAuth: object | null) => void;
+    firebaseAuth: FireBaseUserInterface | null;
+    setFirebaseAuth: (firebaseAuth: FireBaseUserInterface | null) => void;
 }
 
 const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {

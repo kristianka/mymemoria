@@ -5,10 +5,11 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 
 import { toast } from "react-toastify";
+import { FireBaseUserInterface } from "../../types";
 
 interface props {
-    firebaseAuth: object | null;
-    setFirebaseAuth: (firebaseAuth: object | null) => void;
+    firebaseAuth: FireBaseUserInterface | null;
+    setFirebaseAuth: (firebaseAuth: FireBaseUserInterface | null) => void;
 }
 
 const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
@@ -29,9 +30,15 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             e.preventDefault();
 
             const res = await signInWithEmailAndPassword(auth, email, password);
-            const user = res.user;
-            console.log(user);
-            setFirebaseAuth(user);
+            const { uid, emailVerified, metadata } = res.user;
+            const neededUserData: FireBaseUserInterface = {
+                email: res.user.email,
+                uid,
+                emailVerified,
+                metadata
+            };
+
+            setFirebaseAuth(neededUserData);
             toast.success("Logged in successfully! 😃");
             navigate("/");
         } catch (error) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
@@ -15,55 +15,25 @@ import SingleNote from "./components/Notes/SingleNote";
 
 import Notes from "./components/Notes/Notes";
 
-import notesService from "./services/notes";
-import userService from "./services/user";
-import infoService from "./services/info";
-
 import AddNote from "./components/Notes/AddNote";
-import { auth } from "./firebase";
 
 import useUser from "./hooks/useUser";
-import { toast } from "react-toastify";
+
+import { FireBaseUserInterface } from "./types";
+import useAuthEffect from "./hooks/useAuthEffect";
 
 const App = () => {
-    const [firebaseAuth, setFirebaseAuth] = useState<object | null>(null);
-
+    const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
+    // avoids flickering landing page
+    const [loading, setLoading] = useState<boolean>(true);
     // user hook
     const { data: user, status: userStatus } = useUser(firebaseAuth);
-    console.log("user", user);
-    console.log("fb", firebaseAuth);
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                // User is signed in, only get these values
-                // checks server health and displays a toast if server is down
-                infoService.serverHealthCheck();
 
-                setFirebaseAuth(authUser);
-                authUser
-                    .getIdToken()
-                    .then((token) => {
-                        notesService.setToken(token);
-                        userService.setToken(token);
-                    })
-                    .catch((error) => {
-                        console.error("Error getting Firebase ID token:", error);
-                    });
-            } else {
-                // User is signed out
-                setFirebaseAuth(null);
-                // remove fetched user data (usernames, etc.) from local storage
-                localStorage.removeItem("userData");
-            }
-        });
-
-        // Cleanup the observer when the component unmounts
-        return () => unsubscribe();
-    }, []);
+    useAuthEffect(setFirebaseAuth, setLoading);
 
     console.log(user);
 
-    if (firebaseAuth && userStatus === "pending") {
+    if (loading) {
         return (
             <div>
                 <AnnouncementBanner></AnnouncementBanner>
@@ -74,17 +44,13 @@ const App = () => {
         );
     }
 
-    if (firebaseAuth && userStatus === "error") {
-        toast.error("Error connecting to server. Please try again later.");
-    }
-
     console.log("in app");
     return (
         <div>
             <AnnouncementBanner></AnnouncementBanner>
             <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
             <Routes>
-                {user && firebaseAuth ? (
+                {firebaseAuth && user && userStatus === "success" && !loading ? (
                     <Route path="/" element={<Notes firebaseAuth={firebaseAuth} />} />
                 ) : (
                     <Route path="/" element={<LandingPage />} />

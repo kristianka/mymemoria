@@ -1,20 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
+import { FireBaseUserInterface } from "../types";
 import userService from "../services/user";
 
-const useUser = (firebaseAuth: object | null) => {
+const useUser = (firebaseAuth: FireBaseUserInterface | null) => {
     return useQuery({
         queryKey: ["user", firebaseAuth],
         enabled: !!firebaseAuth,
         queryFn: () => {
-            console.log("RUNNING USERQUERY! FIREBASEAUTH", firebaseAuth);
             const cachedUserData = localStorage.getItem("userData");
-            console.log("cached userdata", cachedUserData);
             if (!cachedUserData) {
                 const fetchData = async () => {
-                    const user = await userService.getAll();
+                    const user = await userService.getUser();
                     // not to be used for validation, just for caching to avoid flickering
                     localStorage.setItem("userData", JSON.stringify(user));
-                    console.log("returning user data from useuser hook", user);
                     return user;
                 };
                 return fetchData();

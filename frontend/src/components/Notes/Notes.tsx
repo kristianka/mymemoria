@@ -1,13 +1,13 @@
 // import { Note } from "../../types";
 import Map from "../Map";
 import useNotes from "../../hooks/useNotes";
-import { NoteInterface } from "../../types";
+import { FireBaseUserInterface, NoteInterface } from "../../types";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import useUser from "../../hooks/useUser";
 
 interface props {
-    firebaseAuth: object | null;
+    firebaseAuth: FireBaseUserInterface | null;
 }
 
 const Notes = ({ firebaseAuth }: props) => {
@@ -15,7 +15,7 @@ const Notes = ({ firebaseAuth }: props) => {
     const { data: notes, status: notesStatus } = useNotes(user);
     const navigate = useNavigate();
     console.log("user in notes");
-    if (!user) {
+    if (!user && userStatus !== "pending") {
         navigate("/");
     }
 
