@@ -58,7 +58,7 @@ const getTokenFromReq = (req: AuthRequest, _res: Response, next: NextFunction) =
 };
 
 const getUserFromReq = async (req: any, _res: Response, next: NextFunction) => {
-    if (!req.token || !process.env.SECRET) {
+    if (!req.token) {
         req.user = undefined;
         return next();
     }
@@ -68,6 +68,7 @@ const getUserFromReq = async (req: any, _res: Response, next: NextFunction) => {
         req.user = decodedUser;
     } catch (error) {
         req.user = undefined;
+        return next(error);
     }
     next();
 };

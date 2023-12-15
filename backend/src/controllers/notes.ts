@@ -7,7 +7,8 @@ import { AuthRequest } from "../types";
 
 const notesRouter = Express.Router();
 
-notesRouter.get("/", getUserFromReq, async (req: any, res) => {
+// get all user's notes
+notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         const userId = req.user.user_id;
         const user = await User.findOne({ fireBaseUid: userId }).populate({
@@ -17,18 +18,17 @@ notesRouter.get("/", getUserFromReq, async (req: any, res) => {
                 model: Location
             }
         });
-        console.log("USER ID IS", userId);
         if (!user || userId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        console.log(user.notes);
         return res.json(user.notes);
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ error: error });
+        return next(error);
     }
 });
 
+// get by id, not really used because you can just get all notes and filter by id
 notesRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         const user = await User.findById(req.user.id);
@@ -45,11 +45,11 @@ notesRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
         }
     } catch (error) {
         return next(error);
-        // return res.status(400).json({ error: error });
     }
 });
 
-notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res) => {
+// post note
+notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         const { title, content, location } = req.body;
         if (!title || !content || !location) {
@@ -71,19 +71,65 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res) => {
         const note = new Note({
             title,
             content,
-            location: (savedLocation as any)._id,
+            location: savedLocation._id,
             user: user._id
         });
 
         const savedNote = await note.save();
         user.notes.push(savedNote._id);
         await user.save();
-        // remove before production
-        console.log(`Added note ${savedNote.title} to user ${user.name}`);
+
         return res.status(201).json(savedNote);
-    } catch (error: any) {
-        console.log(error);
-        return res.status(400).json({ error: error.message });
+    } catch (error) {
+        return next(error);
+    }
+});
+
+// update note
+notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
+    try {
+        const { title, content } = req.body;
+        if (!title || !content) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+        const user = await User.findById(req.user.id);
+        const note = await Note.findById(req.params.id);
+
+        if (req.user.id !== user?.id) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        if (!note) {
+            return res.status(404).end();
+        }
+
+        note.title = title;
+        note.content = content;
+        const savedNote = await note.save();
+        return res.status(200).json(savedNote);
+    } catch (error) {
+        return next(error);
+    }
+});
+
+// delete note
+notesRouter.delete("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const note = await Note.findById(req.params.id);
+
+        if (req.user.id !== user?.id) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        if (!note) {
+            return res.status(404).end();
+        }
+
+        await note.deleteOne();
+        return res.status(204).end();
+    } catch (error) {
+        return next(error);
     }
 });
 
