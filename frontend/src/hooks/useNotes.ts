@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import notesService from "../services/notes";
-import { FireBaseUserInterface } from "../types";
+import { BackendUserInterface } from "../types";
 
-const useNotes = (firebaseAuth: FireBaseUserInterface | null) => {
+const useNotes = (user: BackendUserInterface | null) => {
     return useQuery({
         queryKey: ["notes"],
-        enabled: !!firebaseAuth,
+        enabled: !!user,
         queryFn: async () => {
-            return notesService.getAll();
+            const notes = await notesService.getAll();
+            return notes;
         }
     });
 };

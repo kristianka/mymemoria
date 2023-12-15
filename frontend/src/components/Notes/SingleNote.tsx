@@ -1,51 +1,47 @@
-import { NoteInterface } from "../../types";
+import { FireBaseUserInterface, NoteInterface } from "../../types";
 import useNotes from "../../hooks/useNotes";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../NotFound";
 import useUser from "../../hooks/useUser";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 interface props {
-    firebaseAuth: object | null;
+    firebaseAuth: FireBaseUserInterface | null;
 }
 
 const SingleNote = ({ firebaseAuth }: props) => {
     const { id } = useParams();
-    const { data: user, status: userStatus } = useUser(firebaseAuth);
-    const { data: notes, status: notesStatus } = useNotes(user);
+    const { data: user } = useUser(firebaseAuth);
+    const { data: notes, status: notesStatus } = useNotes(user || null);
     const navigate = useNavigate();
 
-    if (!user) {
-        // setNotificationContent("You need to be logged in to do that!");
-        // setNotificationType("error");
-        // setTimeout(() => {
-        //     setNotificationContent(null);
-        //     setNotificationType(null);
-        // }, 10000);
-        navigate("/");
-    }
+    useEffect(() => {
+        if (!firebaseAuth) {
+            navigate("/");
+        }
+    }, [firebaseAuth, navigate]);
 
     if (notesStatus === "pending") {
         return <span className="loading loading-spinner loading-md"></span>;
     }
 
     if (notesStatus === "error") {
+        toast.error("Error getting notes, please try again later.");
         return <div>Something went wrong, please try again later</div>;
     }
 
-    const note: NoteInterface = notes?.find((note) => note.id === id);
-    console.log("note", note);
-
-    console.log("notes in single note", notes);
-
+    const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
     if (!note) {
         return <NotFound></NotFound>;
     }
+
+    document.title = `${note.title} | Notes`;
     return (
         <div>
+            <p>delete note:</p> <button>delete</button>
             <h2>{note.title}</h2>
             <p>{note.content}</p>
-            <p>{note.location[0]}</p>
-            <p>{note.location[1]}</p>
             <p>{note.user}</p>
             <h1>Logged in as {user?.name}</h1>
             <h1>Single Note</h1>

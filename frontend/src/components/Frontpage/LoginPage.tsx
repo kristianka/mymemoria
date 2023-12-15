@@ -6,6 +6,7 @@ import { auth } from "../../firebase";
 
 import { toast } from "react-toastify";
 import { FireBaseUserInterface } from "../../types";
+import { FirebaseError } from "firebase/app";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -42,11 +43,24 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             toast.success("Logged in successfully! 😃");
             navigate("/");
         } catch (error) {
+            // Handle form errors. First, Firebase errors
+            if (error instanceof FirebaseError) {
+                if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
+                    toast.error("Please fill in all the fields.");
+                    return;
+                }
+                if (error.code === "auth/invalid-credential") {
+                    toast.error("Invalid credentials. Please try again.");
+                    return;
+                }
+            }
+
             console.log(error);
         }
     };
 
     useEffect(() => {
+        document.title = "Login | Notes";
         if (firebaseAuth) {
             navigate("/");
         }

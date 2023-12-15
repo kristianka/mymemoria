@@ -3,7 +3,9 @@ export interface NoteInterface {
     title: string;
     content: string;
     user: string;
-    location: string;
+    location: {
+        coordinates: [number, number];
+    };
 }
 
 import { UserMetadata } from "firebase/auth";

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoggedInUser } from "../../types";
+import { FireBaseUserInterface } from "../../types";
 import notesService from "../../services/notes";
 import AddingNoteMap from "./AddingNoteMap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface AddNoteProps {
-    user: LoggedInUser | null;
+    firebaseAuth: FireBaseUserInterface | null;
 }
-const AddNote = (user: AddNoteProps) => {
+const AddNote = (firebaseAuth: AddNoteProps) => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -27,10 +27,12 @@ const AddNote = (user: AddNoteProps) => {
     };
 
     useEffect(() => {
-        if (!user) {
+        if (!firebaseAuth) {
             navigate("/");
         }
-    }, [user, navigate]);
+    }, [firebaseAuth, navigate]);
+
+    document.title = "Add note | Notes";
 
     const createNoteMutation = useMutation({
         mutationFn: notesService.create,
@@ -82,7 +84,7 @@ const AddNote = (user: AddNoteProps) => {
                     <label className="label">
                         <span className="label-text">Content</span>
                     </label>
-                    <textarea
+                    <input
                         onChange={handleContentChange}
                         value={content}
                         type="text"

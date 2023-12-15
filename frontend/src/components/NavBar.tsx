@@ -31,13 +31,39 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
         handleLogout();
     };
 
-    if (userStatus === "pending") {
+    // loading skeleton
+    if (firebaseAuth && !user) {
         return (
             <div className="navbar bg-base-100">
                 <div className="flex-1">
                     <Link to="/" className="btn btn-ghost normal-case text-xl">
                         Notes
                     </Link>
+                </div>
+                <div className="flex-none">
+                    <Link to="/notes/add/">
+                        <label tabIndex={0} className="btn btn-ghost btn-circle">
+                            +
+                        </label>
+                    </Link>
+                    <label className="" htmlFor="">
+                        <div className="flex animate-pulse">
+                            <div className="ms-2 mt-0 w-full">
+                                <h3 className="bg-gray-100 rounded-full dark:bg-gray-300 w-40 h-6"></h3>
+                            </div>
+                        </div>
+                    </label>
+                    <div className="dropdown dropdown-end">
+                        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                            <div className="w-10 rounded-full">
+                                <div className="flex animate-pulse">
+                                    <div className="flex-shrink-0">
+                                        <span className="w-12 h-12 block bg-gray-100 rounded-full dark:bg-gray-300"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
         );
@@ -63,7 +89,10 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&w=1000&q=80" />
+                                {/* api doesn't collect any data */}
+                                <img
+                                    src={`https://ui-avatars.com/api/?background=ed58a0&color=fff&name=${user.name}`}
+                                />
                             </div>
                         </label>
                         <ul

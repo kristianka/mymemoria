@@ -17,8 +17,6 @@ import Notes from "./components/Notes/Notes";
 
 import AddNote from "./components/Notes/AddNote";
 
-import useUser from "./hooks/useUser";
-
 import { FireBaseUserInterface } from "./types";
 import useAuthEffect from "./hooks/useAuthEffect";
 
@@ -26,8 +24,6 @@ const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
     // avoids flickering landing page
     const [loading, setLoading] = useState<boolean>(true);
-    // user hook
-    const { data: user, status: userStatus } = useUser(firebaseAuth);
     // auth hook
     useAuthEffect(setFirebaseAuth, setLoading);
 
@@ -36,8 +32,6 @@ const App = () => {
             <div>
                 <AnnouncementBanner></AnnouncementBanner>
                 <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
-                <span className="loading loading-spinner loading-md"></span>
-                <p>loading</p>
             </div>
         );
     }
@@ -47,7 +41,7 @@ const App = () => {
             <AnnouncementBanner></AnnouncementBanner>
             <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
             <Routes>
-                {firebaseAuth && user && userStatus === "success" && !loading ? (
+                {firebaseAuth && !loading ? (
                     <Route path="/" element={<Notes firebaseAuth={firebaseAuth} />} />
                 ) : (
                     <Route path="/" element={<LandingPage />} />
@@ -63,7 +57,10 @@ const App = () => {
                     path="/notes/:id"
                     element={<SingleNote firebaseAuth={firebaseAuth} />}
                 ></Route>
-                <Route path="/notes/add" element={<AddNote user={user}></AddNote>}></Route>
+                <Route
+                    path="/notes/add"
+                    element={<AddNote firebaseAuth={firebaseAuth}></AddNote>}
+                ></Route>
                 <Route path="/profile" element={<ProfilePage />}></Route>
                 <Route path="/settings" element={<SettingsPage />}></Route>
                 <Route

@@ -84,6 +84,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
 
     // if user is already logged in, redirect to home page
     useEffect(() => {
+        document.title = "Register | Notes";
         if (firebaseAuth) {
             navigate("/");
         }

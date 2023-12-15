@@ -4,20 +4,16 @@ import userService from "../services/user";
 
 const useUser = (firebaseAuth: FireBaseUserInterface | null) => {
     return useQuery({
+        // firebase auth is dependency for this query,
+        // so it will be refetched when firebase auth changes
         queryKey: ["user", firebaseAuth],
         enabled: !!firebaseAuth,
         queryFn: () => {
-            const cachedUserData = localStorage.getItem("userData");
-            if (!cachedUserData) {
-                const fetchData = async () => {
-                    const user = await userService.getUser();
-                    // not to be used for validation, just for caching to avoid flickering
-                    localStorage.setItem("userData", JSON.stringify(user));
-                    return user;
-                };
-                return fetchData();
-            }
-            return JSON.parse(cachedUserData);
+            const fetchData = async () => {
+                const user = await userService.getUser();
+                return user;
+            };
+            return fetchData();
         }
     });
 };
