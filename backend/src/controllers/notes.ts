@@ -10,7 +10,7 @@ const notesRouter = Express.Router();
 // get all user's notes
 notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const userId = req.user.user_id;
+        const userId = req.user?.user_id;
         const user = await User.findOne({ fireBaseUid: userId }).populate({
             path: "notes",
             populate: {
@@ -31,10 +31,10 @@ notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
 // get by id, not really used because you can just get all notes and filter by id
 notesRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user?.id);
         const note = await Note.findById(req.params.id);
 
-        if (req.user.id !== user?.id) {
+        if (req.user?.id !== user?.id) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
@@ -55,7 +55,7 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
         if (!title || !content || !location) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-        const user = await User.findOne({ fireBaseUid: req.user.uid });
+        const user = await User.findOne({ fireBaseUid: req.user?.uid });
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -92,10 +92,10 @@ notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
         if (!title || !content) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user?.id);
         const note = await Note.findById(req.params.id);
 
-        if (req.user.id !== user?.id) {
+        if (req.user?.id !== user?.id) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
@@ -115,10 +115,10 @@ notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 // delete note
 notesRouter.delete("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user?.id);
         const note = await Note.findById(req.params.id);
 
-        if (req.user.id !== user?.id) {
+        if (req.user?.id !== user?.id) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 

@@ -7,7 +7,7 @@ const userRouter = Express.Router();
 
 userRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const userId = req.user.user_id;
+        const userId = req.user?.user_id;
         const user = await User.findOne({ fireBaseUid: userId }).populate("favouriteLocations");
 
         if (!user || userId !== user.fireBaseUid) {
@@ -23,7 +23,7 @@ userRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
 
 userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        if (req.user.id !== req.params.id) {
+        if (req.user?.id !== req.params.id) {
             return res.status(401).json({ error: "Unauthorized" });
         }
         const user = await User.findById(req.user.id).populate("favouriteLocations");
