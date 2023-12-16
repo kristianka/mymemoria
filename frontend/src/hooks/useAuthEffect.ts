@@ -4,6 +4,7 @@ import notesService from "../services/notes";
 import userService from "../services/user";
 import infoService from "../services/info";
 import { FireBaseUserInterface } from "../types";
+import { toast } from "react-toastify";
 
 const useAuthEffect = (
     setFirebaseAuth: React.Dispatch<React.SetStateAction<FireBaseUserInterface | null>>,
@@ -29,7 +30,11 @@ const useAuthEffect = (
                         userService.setToken(token);
                     })
                     .catch((error) => {
-                        console.error("Error getting Firebase ID token:", error);
+                        if (error.message.includes("auth/id-token-expired")) {
+                            toast.error("Your session has expired. Please log in again.");
+                        } else {
+                            toast.error("An error occurred. Please try again.");
+                        }
                     });
             } else {
                 // User is signed out

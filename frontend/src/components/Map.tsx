@@ -15,9 +15,16 @@ interface props {
 
 const Map = ({ firebaseAuth }: props) => {
     const { data: user } = useUser(firebaseAuth);
-    const { data: notes } = useNotes(user);
+    const { data: notes } = useNotes(user || null);
     const mapContainer = useRef<HTMLDivElement>(null);
-    console.log("notes in map", notes);
+
+    const defaultCoordinates =
+        notes &&
+        notes.length > 0 &&
+        (notes[0].location.coordinates[0] !== 0 || notes[0].location.coordinates[1] !== 0)
+            ? notes[0].location?.coordinates
+            : [23.761, 61.4978]; // Tampere, Finland;
+
     useEffect(() => {
         const initializeMap = async () => {
             if (!mapContainer.current) return;
@@ -25,7 +32,7 @@ const Map = ({ firebaseAuth }: props) => {
             const mapInstance = new mapboxgl.Map({
                 container: mapContainer.current,
                 style: "mapbox://styles/mapbox/outdoors-v12",
-                center: [23.761, 61.4978], // Tampere, Finland
+                center: defaultCoordinates as LngLatLike,
                 zoom: 12
             });
 
@@ -79,7 +86,7 @@ const Map = ({ firebaseAuth }: props) => {
                     </h2>
                 </div>
             ) : (
-                <div ref={mapContainer} style={{ height: "400px" }} />
+                <div className="h-100" ref={mapContainer} style={{ height: "400px" }} />
             )}
         </div>
     );

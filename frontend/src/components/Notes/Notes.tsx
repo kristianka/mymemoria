@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import useUser from "../../hooks/useUser";
 import { toast } from "react-toastify";
+import NotesLoadingSkeleton from "./NotesLoadingSkeleton";
+import MapLoadingSkeleton from "./MapLoadingSkeleton";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -24,43 +26,7 @@ const Notes = ({ firebaseAuth }: props) => {
 
     document.title = "Your notes | Notes";
 
-    if (firebaseAuth && notesStatus === "pending") {
-        return (
-            <div className="grid grid-cols-2 divide-x">
-                <div className="grid grid-cols-1 divide-y">
-                    <div className="rounded-lg">
-                        <div className="flex animate-pulse">
-                            <li className="collapse collapse-arrow border bg-gray-100 rounded-md dark:bg-gray-300">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl"></div>
-                                <div className="collapse-content"></div>
-                            </li>
-                        </div>
-                    </div>
-                    <div className="rounded-lg">
-                        <div className="flex animate-pulse">
-                            <li className="collapse collapse-arrow border bg-gray-100 rounded-md dark:bg-gray-300">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl"></div>
-                                <div className="collapse-content"></div>
-                            </li>
-                        </div>
-                    </div>
-
-                    <div className="rounded-lg">
-                        <div className="flex animate-pulse">
-                            <li className="collapse collapse-arrow border bg-gray-100 rounded-md dark:bg-gray-300">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl"></div>
-                                <div className="collapse-content"></div>
-                            </li>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
+    console.log(notes);
     if (notesStatus === "error") {
         toast.error("Error getting notes, please try again later.");
         return <div>Something went, please try again later</div>;
@@ -70,24 +36,27 @@ const Notes = ({ firebaseAuth }: props) => {
             <h1>There are {notes?.length} note(s)</h1>
             <div className="grid grid-cols-2 divide-x">
                 <div className="grid grid-cols-1 divide-y">
+                    {firebaseAuth &&
+                        notesStatus === "pending" &&
+                        [...Array(3)].map((_, i) => <NotesLoadingSkeleton key={i} />)}{" "}
                     {notes &&
                         notes?.map((note: NoteInterface) => (
-                            <div key={note.id} className="rounded-lg">
-                                <li className="collapse collapse-arrow border" key={note.id}>
-                                    <input type="checkbox" />
-                                    <div className="collapse-title text-xl">{note.title}</div>
-                                    <div className="collapse-content">
-                                        {note.content}
+                            <div key={note.id} className="card bg-base-100">
+                                <div className="card-body">
+                                    <h2 className="card-title truncate">{note.title}</h2>
+                                    <p className="trunacte text-ellipsis">{note.content}</p>
+                                    <div className="card-actions justify-end">
                                         <Link to={`/notes/${note.id}`}>
                                             <ChevronRightIcon className="h-10 w-10 text-blue-500" />
                                         </Link>
                                     </div>
-                                </li>
+                                </div>
                             </div>
                         ))}
                 </div>
-                <div className="rounded-lg">
-                    <Map firebaseAuth={firebaseAuth}></Map>
+                <div className="grid grid-cols-1 divide-y rounded-lg">
+                    {firebaseAuth && notesStatus === "pending" && <MapLoadingSkeleton />}
+                    {notes && notes.length !== 0 && <Map firebaseAuth={firebaseAuth}></Map>}
                 </div>
             </div>
         </div>

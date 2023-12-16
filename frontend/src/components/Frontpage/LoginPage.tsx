@@ -45,6 +45,10 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         } catch (error) {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {
+                if (error.code === "auth/invalid-email") {
+                    toast.error("Invalid email. Please try again.");
+                    return;
+                }
                 if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
                     toast.error("Please fill in all the fields.");
                     return;

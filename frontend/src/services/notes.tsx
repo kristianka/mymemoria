@@ -23,11 +23,17 @@ const create = (newObject: CreateNoteInterface) => {
     return axios.post(baseUrl, newObject, config);
 };
 
-const update = (id: string) => {
+interface UpdateNoteInterface {
+    id: string;
+    title: string;
+    content: string;
+}
+
+const update = (obj: UpdateNoteInterface) => {
     const config = {
         headers: { Authorization: token }
     };
-    return axios.put(`${baseUrl}/${id}`, null, config);
+    return axios.put(`${baseUrl}/${obj.id}`, obj, config);
 };
 
 const remove = (id: string) => {

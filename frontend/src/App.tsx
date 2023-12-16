@@ -19,6 +19,7 @@ import AddNote from "./components/Notes/AddNote";
 
 import { FireBaseUserInterface } from "./types";
 import useAuthEffect from "./hooks/useAuthEffect";
+import EditNote from "./components/Notes/EditNote";
 
 const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
@@ -56,6 +57,10 @@ const App = () => {
                 <Route
                     path="/notes/:id"
                     element={<SingleNote firebaseAuth={firebaseAuth} />}
+                ></Route>
+                <Route
+                    path="/notes/:id/edit"
+                    element={<EditNote firebaseAuth={firebaseAuth}></EditNote>}
                 ></Route>
                 <Route
                     path="/notes/add"
