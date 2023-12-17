@@ -7,6 +7,7 @@ import useUser from "../../hooks/useUser";
 import { toast } from "react-toastify";
 import NotesLoadingSkeleton from "./NotesLoadingSkeleton";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
+import { useEffect } from "react";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -20,10 +21,12 @@ const Notes = ({ firebaseAuth }: props) => {
     const navigate = useNavigate();
 
     // if user is not logged in, redirect to front page
-    if (!user && userStatus !== "pending") {
-        navigate("/");
-    }
-
+    // useEffect to prevent infinite loop if server is down
+    useEffect(() => {
+        if (!user && userStatus !== "pending") {
+            navigate("/");
+        }
+    }, [user, userStatus, navigate]);
     document.title = "Your notes | Notes";
 
     console.log(notes);

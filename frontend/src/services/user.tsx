@@ -1,6 +1,9 @@
 import axios from "axios";
 const baseUrl = "/api/users/";
 import { BackendUserInterface } from "../types";
+import infoService from "./info";
+import { auth } from "../firebase";
+import { toast } from "react-toastify";
 
 let token: string | null;
 
@@ -9,11 +12,23 @@ const setToken = (newToken: string) => {
 };
 
 const getUser = async () => {
-    const config = {
-        headers: { Authorization: token }
-    };
-    const res = await axios.get<BackendUserInterface>(baseUrl, config);
-    return res.data;
+    try {
+        const config = {
+            headers: { Authorization: token }
+        };
+        const res = await axios.get<BackendUserInterface>(baseUrl, config);
+        return res.data;
+    } catch (error) {
+        const serverRes = await infoService.serverHealthCheck();
+        // log user out if unauhtorized but server ok
+        // this can happen when changing env on backend
+        if (serverRes === 200) {
+            auth.signOut();
+            toast.error("Signed out due to server error. Please try again later.");
+        }
+
+        console.log(error);
+    }
 };
 
 const register = async (newUser: object) => {

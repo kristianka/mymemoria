@@ -21,7 +21,6 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 await auth.signOut();
                 console.log("User logged out");
                 setFirebaseAuth(null);
-                window.localStorage.removeItem("userData");
                 queryClient.clear();
                 navigate("/");
             } catch (error) {

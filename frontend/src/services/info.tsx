@@ -6,8 +6,8 @@ const serverHealthCheck = async () => {
     try {
         const res = await axios.get(`${baseUrl}/health`);
         console.log("server status:", res.status);
+        return res.status;
     } catch (error) {
-        console.log("error in info");
         toast.error("The server is down. Please try again later.");
     }
 };

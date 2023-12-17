@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { auth } from "../firebase";
 import notesService from "../services/notes";
 import userService from "../services/user";
-import infoService from "../services/info";
 import { FireBaseUserInterface } from "../types";
 import { toast } from "react-toastify";
 
@@ -11,11 +10,8 @@ const useAuthEffect = (
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+        const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
-                // checks server health and displays a toast if server is down
-                infoService.serverHealthCheck();
-
                 const ff: FireBaseUserInterface = {
                     email: authUser.email,
                     uid: authUser.uid,
@@ -39,8 +35,6 @@ const useAuthEffect = (
             } else {
                 // User is signed out
                 setFirebaseAuth(null);
-                // remove fetched user data (usernames, etc.) from local storage
-                localStorage.removeItem("userData");
             }
             setLoading(false);
         });
