@@ -3,6 +3,7 @@ import { MONGODB_URI } from "./config";
 
 const connectToMongo = () => {
     console.log("Connecting to MongoDB...");
+
     mongoose
         .connect(MONGODB_URI)
         .then((_res) => {

@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import * as credentials from "../../firebase-admin-sdk.json";
+import { FIREBASE_CREDENTIALS } from "./config";
 
 let initializedAdmin: admin.app.App | null = null;
 
@@ -9,10 +9,8 @@ const connectToFirebase = () => {
             console.log("Connecting to Firebase...");
             initializedAdmin = admin.initializeApp({
                 credential: admin.credential.cert({
-                    ...credentials,
-                    privateKey: credentials.private_key.replace(/\\n/g, "\n")
-                }),
-                databaseURL: process.env.FIREBASE_DB_URL
+                    ...FIREBASE_CREDENTIALS
+                })
             });
             console.log("Successfully connected to Firebase!");
         } catch (error) {

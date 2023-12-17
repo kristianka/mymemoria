@@ -8,6 +8,7 @@ import { errorHandler, getTokenFromReq, unknownEndpoint } from "./utils/middlewa
 import notesRouter from "./controllers/notes";
 import userRouter from "./controllers/user";
 import infoRouter from "./controllers/info";
+import testingRouter from "./controllers/testing";
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,12 @@ app.use(errorHandler);
 app.get("/", (_req, res) => {
     res.send("Hello world!");
 });
+
+// DO NOT RUN THIS IN PRODUCTION !!!
+// THIS IS FOR TESTING, ALL DATA WILL BE DELETED
+if (process.env.NODE_ENV === "test") {
+    app.use("/api/testing", testingRouter);
+}
 
 app.use(getTokenFromReq);
 app.use("/api/notes", notesRouter);
