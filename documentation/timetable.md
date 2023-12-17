@@ -29,8 +29,9 @@
 |13.12.2023|9|Add react toastify, improve component prop passing, fix bugs (firebase-auth branch)|
 |14.12.2023|10|Clean code a lot, fix bugs, add missing types. (firebase-auth branch) Merge branch, fix bugs, add missing validations and toasts, update UI|
 |15.12.2023|8|Fix bugs and types, add user icon, add route to backend for deleting/updating note. Add same to frontend. Improve UI, fix loading skeletons|
-|16.12.2023|3|Fix bugs on backend, improve types, clean old code|
+|16.12.2023|8|Fix bugs on front- and backend, improve types, clean old code, prepare envs for testing|
+|17.12.2023|2|Add testing reset to backend, add "test" env variables to front- and backend with new firebase auth and mongodb credentials|
 
-<h2>Total: 169 hours</h2>
+<h2>Total: 176 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
