@@ -44,7 +44,7 @@ jobs:
                   SECRET: ${{ secrets.SECRET }}
                   PORT: ${{ secrets.PORT }}
                   MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
-                  FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+                  FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_SECRETS }}
 
             - name: Start frontend
               run: cd frontend && npm run test
