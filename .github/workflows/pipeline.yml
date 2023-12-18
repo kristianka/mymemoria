@@ -1,0 +1,71 @@
+name: Deployment pipeline
+
+on:
+    push:
+        branches:
+            - github-workflow
+
+    pull_request:
+        branches: [github-work]
+        types: [opened, synchronize]
+
+jobs:
+    test_pipeline:
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
+
+            - name: Install dependencies for frontend
+              run: cd frontend && npm install && cd ..
+
+            - name: Install dependencies for backend
+              run: c& cd backend && npm install && cd ..
+
+            #   - name: Check styles
+            #     run: npm run lint && cd frontend && npm run lint && cd ..
+
+            #   - name: Build
+            #     run: cd blog_frontend && npm run build
+
+            #   - name: Run backend tests
+            #     run: npm test -- tests/blog_api.test.js
+
+            #   - name: Run frontend tests
+            #     run: cd blog_frontend && npm run test && cd ..
+
+            - name: Start backend
+              run: cd backend && npm run test
+              env:
+                  NODE_ENV: test
+                  MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
+                  SECRET: ${{ secrets.SECRET }}
+                  PORT: ${{ secrets.PORT }}
+                  MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+                  FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+
+            - name: Start frontend
+              run: cd frontend && npm run test
+
+            - name: e2e tests
+              uses: cypress-io/github-action@v5
+              with:
+                  working-directory: frontend
+                  command: npm run cy:e2e
+                  wait-on: http://localhost:3001
+
+    # tag_release:
+    #   runs-on: ubuntu-latest
+    #   needs: deployment_pipeline
+    #   if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
+    #   steps:
+    #     - uses: actions/checkout@v3
+    #     - uses: actions/setup-node@v3
+    #     - uses: anothrNick/github-tag-action@1.67.0
+
+    #       name: Bump version and push tag
+    #       env:
+    #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #         DEFAULT_BUMP: patch
