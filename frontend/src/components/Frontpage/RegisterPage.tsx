@@ -33,6 +33,11 @@ const RegisterPage = ({ firebaseAuth }: props) => {
         try {
             e.preventDefault();
 
+            if (!email || !password || !name) {
+                toast.error("Please fill in all the fields.");
+                return;
+            }
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             const uid = user.uid;

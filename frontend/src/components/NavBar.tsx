@@ -40,11 +40,6 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     </Link>
                 </div>
                 <div className="flex-none">
-                    <Link to="/notes/add/">
-                        <label tabIndex={0} className="btn btn-ghost btn-circle">
-                            +
-                        </label>
-                    </Link>
                     <label className="" htmlFor="">
                         <div className="flex animate-pulse">
                             <div className="ms-2 mt-0 w-full">
@@ -76,7 +71,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 </Link>
             </div>
             {user ? (
-                <div className="flex-none">
+                <div className="addNoteButton flex-none">
                     <Link to="/notes/add/">
                         <label tabIndex={0} className="btn btn-ghost btn-circle">
                             +
@@ -85,7 +80,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     <label className="" htmlFor="">
                         {user.name}
                     </label>
-                    <div className="dropdown dropdown-end">
+                    <div className="userAvatar dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
                                 {/* api doesn't collect any data */}
@@ -98,16 +93,16 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                         >
-                            <li>
+                            <li className="profileButton">
                                 <Link to="/profile" className="justify-between">
                                     Profile
                                     <span className="badge">New</span>
                                 </Link>
                             </li>
-                            <li>
+                            <li className="settingsButton">
                                 <Link to="/settings">Settings</Link>
                             </li>
-                            <li>
+                            <li className="logoutButton">
                                 <Link to="/" onClick={logout}>
                                     Logout
                                 </Link>
@@ -117,10 +112,10 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 </div>
             ) : (
                 <div className="flex-none">
-                    <Link to="/login" className="btn btn-ghost">
+                    <Link to="/login" className="loginButton btn btn-ghost">
                         Login
                     </Link>
-                    <Link to="/register" className="btn btn-ghost">
+                    <Link to="/register" className="registerButton btn btn-ghost">
                         Register
                     </Link>
                 </div>

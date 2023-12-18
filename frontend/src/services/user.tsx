@@ -16,11 +16,14 @@ const getUser = async () => {
         const config = {
             headers: { Authorization: token }
         };
+        if (!token) {
+            return null;
+        }
         const res = await axios.get<BackendUserInterface>(baseUrl, config);
         return res.data;
     } catch (error) {
         const serverRes = await infoService.serverHealthCheck();
-        // log user out if unauhtorized but server ok
+        // log user out if unauthorized but server ok
         // this can happen when changing env on backend
         if (serverRes === 200) {
             auth.signOut();

@@ -12,18 +12,18 @@ const useAuthEffect = (
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
-                const ff: FireBaseUserInterface = {
+                const firebaseObject: FireBaseUserInterface = {
                     email: authUser.email,
                     uid: authUser.uid,
                     emailVerified: authUser.emailVerified,
                     metadata: authUser.metadata
                 };
-                setFirebaseAuth(ff);
                 authUser
                     .getIdToken()
                     .then((token) => {
-                        notesService.setToken(token);
                         userService.setToken(token);
+                        notesService.setToken(token);
+                        setFirebaseAuth(firebaseObject);
                     })
                     .catch((error) => {
                         if (error.message.includes("auth/id-token-expired")) {
@@ -31,6 +31,7 @@ const useAuthEffect = (
                         } else {
                             toast.error("An error occurred. Please try again.");
                         }
+                        setFirebaseAuth(null);
                     });
             } else {
                 // User is signed out

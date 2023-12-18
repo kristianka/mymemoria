@@ -12,6 +12,9 @@ const getAll = async () => {
     const config = {
         headers: { Authorization: token }
     };
+    if (!token) {
+        return null;
+    }
     const res = await axios.get<NoteInterface[]>(baseUrl, config);
     return res.data;
 };

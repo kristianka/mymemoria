@@ -13,8 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
         <BrowserRouter>
             <ToastContainer
-                position="top-right"
-                autoClose={10000}
+                className="toast-notification"
+                position="top-center"
+                autoClose={7000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
