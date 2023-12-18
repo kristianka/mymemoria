@@ -22,7 +22,7 @@ jobs:
               run: cd frontend && npm install && cd ..
 
             - name: Install dependencies for backend
-              run: c& cd backend && npm install && cd ..
+              run: cd backend && npm install && cd ..
 
             #   - name: Check styles
             #     run: npm run lint && cd frontend && npm run lint && cd ..
