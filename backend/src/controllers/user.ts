@@ -37,13 +37,12 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 
 userRouter.post("/", async (req, res, next) => {
     try {
-        console.log("POST /api/users");
         const { name, uid } = req.body;
-        console.log("name", name, "uid", uid);
-
         if (!name || !uid) {
             return res.status(400).json({ error: "Missing name or uid" });
         }
+
+        if (process.env.NODE_ENV === "test") console.log("Creating new user:", name, ", ", uid);
 
         const user = new User({
             fireBaseUid: uid,
@@ -52,8 +51,8 @@ userRouter.post("/", async (req, res, next) => {
 
         const savedUser = await user.save();
         return res.status(201).json(savedUser);
-    } catch (error: any) {
-        console.log(error.message);
+    } catch (error) {
+        console.log(error);
         return next(error);
     }
 });
