@@ -17,6 +17,7 @@ MONGODB_URI = process.env.MONGODB_TEST_URI as string;
 const obj = {
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
     // replace `\` and `n` character pairs w/ single `\n` character
     privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n")
 };
