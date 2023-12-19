@@ -19,9 +19,6 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: Sync server time
-              run: sudo ntpdate -s time.nist.gov
-
             - name: Install dependencies for frontend
               run: cd frontend && npm install && cd ..
 
