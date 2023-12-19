@@ -21,6 +21,8 @@ const obj = {
     privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n")
 };
 FIREBASE_CREDENTIALS = obj as ServiceAccount;
+console.log("FIREBASE_CREDENTIALS", FIREBASE_CREDENTIALS);
+
 // else {
 //     FIREBASE_CREDENTIALS = testing_credentials as ServiceAccount;
 // }
