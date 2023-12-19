@@ -45,7 +45,7 @@ describe("Note app", function () {
         // logout user
         logoutUser();
         // reset the database
-        cy.request("POST", "http://localhost:3000/api/testing/reset")
+        cy.request("http://localhost:3000/api/testing/reset")
             .its("status")
             .should("eq", 200)
             .clearAllCookies()
