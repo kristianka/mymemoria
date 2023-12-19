@@ -13,9 +13,15 @@ let FIREBASE_CREDENTIALS: ServiceAccount;
 
 // TO DO: FIX THIS
 MONGODB_URI = process.env.MONGODB_TEST_URI as string;
-if (process.env.FIREBASE_CREDENTIALS) {
-    FIREBASE_CREDENTIALS = JSON.parse(process.env.FIREBASE_CREDENTIALS) as ServiceAccount;
-} // else {
+
+const obj = {
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    // replace `\` and `n` character pairs w/ single `\n` character
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n")
+};
+FIREBASE_CREDENTIALS = obj as ServiceAccount;
+// else {
 //     FIREBASE_CREDENTIALS = testing_credentials as ServiceAccount;
 // }
 
