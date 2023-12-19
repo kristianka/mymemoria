@@ -127,6 +127,8 @@ describe("Note app", function () {
                 cy.visit("/register");
                 registerUser("testuser@gmail.com", "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
+                cy.wait(1000);
+                cy.visit("/");
                 cy.contains("There are 0 note(s)");
 
                 logoutUser();
