@@ -40,7 +40,7 @@ jobs:
             - name: Start backend
               run: |
                   cd backend && npm run test &
-                  for i in {1..20}; do
+                  for i in {1..50}; do
                     if curl --silent --fail http://localhost:${{ secrets.PORT }} > /dev/null; then
                       echo "Backend started"
                       break
@@ -61,7 +61,7 @@ jobs:
             - name: Start frontend
               run: |
                   cd frontend && npm run test &
-                  for i in {1..20}; do
+                  for i in {1..50}; do
                     if curl --silent --fail http://localhost:5173 > /dev/null; then
                       echo "Frontend started"
                       break
