@@ -38,7 +38,7 @@ jobs:
             #     run: cd blog_frontend && npm run test && cd ..
 
             - name: Start backend
-              run: cd backend && npm run test &
+              run: cd backend && npm run test && sleep 20 &
 
               env:
                   NODE_ENV: test
