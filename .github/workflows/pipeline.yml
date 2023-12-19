@@ -66,7 +66,7 @@ jobs:
               with:
                   working-directory: frontend
                   command: npm run cy:e2e
-                  wait-on: http://localhost:3001
+                  wait-on: http://localhost:5173
 
     # tag_release:
     #   runs-on: ubuntu-latest
