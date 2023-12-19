@@ -43,7 +43,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 console.log("ENV is", process.env.NODE_ENV);
-console.log("firebaseConfig is", firebaseConfig);
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);

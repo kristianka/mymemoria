@@ -55,18 +55,20 @@ jobs:
                   NODE_ENV: test
                   VITE_MAPBOX_API: ${{ secrets.VITE_MAXBOX_API }}
                   VITE_FIREBASE_TESTING_API_KEY: ${{ secrets.VITE_FIREBASE_TESTING_API_KEY }}
-                  VITE_FIREBASE_TESTING_AUTH_DOMAIN:  ${{ secrets.VITE_FIREBASE_TESTING_AUTH_DOMAIN }}
-                  VITE_FIREBASE_TESTING_PROJECT_ID:  ${{ secrets.VITE_FIREBASE_TESTING_PROJECT_ID }}
-                  VITE_FIREBASE_TESTING_STORAGE_BUCKET:  ${{ secrets.VITE_FIREBASE_TESTING_STORAGE_BUCKET }}
-                  VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID:  ${{ secrets.VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID }}
-                  VITE_FIREBASE_TESTING_APP_ID:  ${{ secrets.VITE_FIREBASE_TESTING_APP_ID }}
+                  VITE_FIREBASE_TESTING_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_TESTING_AUTH_DOMAIN }}
+                  VITE_FIREBASE_TESTING_PROJECT_ID: ${{ secrets.VITE_FIREBASE_TESTING_PROJECT_ID }}
+                  VITE_FIREBASE_TESTING_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_TESTING_STORAGE_BUCKET }}
+                  VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID }}
+                  VITE_FIREBASE_TESTING_APP_ID: ${{ secrets.VITE_FIREBASE_TESTING_APP_ID }}
 
             - name: e2e tests
               uses: cypress-io/github-action@v5
+              env:
+                  PORT: ${{ secrets.PORT }}
               with:
                   working-directory: frontend
                   command: npm run cy:e2e
-                  wait-on: http://localhost:3000
+                  wait-on: http://localhost:${{ secrets.PORT }}
 
     # tag_release:
     #   runs-on: ubuntu-latest
