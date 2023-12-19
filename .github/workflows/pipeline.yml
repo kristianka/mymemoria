@@ -38,8 +38,16 @@ jobs:
             #     run: cd blog_frontend && npm run test && cd ..
 
             - name: Start backend
-              run: cd backend && npm run test && sleep 20 &
-
+              run: |
+                  cd backend && npm run test &
+                  for i in {1..20}; do
+                    if curl --silent --fail http://localhost:${{ secrets.PORT }} > /dev/null; then
+                      echo "Backend started"
+                      break
+                    fi
+                    echo "Waiting for backend..."
+                    sleep 1
+                  done
               env:
                   NODE_ENV: test
                   MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
