@@ -41,7 +41,8 @@ jobs:
               run: |
                   cd backend && npm run test &
                   for i in {1..50}; do
-                    if curl --silent --fail http://localhost:${{ secrets.PORT }} > /dev/null; then
+                    if curl --silent --fail http://localhost:${{ secrets.PORT }}/api/testing/reset > /dev/null; then
+                      sleep 10
                       echo "Backend started"
                       break
                     fi
@@ -63,6 +64,7 @@ jobs:
                   cd frontend && npm run test &
                   for i in {1..50}; do
                     if curl --silent --fail http://localhost:5173 > /dev/null; then
+                      sleep 10
                       echo "Frontend started"
                       break
                     fi
