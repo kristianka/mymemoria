@@ -38,7 +38,10 @@ jobs:
             #     run: cd blog_frontend && npm run test && cd ..
 
             - name: Start backend
-              run: cd backend && npm run test && sleep 20 &
+              run: |
+                  cd backend
+                  npm run test
+                  sleep 30
               env:
                   NODE_ENV: test
                   MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
@@ -50,7 +53,10 @@ jobs:
                   FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
             - name: Start frontend
-              run: cd frontend && npm run test && sleep 20 &
+              run: |
+                  cd frontend
+                  npm run test
+                  sleep 30
               env:
                   NODE_ENV: test
                   VITE_MAPBOX_API: ${{ secrets.VITE_MAXBOX_API }}
