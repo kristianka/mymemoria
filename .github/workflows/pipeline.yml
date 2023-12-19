@@ -51,7 +51,7 @@ jobs:
                   FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
             - name: Start frontend
-              run: cd frontend && npm run test &
+              run: cd frontend && npm run test && sleep 10 &
               env:
                   NODE_ENV: test
                   VITE_MAPBOX_API: ${{ secrets.VITE_MAXBOX_API }}
