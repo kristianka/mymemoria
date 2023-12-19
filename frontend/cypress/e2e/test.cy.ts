@@ -42,12 +42,16 @@ describe("Note app", function () {
     }
 
     beforeEach(function () {
+        // logout user
+        logoutUser();
         // reset the database
         cy.request("POST", "http://localhost:3000/api/testing/reset")
             .its("status")
             .should("eq", 200);
         // check that env is test
-        logoutUser();
+        cy.window().then((win) => {
+            win.sessionStorage.clear();
+        });
         cy.visit("/");
         cy.contains("Using test environment", { timeout: 6000 }).should("be.visible");
     });

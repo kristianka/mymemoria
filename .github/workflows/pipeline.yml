@@ -63,12 +63,10 @@ jobs:
 
             - name: e2e tests
               uses: cypress-io/github-action@v5
-              env:
-                  PORT: ${{ secrets.PORT }}
               with:
                   working-directory: frontend
                   command: npm run cy:e2e
-                  wait-on: http://localhost:${{ secrets.PORT }}
+                  wait-on: http://localhost:3000
 
     # tag_release:
     #   runs-on: ubuntu-latest
