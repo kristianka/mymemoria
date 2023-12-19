@@ -12,6 +12,7 @@ on:
 jobs:
     test_pipeline:
         runs-on: ubuntu-20.04
+        environment: testing
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
