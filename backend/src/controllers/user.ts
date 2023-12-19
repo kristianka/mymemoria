@@ -9,7 +9,6 @@ userRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         const userId = req.user?.user_id;
         const user = await User.findOne({ fireBaseUid: userId }).populate("favouriteLocations");
-
         if (!user || userId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }
@@ -50,7 +49,12 @@ userRouter.post("/", async (req, res, next) => {
         });
 
         const savedUser = await user.save();
-        return res.status(201).json(savedUser);
+        const findSavedUser = await User.findOne({ fireBaseUid: uid });
+        console.log("findSavedUser", findSavedUser);
+        setTimeout(() => {
+            // needed for database delay when registering via cypress because of the database delay
+            return res.status(201).json(savedUser);
+        }, 3000);
     } catch (error) {
         console.log(error);
         return next(error);
