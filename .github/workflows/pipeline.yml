@@ -59,7 +59,16 @@ jobs:
                   FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
             - name: Start frontend
-              run: cd frontend && npm run test && sleep 10 &
+              run: |
+                  cd frontend && npm run test &
+                  for i in {1..20}; do
+                    if curl --silent --fail http://localhost:5173 > /dev/null; then
+                      echo "Frontend started"
+                      break
+                    fi
+                    echo "Waiting for frontend..."
+                    sleep 1
+                  done
               env:
                   NODE_ENV: test
                   VITE_MAPBOX_API: ${{ secrets.VITE_MAXBOX_API }}
@@ -75,7 +84,7 @@ jobs:
               with:
                   working-directory: frontend
                   command: npm run cy:e2e
-                  wait-on: http://localhost:3000
+                  wait-on: http://localhost:5173
 
     # tag_release:
     #   runs-on: ubuntu-latest
