@@ -39,10 +39,10 @@ jobs:
 
             - name: Start backend
               run: |
-                  cd backend && npm run test &
+                  cd backend && npm run start:test-env &
                   for i in {1..50}; do
                     if curl --silent --fail http://localhost:${{ secrets.PORT }}/api/testing/reset > /dev/null; then
-                      sleep 10
+                      sleep 5
                       echo "Backend started"
                       break
                     fi
@@ -61,10 +61,10 @@ jobs:
 
             - name: Start frontend
               run: |
-                  cd frontend && npm run test &
+                  cd frontend && npm run start:test-env &
                   for i in {1..50}; do
                     if curl --silent --fail http://localhost:5173 > /dev/null; then
-                      sleep 10
+                      sleep 5
                       echo "Frontend started"
                       break
                     fi

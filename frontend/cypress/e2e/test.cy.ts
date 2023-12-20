@@ -229,7 +229,7 @@ describe("Note app", function () {
                 cy.contains("Another note content");
             });
 
-            it.only("you can edit the note", () => {
+            it("you can edit the note", () => {
                 cy.get('[id^="toNoteButton"]').click();
                 cy.contains("edit note").click();
 
@@ -243,7 +243,7 @@ describe("Note app", function () {
                 cy.contains("There are 1 note(s)");
                 cy.contains("Edited note by test user");
                 cy.contains("Edited note content");
-            }); 
+            });
         });
     });
 });
