@@ -37,7 +37,18 @@ jobs:
                   VITE_FIREBASE_TESTING_APP_ID: ${{ secrets.VITE_FIREBASE_TESTING_APP_ID }}
                   MODE: testing
 
-            - name: Build and start backend
+            - name: Build backend
+              run: cd backend && npm run tsc
+              env:
+                  NODE_ENV: test
+                  MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
+                  SECRET: ${{ secrets.SECRET }}
+                  PORT: ${{ secrets.PORT }}
+                  FIREBASE_TESTING_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+                  FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+                  FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+
+            - name: Start backend
               run: |
                   cd backend && npm run start-build:testing &
                   for i in {1..50}; do
