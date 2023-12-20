@@ -4,6 +4,7 @@ import { PORT } from "./utils/config";
 import { connectToMongo } from "./utils/mongoConnection";
 import { connectToFirebase } from "./utils/firebaseConnection";
 import { errorHandler, getTokenFromReq, unknownEndpoint } from "./utils/middlewares";
+import path from "path";
 
 import notesRouter from "./controllers/notes";
 import userRouter from "./controllers/user";
@@ -14,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 if (process.env.NODE_ENV !== "development") {
-    app.use(express.static("../frontend/dist"));
+    app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 }
 
 connectToMongo();
@@ -32,6 +33,10 @@ app.use(getTokenFromReq);
 app.use("/api/notes", notesRouter);
 app.use("/api/users", userRouter);
 app.use("/api/info", infoRouter);
+
+app.get("/*", (_req, res) => {
+    res.sendFile(path.join(__dirname, "../../frontend/dist", "index.html"));
+});
 
 app.use(unknownEndpoint);
 app.use(errorHandler);

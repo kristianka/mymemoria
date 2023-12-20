@@ -15,8 +15,8 @@
     "start:prod:test-env": "cross-env NODE_ENV=testing node dist/app.js",    
     
     "preview": "vite preview",
-    "cypress:open": "cypress open",
-    "cy:e2e": "cypress run --e2e --browser chrome",
+    "cypress:open": "cross-env NODE_ENV=builtTesting cypress open",
+    "cy:e2e": "cross-env NODE_ENV=builtTesting cypress run --e2e --browser chrome",
 
     "cypress:open:testing": "cross-env NODE_ENV=unbuiltTesting cypress open",
     "cy:e2e:testing": "cross-env NODE_ENV=unbuiltTesting cypress run --e2e --browser chrome"

@@ -35,9 +35,3 @@
 //     }
 //   }
 // }
-
-if (process.env.NODE_ENV === "builtTesting") {
-    Cypress.config("baseUrl", "http://localhost:3000");
-} else {
-    Cypress.config("baseUrl", "http://localhost:5173");
-}
