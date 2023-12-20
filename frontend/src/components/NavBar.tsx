@@ -71,8 +71,8 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 </Link>
             </div>
             {user ? (
-                <div className="addNoteButton flex-none">
-                    <Link to="/notes/add/">
+                <div className="flex-none">
+                    <Link id="addNoteButton" to="/notes/add/">
                         <label tabIndex={0} className="btn btn-ghost btn-circle">
                             +
                         </label>

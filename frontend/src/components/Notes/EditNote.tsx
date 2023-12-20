@@ -107,6 +107,7 @@ const EditNote = ({ firebaseAuth }: props) => {
                     value={title}
                     type="text"
                     placeholder="Title"
+                    id="noteTitle"
                     className="input input-bordered w-full max-w-xs"
                 />
             </div>
@@ -119,11 +120,12 @@ const EditNote = ({ firebaseAuth }: props) => {
                     value={content}
                     type="text"
                     placeholder="Content"
+                    id="noteContent"
                     className="input input-bordered w-full max-w-xs"
                 />
             </div>
 
-            <button onClick={submit} className="btn">
+            <button id="editNoteButton" onClick={submit} className="btn">
                 Add
             </button>
         </div>

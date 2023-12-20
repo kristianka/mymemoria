@@ -173,4 +173,77 @@ describe("Note app", function () {
             });
         });
     });
+
+    describe("NotePage (when logged in)", () => {
+        beforeEach(() => {
+            // create user before each test
+            cy.visit("/register");
+            registerUser("testuser@gmail.com", "Test user", "password123");
+            cy.wait(1000);
+            cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
+            cy.visit("/");
+        });
+
+        it("should render the note page", () => {
+            cy.contains("There are 0 note(s)");
+            cy.get("#addNoteButton").should("be.visible");
+        });
+
+        it("should add a note", () => {
+            cy.get("#addNoteButton").click();
+            cy.get("#noteTitle").type("Test note");
+            cy.get("#noteContent").type("Test note content");
+
+            // the tricky part, select location from the map
+            cy.wait(2000); // wait for the iframe to load
+            cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(2000).type("{enter}");
+
+            cy.get("#saveNoteButton").click();
+            cy.contains("There are 1 note(s)");
+            cy.contains("Test note");
+            cy.contains("Test note content");
+        });
+
+        describe("when there is a note", () => {
+            beforeEach(() => {
+                cy.get("#addNoteButton").click();
+                cy.get("#noteTitle").type("Test note by test user");
+                cy.get("#noteContent").type("Test note content");
+                cy.wait(2000); // wait for the iframe to load
+                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(2000).type("{enter}");
+                cy.get("#saveNoteButton").click();
+                cy.contains("There are 1 note(s)");
+                cy.contains("Test note by test user");
+                cy.contains("Test note content");
+            });
+
+            it("you can add another note", () => {
+                cy.get("#addNoteButton").click();
+                cy.get("#noteTitle").type("Another note by test user");
+                cy.get("#noteContent").type("Another note content");
+                cy.wait(2000); // wait for the iframe to load
+                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(2000).type("{enter}");
+                cy.get("#saveNoteButton").click();
+                cy.contains("There are 2 note(s)");
+                cy.contains("Another note by test user");
+                cy.contains("Another note content");
+            });
+
+            it.only("you can edit the note", () => {
+                cy.get('[id^="toNoteButton"]').click();
+                cy.contains("edit note").click();
+
+                cy.get("#noteTitle").clear().type("Edited note by test user");
+                cy.get("#noteContent").clear().type("Edited note content");
+
+                cy.get("#editNoteButton").click();
+
+                cy.visit("/");
+
+                cy.contains("There are 1 note(s)");
+                cy.contains("Edited note by test user");
+                cy.contains("Edited note content");
+            }); 
+        });
+    });
 });

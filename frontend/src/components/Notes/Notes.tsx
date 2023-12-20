@@ -49,7 +49,10 @@ const Notes = ({ firebaseAuth }: props) => {
                                     <h2 className="card-title truncate">{note.title}</h2>
                                     <p className="trunacte text-ellipsis">{note.content}</p>
                                     <div className="card-actions justify-end">
-                                        <Link to={`/notes/${note.id}`}>
+                                        <Link
+                                            id={`toNoteButton=${note.id}`}
+                                            to={`/notes/${note.id}`}
+                                        >
                                             <ChevronRightIcon className="h-10 w-10 text-blue-500" />
                                         </Link>
                                     </div>
