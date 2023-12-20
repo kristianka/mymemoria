@@ -1,5 +1,3 @@
-import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
-
 const AnnouncementBanner = () => {
     return (
         <div className="bg-gradient-to-r from-red-500 via-purple-400 to-blue-500">

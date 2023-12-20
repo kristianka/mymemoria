@@ -7,6 +7,9 @@ export default defineConfig({
     // test: {
     //     environment: "jsdom"
     // },
+    build: {
+        outDir: "../dist"
+    },
     server: {
         port: 5173,
         proxy: {

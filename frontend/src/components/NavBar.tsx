@@ -11,7 +11,7 @@ interface props {
 }
 
 const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
-    const { data: user, status: userStatus } = useUser(firebaseAuth);
+    const { data: user } = useUser(firebaseAuth);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
