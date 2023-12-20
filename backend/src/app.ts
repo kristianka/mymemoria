@@ -25,7 +25,7 @@ app.get("/", (_req, res) => {
 
 // DO NOT RUN THIS IN PRODUCTION !!!
 // THIS IS FOR TESTING, ALL DATA WILL BE DELETED
-if (process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENV === "testing") {
     app.use("/api/testing", testingRouter);
 }
 

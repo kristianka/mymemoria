@@ -50,18 +50,15 @@ const RegisterPage = ({ firebaseAuth }: props) => {
 
             if (!response) {
                 throw new Error("Error creating user in MongoDB");
-                return;
             }
 
-            console.log(response);
-            console.log(user);
-            toast.success("Registered successfully! Please check your email for verification.");
+            toast.success("Registered successfully! Welcome!");
 
-            // Add a delay before navigating to the login page
-            // this is needed because database delay, otherwise frontend will logout
-            setTimeout(() => {
-                navigate("/login");
-            }, 2000); // Wait for 2 seconds
+            // // Add a delay before navigating to the login page
+            // // this is needed because database delay, otherwise frontend will logout
+            // setTimeout(() => {
+            //     navigate("/login");
+            // }, 2000); // Wait for 2 seconds
         } catch (error) {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {

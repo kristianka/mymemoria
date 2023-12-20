@@ -54,7 +54,7 @@ describe("Note app", function () {
             .reload();
 
         cy.visit("/");
-        cy.contains("Using test environment", { timeout: 6000 }).should("be.visible");
+        cy.contains("Using testing environment", { timeout: 6000 }).should("be.visible");
     });
 
     describe("LandingPage", () => {
@@ -128,7 +128,6 @@ describe("Note app", function () {
                 registerUser("testuser@gmail.com", "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.wait(1000);
-                cy.visit("/");
                 cy.contains("There are 0 note(s)");
 
                 logoutUser();
@@ -181,7 +180,6 @@ describe("Note app", function () {
             registerUser("testuser@gmail.com", "Test user", "password123");
             cy.wait(1000);
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-            cy.visit("/");
         });
 
         it("should render the note page", () => {
@@ -191,14 +189,13 @@ describe("Note app", function () {
 
         it("should add a note", () => {
             cy.get("#addNoteButton").click();
+
             cy.get("#noteTitle").type("Test note");
             cy.get("#noteContent").type("Test note content");
-
-            // the tricky part, select location from the map
-            cy.wait(2000); // wait for the iframe to load
-            cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(2000).type("{enter}");
-
+            // has to wait for the search results to load
+            cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
             cy.get("#saveNoteButton").click();
+
             cy.contains("There are 1 note(s)");
             cy.contains("Test note");
             cy.contains("Test note content");
@@ -207,11 +204,13 @@ describe("Note app", function () {
         describe("when there is a note", () => {
             beforeEach(() => {
                 cy.get("#addNoteButton").click();
+
                 cy.get("#noteTitle").type("Test note by test user");
                 cy.get("#noteContent").type("Test note content");
-                cy.wait(2000); // wait for the iframe to load
-                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(2000).type("{enter}");
+                // has to wait for the search results to load
+                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
+
                 cy.contains("There are 1 note(s)");
                 cy.contains("Test note by test user");
                 cy.contains("Test note content");
@@ -219,11 +218,13 @@ describe("Note app", function () {
 
             it("you can add another note", () => {
                 cy.get("#addNoteButton").click();
+
                 cy.get("#noteTitle").type("Another note by test user");
                 cy.get("#noteContent").type("Another note content");
-                cy.wait(2000); // wait for the iframe to load
-                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(2000).type("{enter}");
+                // has to wait for the search results to load
+                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
+
                 cy.contains("There are 2 note(s)");
                 cy.contains("Another note by test user");
                 cy.contains("Another note content");
@@ -235,7 +236,6 @@ describe("Note app", function () {
 
                 cy.get("#noteTitle").clear().type("Edited note by test user");
                 cy.get("#noteContent").clear().type("Edited note content");
-
                 cy.get("#editNoteButton").click();
 
                 cy.visit("/");
@@ -243,6 +243,23 @@ describe("Note app", function () {
                 cy.contains("There are 1 note(s)");
                 cy.contains("Edited note by test user");
                 cy.contains("Edited note content");
+            });
+
+            it("you can delete the note", () => {
+                cy.get('[id^="toNoteButton"]').click();
+                cy.contains("delete note").click();
+                // cy.contains("Are you sure you want to delete this note?");
+                // cy.contains("Yes").click();
+                cy.contains("Note deleted successfully", { timeout: 6000 }).should("be.visible");
+                cy.contains("There are 0 note(s)");
+            });
+
+            it("notes don't show afte user logs out", () => {
+                logoutUser();
+                cy.contains("Please login to use the application");
+                cy.contains("Login");
+                cy.contains("Create account");
+                cy.get("#addNoteButton").should("not.exist");
             });
         });
     });

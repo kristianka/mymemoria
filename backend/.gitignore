@@ -24,8 +24,3 @@ dist-ssr
 *.sw?
 
 .env
-# MAKE SURE THIS IS CORRECT!
-firebase-admin-sdk.json
-firebase-admin-dev-sdk.json
-firebase-admin-prod-sdk.json
-firebase-admin-testing-sdk.json

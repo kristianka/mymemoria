@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
     firebaseConfig = firebaseConfigProd;
 } else if (process.env.NODE_ENV === "development") {
     firebaseConfig = firebaseConfigDev;
-} else if (process.env.NODE_ENV === "test") {
+} else if (process.env.NODE_ENV === "testing") {
     toast.info(`Using ${process.env.NODE_ENV} environment`);
     firebaseConfig = firebaseConfigTesting;
 } else {
