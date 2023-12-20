@@ -230,6 +230,12 @@ describe("Note app", function () {
                 cy.contains("Another note content");
             });
 
+            it("you can open the note", () => {
+                cy.get('[id^="toNoteButton"]').click();
+                cy.contains("Test note by test user");
+                cy.contains("Test note content");
+            });
+
             it("you can edit the note", () => {
                 cy.get('[id^="toNoteButton"]').click();
                 cy.contains("edit note").click();

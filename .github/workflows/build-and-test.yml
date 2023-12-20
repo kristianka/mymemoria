@@ -11,7 +11,7 @@ on:
 
 jobs:
     test_pipeline:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         environment: testing
         steps:
             - uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
                     sleep 1
                   done
               env:
-                  NODE_ENV: test
+                  NODE_ENV: testing
                   MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
                   SECRET: ${{ secrets.SECRET }}
                   PORT: ${{ secrets.PORT }}
@@ -71,8 +71,6 @@ jobs:
 
             - name: e2e tests
               uses: cypress-io/github-action@v5
-              env:
-                  NODE_ENV: builtTesting
               with:
                   working-directory: frontend
                   command: npm run cy:e2e
