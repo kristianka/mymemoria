@@ -31,18 +31,19 @@ const firebaseConfigTesting = {
     appId: import.meta.env.VITE_FIREBASE_TESTING_APP_ID
 };
 
-if (process.env.NODE_ENV === "production") {
+const env = import.meta.env.MODE;
+
+if (env === "production") {
     firebaseConfig = firebaseConfigProd;
-} else if (process.env.NODE_ENV === "development") {
+} else if (env === "development") {
     firebaseConfig = firebaseConfigDev;
-} else if (process.env.NODE_ENV === "testing") {
-    toast.info(`Using ${process.env.NODE_ENV} environment`);
+} else if (env === "testing") {
+    toast.info(`Using ${env} environment`);
     firebaseConfig = firebaseConfigTesting;
 } else {
-    throw new Error(`Invalid NODE_ENV: ${process.env.NODE_ENV}`);
+    throw new Error(`Invalid env: ${env}`);
 }
-
-console.log("ENV is", process.env.NODE_ENV);
+console.log("ENV is", env);
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);

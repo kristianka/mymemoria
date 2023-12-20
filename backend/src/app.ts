@@ -13,16 +13,14 @@ import testingRouter from "./controllers/testing";
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static("../../dist"));
+if (process.env.NODE_ENV !== "development") {
+    app.use(express.static("../frontend/dist"));
+}
 
 connectToMongo();
 connectToFirebase();
 
 app.use(errorHandler);
-
-app.get("/", (_req, res) => {
-    res.send("Hello world!");
-});
 
 // DO NOT RUN THIS IN PRODUCTION !!!
 // THIS IS FOR TESTING, ALL DATA WILL BE DELETED
@@ -34,6 +32,7 @@ app.use(getTokenFromReq);
 app.use("/api/notes", notesRouter);
 app.use("/api/users", userRouter);
 app.use("/api/info", infoRouter);
+
 app.use(unknownEndpoint);
 app.use(errorHandler);
 

@@ -5,12 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && vite build",
+    "build:testing": "vite build --mode testing",
+    "build:prod": "tsc && vite build --mode production",
+    "serve": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "start:test-env": "cross-env NODE_ENV=testing vite --host",
+
+    "start:testing-env": "cross-env NODE_ENV=testing vite --host --mode testing",
+    "start:prod-env": "cross-env NODE_ENV=production ts-node-dev src/app.ts",
+    "start:prod:test-env": "cross-env NODE_ENV=testing node dist/app.js",    
+    
     "preview": "vite preview",
     "cypress:open": "cypress open",
-    "cy:e2e": "cypress run --e2e --browser chrome"
+    "cy:e2e": "cypress run --e2e --browser chrome",
+
+    "cypress:open:testing": "cross-env NODE_ENV=unbuiltTesting cypress open",
+    "cy:e2e:testing": "cross-env NODE_ENV=unbuiltTesting cypress run --e2e --browser chrome"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.1",
