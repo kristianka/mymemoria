@@ -54,7 +54,6 @@ jobs:
                   MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
                   SECRET: ${{ secrets.SECRET }}
                   PORT: ${{ secrets.PORT }}
-                  MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
                   FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
                   FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
                   FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
@@ -73,7 +72,7 @@ jobs:
                   done
               env:
                   NODE_ENV: test
-                  VITE_MAPBOX_API: ${{ secrets.VITE_MAXBOX_API }}
+                  VITE_MAPBOX_API: ${{ secrets.VITE_MAPBOX_API }}
                   VITE_FIREBASE_TESTING_API_KEY: ${{ secrets.VITE_FIREBASE_TESTING_API_KEY }}
                   VITE_FIREBASE_TESTING_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_TESTING_AUTH_DOMAIN }}
                   VITE_FIREBASE_TESTING_PROJECT_ID: ${{ secrets.VITE_FIREBASE_TESTING_PROJECT_ID }}
