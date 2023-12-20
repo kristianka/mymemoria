@@ -51,12 +51,12 @@ jobs:
                   done
               env:
                   NODE_ENV: test
-                  MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
+                  MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
                   SECRET: ${{ secrets.SECRET }}
                   PORT: ${{ secrets.PORT }}
-                  FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
-                  FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
-                  FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+                  FIREBASE_TESTING_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+                  FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+                  FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
             - name: Start frontend
               run: |
