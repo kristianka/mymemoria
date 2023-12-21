@@ -31,9 +31,11 @@
 |15.12.2023|8|Fix bugs and types, add user icon, add route to backend for deleting/updating note. Add same to frontend. Improve UI, fix loading skeletons|
 |16.12.2023|8|Fix bugs on front- and backend, improve types, clean old code, prepare envs for testing|
 |17.12.2023|2|Add testing reset to backend, add "test" env variables to front- and backend with new firebase auth and mongodb credentials|
-|18.12.2023|4|Start adding Cypress E2E tests, fix bugs|
-|19.12.2023|5|Struggle getting Cypress tests working on Github Actions|
+|18.12.2023|4|Start adding Cypress E2E tests, fix bugs (github-workflow branch)|
+|19.12.2023|5|Struggle getting Cypress tests working on Github Actions (github-workflow branch)|
+|20.12.2023|5|Add a lot of Cypress tests, add to GitHub actions workflow (github-workflow branch)|
+|21.12.2023|3|Finish tests, merge branch to main (github-workflow branch)|
 
-<h2>Total: 185 hours</h2>
+<h2>Total: 193 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
