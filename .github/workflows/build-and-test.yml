@@ -4,13 +4,16 @@ on:
     push:
         branches:
             - main
+        paths-ignore:
+            - "documentation/**"
 
     pull_request:
-        branches: [main, github-work]
+        branches: [main]
         types: [opened, synchronize]
-
+        paths-ignore:
+            - "documentation/**"
 jobs:
-    test_pipeline:
+    Build-and-test:
         runs-on: ubuntu-22.04
         environment: testing
         steps:
@@ -81,3 +84,26 @@ jobs:
                   working-directory: frontend
                   command: npm run cy:e2e
                   wait-on: http://localhost:3000
+
+    Deploy:
+        name: Deploy to Render
+        needs: Build-and-test
+        runs-on: ubuntu-latest
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#DEPLOY') }}
+        steps:
+            - name: Trigger deployment
+              run: curl ${{ secrets.RENDER_DEPLOY_URL }}
+
+    Tag:
+        runs-on: ubuntu-latest
+        needs: Build-and-test
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#RELEASE') }}
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+            - uses: anothrNick/github-tag-action@1.67.0
+
+              name: Bump version and push tag
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  DEFAULT_BUMP: patch
