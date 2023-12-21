@@ -6,7 +6,7 @@ import { getAdminInstance } from "../utils/firebaseConnection";
 
 const testingRouter = Express.Router();
 
-testingRouter.post("/reset", async (_req, res) => {
+testingRouter.get("/reset", async (_req, res) => {
     const resetUsers = await User.deleteMany({});
     const resetNotes = await Note.deleteMany({});
     const resetLocations = await Location.deleteMany({});

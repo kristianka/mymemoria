@@ -62,6 +62,8 @@ const getUserFromReq = async (req: AuthRequest, _res: Response, next: NextFuncti
     } catch (error) {
         return next(error);
     }
+    // console.log("TOKEN IN GETUSER", req.token);
+    // console.log("USER IN GETUSER", req.user);
     next();
 };
 

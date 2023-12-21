@@ -9,7 +9,6 @@ userRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         const userId = req.user?.user_id;
         const user = await User.findOne({ fireBaseUid: userId }).populate("favouriteLocations");
-
         if (!user || userId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }

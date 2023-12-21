@@ -14,7 +14,9 @@ const useUser = (firebaseAuth: FireBaseUserInterface | null) => {
                 return user;
             };
             return fetchData();
-        }
+        },
+        retry: 5,
+        retryDelay: 1000
     });
 };
 

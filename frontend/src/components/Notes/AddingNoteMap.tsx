@@ -43,7 +43,6 @@ const AddingNoteMap = (props: props) => {
             geocoder.on("result", (e) => {
                 // Get the coordinates from the geocoding result
                 const coordinates = e.result.center;
-                console.log("in result", coordinates);
                 mapInstance.flyTo({
                     center: coordinates,
                     zoom: 14 // Adjust the zoom level as needed
@@ -58,9 +57,8 @@ const AddingNoteMap = (props: props) => {
 
             mapInstance.on("click", (e) => {
                 // Check if the click event is not associated with a geocoding result
-                if (!e.originalEvent || !e.originalEvent?.result) {
+                if (!e.originalEvent || !("result" in e.originalEvent)) {
                     const coordinates: LngLat = e.lngLat;
-                    console.log("in click", coordinates);
                     if (coordinates !== undefined || coordinates !== null) {
                         // Remove existing marker if present
                         if (marker) {
@@ -92,7 +90,7 @@ const AddingNoteMap = (props: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker]);
+    }, [map, marker, props]);
 
     return <div ref={mapContainer} style={{ height: "400px" }} />;
 };

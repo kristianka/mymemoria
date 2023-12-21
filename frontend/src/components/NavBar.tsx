@@ -11,7 +11,7 @@ interface props {
 }
 
 const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
-    const { data: user, status: userStatus } = useUser(firebaseAuth);
+    const { data: user } = useUser(firebaseAuth);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -71,8 +71,8 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 </Link>
             </div>
             {user ? (
-                <div className="addNoteButton flex-none">
-                    <Link to="/notes/add/">
+                <div className="flex-none">
+                    <Link id="addNoteButton" to="/notes/add/">
                         <label tabIndex={0} className="btn btn-ghost btn-circle">
                             +
                         </label>

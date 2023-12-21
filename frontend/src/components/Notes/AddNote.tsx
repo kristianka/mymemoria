@@ -77,6 +77,7 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
                         value={title}
                         type="text"
                         placeholder="Title"
+                        id="noteTitle"
                         className="input input-bordered w-full max-w-xs"
                     />
                 </div>
@@ -89,11 +90,12 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
                         value={content}
                         type="text"
                         placeholder="Content"
+                        id="noteContent"
                         className="input input-bordered w-full max-w-xs"
                     />
                 </div>
 
-                <button onClick={submit} className="btn">
+                <button id="saveNoteButton" onClick={submit} className="btn">
                     Add
                 </button>
             </div>
