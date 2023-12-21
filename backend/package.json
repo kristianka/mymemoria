@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production ts-node-dev src/app.ts",
     "dev": "cross-env NODE_ENV=development ts-node-dev src/app.ts",
     "build:testing": "cross-env NODE_ENV=testing tsc",
-    "start-build:testing": "cross-env NODE_ENV=testing node dist/app.js",    
+    "start-build:testing": "cross-env NODE_ENV=testing node dist/app.js",
     "start:testing-env": "cross-env NODE_ENV=testing ts-node-dev src/app.ts",
     "tsc": "tsc",
     "lint": "eslint --ext .ts ."
@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
     "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.1.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
@@ -37,6 +38,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
     "firebase-admin": "^12.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.1"

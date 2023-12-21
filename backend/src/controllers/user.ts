@@ -49,12 +49,6 @@ userRouter.post("/", async (req, res, next) => {
         });
 
         const savedUser = await user.save();
-        // const findSavedUser = await User.findOne({ fireBaseUid: uid });
-        // console.log("findSavedUser", findSavedUser);
-        // setTimeout(() => {
-        //     // needed for database delay when registering via cypress because of the database delay
-        // }, 3000);
-
         return res.status(201).json(savedUser);
     } catch (error) {
         console.log(error);

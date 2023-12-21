@@ -6,7 +6,7 @@ on:
             - github-workflow
 
     pull_request:
-        branches: [github-work]
+        branches: [main, github-work]
         types: [opened, synchronize]
 
 jobs:
@@ -24,6 +24,12 @@ jobs:
 
             - name: Install dependencies for backend
               run: cd backend && npm install && cd ..
+
+            - name: Lint frontend
+              run: cd frontend && npm run lint && cd ..
+
+            - name: Lint backend
+              run: cd backend && npm run lint && cd ..
 
             - name: Build frontend
               run: cd frontend && npm run build:testing
@@ -69,7 +75,7 @@ jobs:
                   FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
                   FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
-            - name: e2e tests
+            - name: Cypress E2E tests
               uses: cypress-io/github-action@v5
               with:
                   working-directory: frontend

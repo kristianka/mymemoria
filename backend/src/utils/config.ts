@@ -1,7 +1,16 @@
 import dotenv from "dotenv";
+import { rateLimit } from "express-rate-limit";
 import { ServiceAccount } from "firebase-admin";
 
 dotenv.config();
+
+// Limit requests to 200 per 10 minutes
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 min
+    limit: 200, // 200 requests
+    standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+    legacyHeaders: false // Disable the `X-RateLimit-*` headers.
+});
 
 const PORT = process.env.PORT || 3000;
 let MONGODB_URI = "";
@@ -42,4 +51,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 console.log("ENV is", process.env.NODE_ENV);
-export { MONGODB_URI, FIREBASE_CREDENTIALS, PORT };
+export { MONGODB_URI, FIREBASE_CREDENTIALS, PORT, limiter };

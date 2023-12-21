@@ -70,6 +70,8 @@ const Map = ({ firebaseAuth }: props) => {
             });
         };
         initializeMap();
+        // on purpose, we want to run this only once
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [notes]);
 
     if (!notes) {

@@ -72,7 +72,7 @@ describe("Note app", function () {
                 cy.visit("/register");
             });
 
-            it("should render the register form", () => {
+            it("registeration form renders", () => {
                 cy.get('input[type="email"]');
                 cy.get('input[type="text"]');
                 cy.get('input[type="password"]');
@@ -135,7 +135,7 @@ describe("Note app", function () {
                 cy.visit("/login");
             });
 
-            it("should render the login form", () => {
+            it("login form renders", () => {
                 cy.contains("Sign in to your account");
                 cy.get('input[type="email"]');
                 cy.get('input[type="password"]');
@@ -182,12 +182,12 @@ describe("Note app", function () {
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
         });
 
-        it("should render the note page", () => {
+        it("note page renders", () => {
             cy.contains("There are 0 note(s)");
             cy.get("#addNoteButton").should("be.visible");
         });
 
-        it("should add a note", () => {
+        it("user can add a note", () => {
             cy.get("#addNoteButton").click();
 
             cy.get("#noteTitle").type("Test note");
