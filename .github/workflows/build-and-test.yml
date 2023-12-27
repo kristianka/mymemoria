@@ -83,10 +83,10 @@ jobs:
               with:
                   working-directory: frontend
                   command: npm run cy:e2e
-                  wait-on: ${{ secrets.BASE_URL }}
+                  wait-on: ${{ secrets.CYPRESS_baseUrl }}
               env:
-                  CYPRESS_TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
-                  CYPRESS_BASE_URL: ${{ secrets.BASE_URL }}
+                  CYPRESS_testEmail: ${{ secrets.CYPRESS_testEmail }}
+                  CYPRESS_baseUrl: ${{ secrets.CYPRESS_baseUrl }}
     Deploy:
         name: Deploy to Render
         needs: Lint-Build-Test

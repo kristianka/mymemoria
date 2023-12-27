@@ -1,13 +1,15 @@
 /* eslint-disable quotes */
 describe("Note app", function () {
-    let TEST_EMAIL = Cypress.env("CYPRESS_TEST_EMAIL");
+    let TEST_EMAIL = Cypress.env("CYPRESS_testEmail");
+    // if TEST_EMAIL is undefined, try to get it from environment variables
     if (!TEST_EMAIL) {
-        TEST_EMAIL = process.env.CYPRESS_TEST_EMAIL;
-        // if TEST_EMAIL is still undefined, throw an error
-        if (!TEST_EMAIL) {
-            throw new Error("TEST_EMAIL environment variable is not set.");
-        }
+        TEST_EMAIL = process.env.CYPRESS_testEmail;
     }
+    // if TEST_EMAIL is still undefined, throw an error
+    if (!TEST_EMAIL) {
+        throw new Error("CYPRESS_testEmail environment variable is not set.");
+    }
+
     function registerUser(email: string, name: string, password: string) {
         // clear the form
         cy.get('input[type="email"]').clear();
