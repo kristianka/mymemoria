@@ -1,13 +1,13 @@
 /* eslint-disable quotes */
 describe("Note app", function () {
-    let TEST_EMAIL = Cypress.env("CYPRESS_testEmail");
-    // if TEST_EMAIL is undefined, try to get it from environment variables
-    if (!TEST_EMAIL) {
-        TEST_EMAIL = process.env.CYPRESS_testEmail;
+    let CYPRESS_TEST_EMAIL = Cypress.env("CYPRESS_TEST_EMAIL");
+    // if CYPRESS_TEST_EMAIL is undefined, try to get it from environment variables
+    if (!CYPRESS_TEST_EMAIL) {
+        CYPRESS_TEST_EMAIL = process.env.CYPRESS_TEST_EMAIL;
     }
-    // if TEST_EMAIL is still undefined, throw an error
-    if (!TEST_EMAIL) {
-        throw new Error("CYPRESS_testEmail environment variable is not set.");
+    // if CYPRESS_TEST_EMAIL is still undefined, throw an error
+    if (!CYPRESS_TEST_EMAIL) {
+        throw new Error("CYPRESS_TEST_EMAIL environment variable is not set.");
     }
 
     function registerUser(email: string, name: string, password: string) {
@@ -94,13 +94,13 @@ describe("Note app", function () {
             });
 
             it("registeration works", () => {
-                registerUser(TEST_EMAIL, "Test User", "password123");
+                registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.contains("There are 0 note(s)");
             });
 
             it("registeration fails if email is already taken", () => {
-                registerUser(TEST_EMAIL, "Test User", "password123");
+                registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.contains("There are 0 note(s)");
 
@@ -111,7 +111,7 @@ describe("Note app", function () {
                 cy.contains("Create account");
                 cy.get("#addNoteButton").should("not.exist");
                 cy.visit("/register");
-                registerUser(TEST_EMAIL, "Test User", "password123");
+                registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Email already in use");
             });
 
@@ -121,16 +121,16 @@ describe("Note app", function () {
             });
 
             it("registeration fails if password is weak", () => {
-                registerUser(TEST_EMAIL, "Test User", "pass");
+                registerUser(CYPRESS_TEST_EMAIL, "Test User", "pass");
                 cy.contains("Weak password.");
             });
 
             it("registeration fails if email, name or password is empty", () => {
                 registerUser("", "Test user", "password123");
                 cy.contains("Please fill in all the fields.");
-                registerUser(TEST_EMAIL, "", "password123");
+                registerUser(CYPRESS_TEST_EMAIL, "", "password123");
                 cy.contains("Please fill in all the fields.");
-                registerUser(TEST_EMAIL, "Test user", "");
+                registerUser(CYPRESS_TEST_EMAIL, "Test user", "");
                 cy.contains("Please fill in all the fields.");
             });
         });
@@ -139,7 +139,7 @@ describe("Note app", function () {
             beforeEach(() => {
                 // create user before each test
                 cy.visit("/register");
-                registerUser(TEST_EMAIL, "Test user", "password123");
+                registerUser(CYPRESS_TEST_EMAIL, "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.wait(1000);
                 cy.contains("There are 0 note(s)");
@@ -157,7 +157,7 @@ describe("Note app", function () {
             });
 
             it("login works", () => {
-                loginUser(TEST_EMAIL, "password123");
+                loginUser(CYPRESS_TEST_EMAIL, "password123");
                 cy.contains("Logged in successfully!", { timeout: 6000 }).should("be.visible");
 
                 cy.contains("There are 0 note(s)");
@@ -169,19 +169,19 @@ describe("Note app", function () {
             });
 
             it("login fails if password is weak", () => {
-                loginUser(TEST_EMAIL, "pass");
+                loginUser(CYPRESS_TEST_EMAIL, "pass");
                 cy.contains("Invalid credentials.");
             });
 
             it("login fails if password is incorrect", () => {
-                loginUser(TEST_EMAIL, "password1234");
+                loginUser(CYPRESS_TEST_EMAIL, "password1234");
                 cy.contains("Invalid credentials", { timeout: 6000 }).should("be.visible");
             });
 
             it("login fails if email or password is empty", () => {
                 loginUser("", "password123");
                 cy.contains("Invalid email.");
-                loginUser(TEST_EMAIL, "");
+                loginUser(CYPRESS_TEST_EMAIL, "");
                 cy.contains("Please fill in all the fields.");
             });
 
@@ -192,7 +192,7 @@ describe("Note app", function () {
 
             it("user can reset password", () => {
                 cy.get('input[type="email"]').clear();
-                cy.get('input[type="email"]').type(TEST_EMAIL);
+                cy.get('input[type="email"]').type(CYPRESS_TEST_EMAIL);
                 cy.contains("Reset password").click();
                 cy.contains("Password reset email sent.", { timeout: 6000 }).should("be.visible");
             });
@@ -203,7 +203,7 @@ describe("Note app", function () {
         beforeEach(() => {
             // create user before each test
             cy.visit("/register");
-            registerUser(TEST_EMAIL, "Test user", "password123");
+            registerUser(CYPRESS_TEST_EMAIL, "Test user", "password123");
             cy.wait(1000);
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
         });
