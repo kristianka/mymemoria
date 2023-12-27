@@ -1,15 +1,23 @@
 /* eslint-disable quotes */
 describe("Note app", function () {
+    const TEST_EMAIL = Cypress.env("TEST_EMAIL");
+    if (!TEST_EMAIL) {
+        throw new Error("TEST_EMAIL environment variable is not set.");
+    }
     function registerUser(email: string, name: string, password: string) {
         // clear the form
         cy.get('input[type="email"]').clear();
         cy.get('input[type="text"]').clear();
-        cy.get('input[type="password"]').clear();
+        cy.get("#password").clear();
+        cy.get("#confirmPassword").clear();
 
         // Fill in the form
         if (email) cy.get('input[type="email"]').type(email);
         if (name) cy.get('input[type="text"]').type(name);
-        if (password) cy.get('input[type="password"]').type(password);
+        if (password) {
+            cy.get("#password").type(password);
+            cy.get("#confirmPassword").type(password);
+        }
 
         // Click the register button
         cy.get("button").contains("Register").click();
@@ -42,6 +50,9 @@ describe("Note app", function () {
     }
 
     beforeEach(function () {
+        // check that we are in testing env
+        cy.visit("/");
+        cy.contains("Using testing environment", { timeout: 6000 }).should("be.visible");
         // logout user
         logoutUser();
         // reset the database
@@ -52,9 +63,6 @@ describe("Note app", function () {
             .clearLocalStorage()
             .clearAllSessionStorage()
             .reload();
-
-        cy.visit("/");
-        cy.contains("Using testing environment", { timeout: 6000 }).should("be.visible");
     });
 
     describe("LandingPage", () => {
@@ -80,13 +88,13 @@ describe("Note app", function () {
             });
 
             it("registeration works", () => {
-                registerUser("testuser@gmail.com", "Test User", "password123");
+                registerUser(TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.contains("There are 0 note(s)");
             });
 
             it("registeration fails if email is already taken", () => {
-                registerUser("testuser@gmail.com", "Test User", "password123");
+                registerUser(TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.contains("There are 0 note(s)");
 
@@ -97,7 +105,7 @@ describe("Note app", function () {
                 cy.contains("Create account");
                 cy.get("#addNoteButton").should("not.exist");
                 cy.visit("/register");
-                registerUser("testuser@gmail.com", "Test User", "password123");
+                registerUser(TEST_EMAIL, "Test User", "password123");
                 cy.contains("Email already in use");
             });
 
@@ -107,16 +115,16 @@ describe("Note app", function () {
             });
 
             it("registeration fails if password is weak", () => {
-                registerUser("testuser@gmail.com", "Test User", "pass");
+                registerUser(TEST_EMAIL, "Test User", "pass");
                 cy.contains("Weak password.");
             });
 
             it("registeration fails if email, name or password is empty", () => {
                 registerUser("", "Test user", "password123");
                 cy.contains("Please fill in all the fields.");
-                registerUser("testuser@gmail.com", "", "password123");
+                registerUser(TEST_EMAIL, "", "password123");
                 cy.contains("Please fill in all the fields.");
-                registerUser("testuser@gmail.com", "Test user", "");
+                registerUser(TEST_EMAIL, "Test user", "");
                 cy.contains("Please fill in all the fields.");
             });
         });
@@ -125,7 +133,7 @@ describe("Note app", function () {
             beforeEach(() => {
                 // create user before each test
                 cy.visit("/register");
-                registerUser("testuser@gmail.com", "Test user", "password123");
+                registerUser(TEST_EMAIL, "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.wait(1000);
                 cy.contains("There are 0 note(s)");
@@ -143,7 +151,7 @@ describe("Note app", function () {
             });
 
             it("login works", () => {
-                loginUser("testuser@gmail.com", "password123");
+                loginUser(TEST_EMAIL, "password123");
                 cy.contains("Logged in successfully!", { timeout: 6000 }).should("be.visible");
 
                 cy.contains("There are 0 note(s)");
@@ -155,20 +163,32 @@ describe("Note app", function () {
             });
 
             it("login fails if password is weak", () => {
-                loginUser("testuser@gmail.com", "pass");
+                loginUser(TEST_EMAIL, "pass");
                 cy.contains("Invalid credentials.");
+            });
+
+            it("login fails if password is incorrect", () => {
+                loginUser(TEST_EMAIL, "password1234");
+                cy.contains("Invalid credentials", { timeout: 6000 }).should("be.visible");
             });
 
             it("login fails if email or password is empty", () => {
                 loginUser("", "password123");
                 cy.contains("Invalid email.");
-                loginUser("testuser@gmail.com", "");
+                loginUser(TEST_EMAIL, "");
                 cy.contains("Please fill in all the fields.");
             });
 
             it("login fails if user does not exist", () => {
                 loginUser("notregistered@gmail.com", "password123");
                 cy.contains("Invalid credentials", { timeout: 6000 }).should("be.visible");
+            });
+
+            it("user can reset password", () => {
+                cy.get('input[type="email"]').clear();
+                cy.get('input[type="email"]').type(TEST_EMAIL);
+                cy.contains("Reset password").click();
+                cy.contains("Password reset email sent.", { timeout: 6000 }).should("be.visible");
             });
         });
     });
@@ -177,7 +197,7 @@ describe("Note app", function () {
         beforeEach(() => {
             // create user before each test
             cy.visit("/register");
-            registerUser("testuser@gmail.com", "Test user", "password123");
+            registerUser(TEST_EMAIL, "Test user", "password123");
             cy.wait(1000);
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
         });

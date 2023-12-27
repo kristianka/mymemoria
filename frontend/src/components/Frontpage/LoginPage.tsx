@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase";
 
 import { toast } from "react-toastify";
@@ -16,6 +16,9 @@ interface props {
 const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    // avoids button spam via frontend, but of course it can be spammed via backend
+    // and user can refresh the page to reset the cooldown
+    const [isPasswordResettingCooldown, setIsPasswordResettingCooldown] = useState(false);
     const navigate = useNavigate();
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +29,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         setPassword(e.target.value);
     };
 
-    const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         try {
             e.preventDefault();
 
@@ -60,6 +63,36 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             }
 
             console.log(error);
+        }
+    };
+
+    const handleForgotPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        try {
+            await sendPasswordResetEmail(auth, email);
+            toast.success(
+                "Password reset email sent. Please check your your spam folder if you can't find it."
+            );
+            toast.info("You can send another one in a minute if you didn't receive it.");
+            // cooldown for 1 minute
+            setIsPasswordResettingCooldown(true);
+            setTimeout(() => {
+                setIsPasswordResettingCooldown(false);
+            }, 60000);
+        } catch (error) {
+            // Handle form errors. First, Firebase errors
+            if (error instanceof FirebaseError) {
+                if (error.code === "auth/invalid-email") {
+                    toast.error("Invalid email. Please try again.");
+                    return;
+                }
+                if (error.code === "auth/missing-email") {
+                    toast.error("Please fill in email to reset it.");
+                    return;
+                }
+            }
+            toast.error("Error sending password reset email. Please try again later.");
+            console.error(error);
         }
     };
 
@@ -126,7 +159,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
                         <div>
                             <button
-                                onClick={login}
+                                onClick={handleLogin}
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
@@ -146,12 +179,13 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     </p>
                     <p className="mt-1 text-center text-sm text-gray-500">
                         Forgot your password?{" "}
-                        <a
-                            href="/reset-password"
+                        <button
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                            onClick={handleForgotPassword}
+                            disabled={isPasswordResettingCooldown}
                         >
                             Reset password
-                        </a>
+                        </button>
                     </p>
                 </div>
             </div>

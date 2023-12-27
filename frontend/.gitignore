@@ -27,3 +27,4 @@ dist-ssr
 
 cypress/downloads
 cypress/screenshots
+cypress.env.json
