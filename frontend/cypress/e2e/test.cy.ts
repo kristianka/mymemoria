@@ -1,8 +1,8 @@
 /* eslint-disable quotes */
 describe("Note app", function () {
-    let TEST_EMAIL = Cypress.env("TEST_EMAIL");
+    let TEST_EMAIL = Cypress.env("CYPRESS_TEST_EMAIL");
     if (!TEST_EMAIL) {
-        TEST_EMAIL = process.env.TEST_EMAIL;
+        TEST_EMAIL = process.env.CYPRESS_TEST_EMAIL;
         // if TEST_EMAIL is still undefined, throw an error
         if (!TEST_EMAIL) {
             throw new Error("TEST_EMAIL environment variable is not set.");

@@ -84,14 +84,14 @@ jobs:
                   working-directory: frontend
                   command: npm run cy:e2e
                   wait-on: ${{ secrets.BASE_URL }}
-                  env: "TEST_EMAIL=${{ secrets.TEST_EMAIL }},BASE_URL=${{ secrets.BASE_URL }}"
               env:
-                  TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
-                  BASE_URL: ${{ secrets.BASE_URL }}
+                  CYPRESS_TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+                  CYPRESS_BASE_URL: ${{ secrets.BASE_URL }}
     Deploy:
         name: Deploy to Render
         needs: Lint-Build-Test
         runs-on: ubuntu-latest
+        environment: testing
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#DEPLOY') }}
         steps:
             - name: Trigger deployment
