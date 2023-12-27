@@ -35,7 +35,8 @@
 |19.12.2023|5|Struggle getting Cypress tests working on Github Actions (github-workflow branch)|
 |20.12.2023|5|Add a lot of Cypress tests, add to GitHub actions workflow (github-workflow branch)|
 |21.12.2023|3|Finish tests, merge branch to main (github-workflow branch)|
+|27.12.2023|7|Improve tests, register page, add password reset, update workflows|
 
-<h2>Total: 193 hours</h2>
+<h2>Total: 200 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
