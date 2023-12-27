@@ -7,7 +7,9 @@
     "start": "cross-env NODE_ENV=production ts-node-dev src/app.ts",
     "dev": "cross-env NODE_ENV=development ts-node-dev src/app.ts",
     "build:testing": "cross-env NODE_ENV=testing tsc",
-    "start-build:testing": "cross-env NODE_ENV=testing node dist/app.js",
+    "build:production": "cross-env NODE_ENV=production tsc",
+    "start:built-production": "cross-env NODE_ENV=production node dist/app.js",
+    "start:built-testing": "cross-env NODE_ENV=testing node dist/app.js",
     "start:testing-env": "cross-env NODE_ENV=testing ts-node-dev src/app.ts",
     "tsc": "tsc",
     "lint": "eslint --ext .ts ."

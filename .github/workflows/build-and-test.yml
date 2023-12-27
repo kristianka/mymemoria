@@ -47,7 +47,7 @@ jobs:
                   MODE: testing
 
             - name: Build backend
-              run: cd backend && npm run tsc
+              run: cd backend && npm run build:testing
               env:
                   NODE_ENV: test
                   MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
@@ -59,7 +59,7 @@ jobs:
 
             - name: Start backend
               run: |
-                  cd backend && npm run start-build:testing &
+                  cd backend && npm run start:built-testing &
                   for i in {1..50}; do
                     if curl --silent --fail http://localhost:${{ secrets.PORT }}/api/testing/reset > /dev/null; then
                       sleep 1
