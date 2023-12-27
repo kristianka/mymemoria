@@ -84,6 +84,7 @@ jobs:
                   working-directory: frontend
                   command: npm run cy:e2e
                   wait-on: ${{ secrets.BASE_URL }}
+                  env: "TEST_EMAIL=${{ secrets.TEST_EMAIL }},BASE_URL=${{ secrets.BASE_URL }}"
               env:
                   TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
                   BASE_URL: ${{ secrets.BASE_URL }}
