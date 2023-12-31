@@ -72,6 +72,7 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
             title,
             content,
             location: savedLocation._id,
+            createdAt: new Date(),
             user: user._id
         });
 
@@ -105,6 +106,7 @@ notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 
         note.title = title;
         note.content = content;
+        note.modifiedAt = new Date();
         const savedNote = await note.save();
         return res.status(200).json(savedNote);
     } catch (error) {

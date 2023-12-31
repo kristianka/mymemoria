@@ -20,8 +20,8 @@ app.use(errorHandler);
 connectToMongo();
 connectToFirebase();
 
-// Limit requests to 200 per 10 minutes (except in testing)
-if (process.env.NODE_ENV !== "testing") {
+// Limit requests to 300 per 10 minutes in production
+if (process.env.NODE_ENV === "production") {
     app.use(limiter);
 }
 

@@ -15,6 +15,8 @@ export interface NoteInterface {
     location: {
         coordinates: [number, number];
     };
+    createdAt: string;
+    modifiedAt?: string;
 }
 
 export interface BackendUserInterface {

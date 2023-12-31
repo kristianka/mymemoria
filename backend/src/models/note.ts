@@ -12,6 +12,15 @@ const noteSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Location"
     },
+    createdAt: {
+        type: Date,
+        required: true
+    },
+    // last modified
+    modifiedAt: {
+        type: Date,
+        required: false
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
