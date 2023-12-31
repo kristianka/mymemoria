@@ -20,6 +20,7 @@ import AddNote from "./components/Notes/AddNote";
 import { FireBaseUserInterface } from "./types";
 import useAuthEffect from "./hooks/useAuthEffect";
 import EditNote from "./components/Notes/EditNote";
+import NotFound from "./components/NotFound";
 
 const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
@@ -72,6 +73,9 @@ const App = () => {
                     path="/register"
                     element={<RegisterPage firebaseAuth={firebaseAuth} />}
                 ></Route>
+                {/* 404 for any other route */}
+                {/* unknown or unauthorized note will show to 404 from component */}
+                <Route path="*" element={<NotFound />} />
             </Routes>
             {/* <Footer></Footer> */}
         </div>

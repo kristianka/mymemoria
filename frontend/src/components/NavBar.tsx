@@ -86,6 +86,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 {/* api doesn't collect any data */}
                                 <img
                                     src={`https://ui-avatars.com/api/?background=ed58a0&color=fff&name=${user.name}`}
+                                    alt="user avatar"
                                 />
                             </div>
                         </label>

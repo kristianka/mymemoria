@@ -96,13 +96,13 @@ describe("Note app", function () {
             it("registeration works", () => {
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-                cy.contains("There are 0 note(s)");
+                cy.contains("You have 0 notes");
             });
 
             it("registeration fails if email is already taken", () => {
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-                cy.contains("There are 0 note(s)");
+                cy.contains("You have 0 notes");
 
                 logoutUser();
 
@@ -142,7 +142,7 @@ describe("Note app", function () {
                 registerUser(CYPRESS_TEST_EMAIL, "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.wait(1000);
-                cy.contains("There are 0 note(s)");
+                cy.contains("You have 0 notes");
 
                 logoutUser();
                 // Visit the login page before each test
@@ -160,7 +160,7 @@ describe("Note app", function () {
                 loginUser(CYPRESS_TEST_EMAIL, "password123");
                 cy.contains("Logged in successfully!", { timeout: 6000 }).should("be.visible");
 
-                cy.contains("There are 0 note(s)");
+                cy.contains("You have 0 note");
             });
 
             it("login fails if email is invalid", () => {
@@ -209,7 +209,7 @@ describe("Note app", function () {
         });
 
         it("note page renders", () => {
-            cy.contains("There are 0 note(s)");
+            cy.contains("You have 0 notes");
             cy.get("#addNoteButton").should("be.visible");
         });
 
@@ -222,7 +222,7 @@ describe("Note app", function () {
             cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
             cy.get("#saveNoteButton").click();
 
-            cy.contains("There are 1 note(s)");
+            cy.contains("You have 1 notes");
             cy.contains("Test note");
             cy.contains("Test note content");
         });
@@ -237,7 +237,7 @@ describe("Note app", function () {
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
-                cy.contains("There are 1 note(s)");
+                cy.contains("You have 1 notes");
                 cy.contains("Test note by test user");
                 cy.contains("Test note content");
             });
@@ -251,7 +251,7 @@ describe("Note app", function () {
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
-                cy.contains("There are 2 note(s)");
+                cy.contains("You have 2 notes");
                 cy.contains("Another note by test user");
                 cy.contains("Another note content");
             });
@@ -264,7 +264,7 @@ describe("Note app", function () {
 
             it("you can edit the note", () => {
                 cy.get('[id^="toNoteButton"]').click();
-                cy.contains("edit note").click();
+                cy.contains("Edit note").click();
 
                 cy.get("#noteTitle").clear().type("Edited note by test user");
                 cy.get("#noteContent").clear().type("Edited note content");
@@ -272,18 +272,18 @@ describe("Note app", function () {
 
                 cy.visit("/");
 
-                cy.contains("There are 1 note(s)");
+                cy.contains("You have 1 notes");
                 cy.contains("Edited note by test user");
                 cy.contains("Edited note content");
             });
 
             it("you can delete the note", () => {
                 cy.get('[id^="toNoteButton"]').click();
-                cy.contains("delete note").click();
+                cy.contains("Delete note").click();
                 // cy.contains("Are you sure you want to delete this note?");
                 // cy.contains("Yes").click();
                 cy.contains("Note deleted successfully", { timeout: 6000 }).should("be.visible");
-                cy.contains("There are 0 note(s)");
+                cy.contains("You have 0 notes");
             });
 
             it("notes don't show afte user logs out", () => {

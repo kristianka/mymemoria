@@ -92,7 +92,9 @@ const AddingNoteMap = (props: props) => {
         };
     }, [map, marker, props]);
 
-    return <div ref={mapContainer} style={{ height: "400px" }} />;
+    return (
+        <div className="h-100" ref={mapContainer} style={{ height: "400px", borderRadius: 5 }} />
+    );
 };
 
 export default AddingNoteMap;

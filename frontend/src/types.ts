@@ -6,6 +6,8 @@ export interface NoteInterface {
     location: {
         coordinates: [number, number];
     };
+    createdAt: string;
+    modifiedAt?: string;
 }
 
 import { UserMetadata } from "firebase/auth";

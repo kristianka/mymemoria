@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import NotesLoadingSkeleton from "./NotesLoadingSkeleton";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
 import { useEffect } from "react";
+import { auth } from "../../firebase";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -30,15 +31,37 @@ const Notes = ({ firebaseAuth }: props) => {
     document.title = "Your notes | Notes";
 
     console.log(notes);
-    if (notesStatus === "error") {
+    if (notesStatus === "error" || userStatus === "error") {
         toast.error("Error getting notes, please try again later.");
-        return <div>Something went, please try again later</div>;
+        return (
+            <div className="p-5">
+                <h1 className="text-center normal-case text-2xl">
+                    Sorry, something went wrong. Please try again later.
+                </h1>
+                <p className="text-center normal-case text-l p-3">You can try signing out:</p>
+                <div className="flex justify-center">
+                    <button
+                        onClick={() => {
+                            auth.signOut();
+                        }}
+                        className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                    >
+                        Sign out
+                    </button>
+                </div>
+            </div>
+        );
     }
     return (
         <div>
-            <h1>There are {notes?.length} note(s)</h1>
-            <div className="grid grid-cols-2 divide-x">
-                <div className="grid grid-cols-1 divide-y">
+            <div className="grid grid-cols-2 m-3">
+                <div className="divide-y m-1">
+                    <div className="pt-5 pb-5">
+                        <h1 className="text-center normal-case text-2xl">Your notes</h1>
+                        <p className="text-center normal-case text-l">
+                            You have {notes?.length} notes
+                        </p>
+                    </div>
                     {firebaseAuth &&
                         notesStatus === "pending" &&
                         [...Array(3)].map((_, i) => <NotesLoadingSkeleton key={i} />)}{" "}
@@ -60,7 +83,7 @@ const Notes = ({ firebaseAuth }: props) => {
                             </div>
                         ))}
                 </div>
-                <div className="grid grid-cols-1 divide-y rounded-lg">
+                <div className="grid grid-cols-1 rounded-lg">
                     {firebaseAuth && notesStatus === "pending" && <MapLoadingSkeleton />}
                     {notes && notes.length !== 0 && <Map firebaseAuth={firebaseAuth}></Map>}
                 </div>

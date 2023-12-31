@@ -88,7 +88,11 @@ const Map = ({ firebaseAuth }: props) => {
                     </h2>
                 </div>
             ) : (
-                <div className="h-100" ref={mapContainer} style={{ height: "400px" }} />
+                <div
+                    className="h-100"
+                    ref={mapContainer}
+                    style={{ height: "25rem", borderRadius: 5 }}
+                />
             )}
         </div>
     );

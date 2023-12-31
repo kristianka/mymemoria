@@ -1,12 +1,15 @@
 import { FireBaseUserInterface, NoteInterface } from "../../types";
 import useNotes from "../../hooks/useNotes";
 import { useNavigate, useParams } from "react-router-dom";
+import { PencilSquareIcon, InboxArrowDownIcon } from "@heroicons/react/20/solid";
 import NotFound from "../NotFound";
 import useUser from "../../hooks/useUser";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import notesService from "../../services/notes";
 import { useQueryClient } from "@tanstack/react-query";
+import MapLoadingSkeleton from "./MapLoadingSkeleton";
+import SingleNoteMap from "./SingleNoteMap";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -36,6 +39,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
 
     const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
     if (!note) {
+        console.log("note not found");
         return <NotFound></NotFound>;
     }
 
@@ -61,18 +65,54 @@ const SingleNote = ({ firebaseAuth }: props) => {
     };
 
     document.title = `${note.title} | Notes`;
+
     return (
         <div>
-            <div>
-                <button onClick={editNote}>edit note</button>
-                <br></br>
-                <button onClick={deleteNote}>delete note</button>
+            <div className="grid grid-cols-2 m-3">
+                <div className="grid grid-cols-1">
+                    <div key={note.id} className="card bg-base-100">
+                        <div className="card-body">
+                            <h2 className="card-title text-3xl">{note.title}</h2>
+                            <p className="trunacte text-ellipsis text-ll">{note.content}</p>
+                            <div className="card-actions justify-end"></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 rounded-lg">
+                    {firebaseAuth && notesStatus !== "success" && <MapLoadingSkeleton />}
+                    {note && <SingleNoteMap note={note} />}
+                    <div className="grid grid-cols-2 mt-5">
+                        <div className="">
+                            <button
+                                type="button"
+                                onClick={editNote}
+                                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                            >
+                                Edit note
+                            </button>
+                            <button
+                                type="button"
+                                onClick={deleteNote}
+                                className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                            >
+                                Delete note
+                            </button>
+                        </div>
+                        <div className="grid grid-cols-2">
+                            <div className="">
+                                <InboxArrowDownIcon className="h-7 w-7 text-blue-500" />
+                                <p>{new Date(note.createdAt).toLocaleString()} </p>
+                            </div>
+                            {note?.modifiedAt && (
+                                <div className="">
+                                    <PencilSquareIcon className="h-7 w-7 text-blue-500" />
+                                    <p>{new Date(note?.modifiedAt).toLocaleString()}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h2>{note.title}</h2>
-            <p>{note.content}</p>
-            <p>{note.user}</p>
-            <h1>Logged in as {user?.name}</h1>
-            <h1>Single Note</h1>
         </div>
     );
 };

@@ -66,9 +66,8 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
     return (
         <div>
             <AddingNoteMap setLat={setLat} setLng={setLng}></AddingNoteMap>
-            <div className="container mx-auto px-4 align-content: center">
-                <h1>Add note</h1>
-                <div className="form-control w-full max-w-xs">
+            <div className="container m-auto">
+                <div className="form-control">
                     <label className="label">
                         <span className="label-text">Title</span>
                     </label>
