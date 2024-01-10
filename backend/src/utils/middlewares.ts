@@ -3,8 +3,8 @@ import { getAdminInstance } from "./firebaseConnection";
 import { AuthRequest } from "../types";
 
 const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunction) => {
-    if (process.env.NODE_ENV !== "test") {
-        // console.error(error);
+    if (process.env.NODE_ENV !== "testing") {
+        console.error(error);
     }
 
     // it seems to be that firebase and mongoose use normal "Error" class,
@@ -15,8 +15,19 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
     // firebase errors
     if (error.message.includes("auth/id-token-expired")) {
         return res.status(401).json({ error: "Token expired" });
+    } else if (error.message.includes("auth/id-token-revoked")) {
+        return res.status(401).json({ error: "Token revoked" });
+    } else if (error.message.includes("auth/argument-error")) {
+        return res.status(400).json({ error: "Bad request" });
+    } else if (error.message.includes("auth/invalid-argument")) {
+        return res.status(400).json({ error: "Bad request" });
+    } else if (error.message.includes("auth/invalid-claims")) {
+        return res.status(400).json({ error: "Bad request" });
+    } else if (error.message.includes("auth/invalid-creation-time")) {
+        return res.status(400).json({ error: "Bad request" });
+    } else if (error.message.includes("auth/invalid-disabled-field")) {
+        return res.status(400).json({ error: "Bad request" });
     }
-
     // mongoose errors
     if (error.message.includes("MongoConnectionException")) {
         return res.status(500).json({ error: "Server error. Please try again later" });
@@ -62,8 +73,6 @@ const getUserFromReq = async (req: AuthRequest, _res: Response, next: NextFuncti
     } catch (error) {
         return next(error);
     }
-    // console.log("TOKEN IN GETUSER", req.token);
-    // console.log("USER IN GETUSER", req.user);
     next();
 };
 

@@ -15,7 +15,6 @@ testingRouter.get("/reset", async (_req, res) => {
     const listUsers = await admin.auth().listUsers();
     listUsers.users.forEach(async (userRecord) => {
         await admin.auth().deleteUser(userRecord.uid);
-        console.log(`Deleted user with uid: ${userRecord.uid}`);
     });
     if (!resetUsers.acknowledged || !resetNotes.acknowledged || !resetLocations.acknowledged) {
         return res.status(500).json({ error: "Database reset failed" });

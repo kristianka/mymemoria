@@ -89,8 +89,8 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
 // update note
 notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const { title, content } = req.body;
-        if (!title || !content) {
+        const { title, content, location } = req.body;
+        if (!title || !content || !location) {
             return res.status(400).json({ error: "Missing required fields" });
         }
         const user = await User.findById(req.user?.id);
@@ -104,8 +104,16 @@ notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
             return res.status(404).end();
         }
 
+        // note the order!!!
+        const loc = new Location({
+            coordinates: [location.lng, location.lat]
+        });
+
+        const savedLocation = await loc.save();
+
         note.title = title;
         note.content = content;
+        note.location = savedLocation._id;
         note.modifiedAt = new Date();
         const savedNote = await note.save();
         return res.status(200).json(savedNote);
