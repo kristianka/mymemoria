@@ -37,7 +37,9 @@
 |21.12.2023|3|Finish tests, merge branch to main (github-workflow branch)|
 |27.12.2023|7|Improve tests, register page, add password reset, update workflows|
 |31.12.2023|7|Revamp UI, add timestamps to notes|
+|1.12.2023|6|Revamp UI on edit note, add ability to edit note location. Fix map bugs. Add tooltips to some places|
+|4.12.2023|5|Update footer, make UI responsive, add ability to delete account. Add ability to format text with new lines when adding note. Fix bugs and other misc changes|
 
-<h2>Total: 207 hours</h2>
+<h2>Total: 218 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
