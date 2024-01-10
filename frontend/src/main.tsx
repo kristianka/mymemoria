@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <ToastContainer
                 className="toast-notification"
                 position="top-center"
-                autoClose={7000}
+                autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick

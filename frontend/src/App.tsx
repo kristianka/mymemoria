@@ -2,16 +2,15 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import AnnouncementBanner from "./components/AnnouncementBanner";
 import NavBar from "./components/NavBar";
-// import Footer from "./components/Footer/Footer";
+import Footer from "./components/Footer/Footer";
 
 import LandingPage from "./components/Frontpage/LandingPage";
 import LoginPage from "./components/Frontpage/LoginPage";
 import RegisterPage from "./components/Frontpage/RegisterPage";
 import SettingsPage from "./components/SettingsPage";
 import ProfilePage from "./components/ProfilePage";
-import SingleNote from "./components/Notes/SingleNote";
+import SingleNote from "./components/Notes/SingleNotePage";
 
 import Notes from "./components/Notes/Notes";
 
@@ -21,6 +20,7 @@ import { FireBaseUserInterface } from "./types";
 import useAuthEffect from "./hooks/useAuthEffect";
 import EditNote from "./components/Notes/EditNote";
 import NotFound from "./components/NotFound";
+import InfoPage from "./components/Footer/InfoPage";
 
 const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
@@ -32,15 +32,14 @@ const App = () => {
     if (loading) {
         return (
             <div>
-                <AnnouncementBanner></AnnouncementBanner>
                 <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
+                <div className="flex flex-col min-h-screen bg-slate-50"></div>
             </div>
         );
     }
 
     return (
-        <div>
-            <AnnouncementBanner></AnnouncementBanner>
+        <div className="flex flex-col min-h-screen bg-slate-50">
             <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
             <Routes>
                 {firebaseAuth && !loading ? (
@@ -55,29 +54,32 @@ const App = () => {
                     }
                 />
                 <Route path="/notes" element={<Notes firebaseAuth={firebaseAuth} />} />
-                <Route
-                    path="/notes/:id"
-                    element={<SingleNote firebaseAuth={firebaseAuth} />}
-                ></Route>
+                <Route path="/notes/:id" element={<SingleNote firebaseAuth={firebaseAuth} />} />
                 <Route
                     path="/notes/:id/edit"
                     element={<EditNote firebaseAuth={firebaseAuth}></EditNote>}
-                ></Route>
+                />
                 <Route
                     path="/notes/add"
                     element={<AddNote firebaseAuth={firebaseAuth}></AddNote>}
-                ></Route>
-                <Route path="/profile" element={<ProfilePage />}></Route>
-                <Route path="/settings" element={<SettingsPage />}></Route>
+                />
                 <Route
-                    path="/register"
-                    element={<RegisterPage firebaseAuth={firebaseAuth} />}
-                ></Route>
+                    path="/profile"
+                    element={
+                        <ProfilePage
+                            firebaseAuth={firebaseAuth}
+                            setFirebaseAuth={setFirebaseAuth}
+                        />
+                    }
+                />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/register" element={<RegisterPage firebaseAuth={firebaseAuth} />} />
+                <Route path="/info" element={<InfoPage />} />
                 {/* 404 for any other route */}
                 {/* unknown or unauthorized note will show to 404 from component */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
-            {/* <Footer></Footer> */}
+            <Footer />
         </div>
     );
 };

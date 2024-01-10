@@ -36,3 +36,19 @@ export interface CreateNoteInterface {
         lng: number;
     };
 }
+
+export interface UpdateUserInterface {
+    id: string;
+    title: string;
+    content: string;
+}
+
+export interface UpdateNoteInterface {
+    id: string;
+    title: string;
+    content: string;
+    location: {
+        lat: number;
+        lng: number;
+    };
+}

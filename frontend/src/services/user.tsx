@@ -1,6 +1,6 @@
 import axios from "axios";
-const baseUrl = "/api/users/";
-import { BackendUserInterface } from "../types";
+const baseUrl = "/api/users";
+import { BackendUserInterface, UpdateUserInterface } from "../types";
 
 let token: string | null;
 
@@ -24,4 +24,21 @@ const register = async (newUser: object) => {
     return res.data;
 };
 
-export default { setToken, getUser, register };
+const update = async (obj: UpdateUserInterface) => {
+    const config = {
+        headers: { Authorization: token }
+    };
+    return axios.put(`${baseUrl}/${obj.id}`, obj, config);
+};
+
+const remove = async (id: string) => {
+    const config = {
+        headers: { Authorization: token }
+    };
+    if (!token) {
+        return null;
+    }
+    return axios.delete(`${baseUrl}/${id}`, config);
+};
+
+export default { setToken, getUser, register, update, remove };

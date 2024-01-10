@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseUrl = "/api/notes";
-import { CreateNoteInterface, NoteInterface } from "../types";
+import { CreateNoteInterface, NoteInterface, UpdateNoteInterface } from "../types";
 
 let token: string | null;
 
@@ -25,12 +25,6 @@ const create = (newObject: CreateNoteInterface) => {
     };
     return axios.post(baseUrl, newObject, config);
 };
-
-interface UpdateNoteInterface {
-    id: string;
-    title: string;
-    content: string;
-}
 
 const update = (obj: UpdateNoteInterface) => {
     const config = {

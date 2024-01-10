@@ -1,14 +1,14 @@
-import Map from "../Map";
+import Map from "./Map";
 import useNotes from "../../hooks/useNotes";
 import { FireBaseUserInterface, NoteInterface } from "../../types";
-import { Link, useNavigate } from "react-router-dom";
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import { useNavigate } from "react-router-dom";
 import useUser from "../../hooks/useUser";
 import { toast } from "react-toastify";
 import NotesLoadingSkeleton from "./NotesLoadingSkeleton";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
 import { useEffect } from "react";
 import { auth } from "../../firebase";
+import NoteCard from "./NoteCard";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -52,38 +52,37 @@ const Notes = ({ firebaseAuth }: props) => {
             </div>
         );
     }
+
+    if (notesStatus === "success" && notes?.length === 0) {
+        return (
+            <div className="p-5">
+                <h1 className="text-center normal-case text-3xl">No notes yet</h1>
+                <p className="text-center normal-case text-xl p-3">
+                    Click on the "+" -icon next to your name to add one
+                </p>
+            </div>
+        );
+    }
     return (
         <div>
-            <div className="grid grid-cols-2 m-3">
-                <div className="divide-y m-1">
-                    <div className="pt-5 pb-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
+                <div className="divide-y m-3">
+                    <div className="pt-5 pb-5  bg-white">
                         <h1 className="text-center normal-case text-2xl">Your notes</h1>
                         <p className="text-center normal-case text-l">
                             You have {notes?.length} notes
                         </p>
                     </div>
+                    {/* render three loading skeletons */}
                     {firebaseAuth &&
                         notesStatus === "pending" &&
                         [...Array(3)].map((_, i) => <NotesLoadingSkeleton key={i} />)}{" "}
                     {notes &&
                         notes?.map((note: NoteInterface) => (
-                            <div key={note.id} className="card bg-base-100">
-                                <div className="card-body">
-                                    <h2 className="card-title truncate">{note.title}</h2>
-                                    <p className="trunacte text-ellipsis">{note.content}</p>
-                                    <div className="card-actions justify-end">
-                                        <Link
-                                            id={`toNoteButton=${note.id}`}
-                                            to={`/notes/${note.id}`}
-                                        >
-                                            <ChevronRightIcon className="h-10 w-10 text-blue-500" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
+                            <NoteCard key={note.id} note={note}></NoteCard>
                         ))}
                 </div>
-                <div className="grid grid-cols-1 rounded-lg">
+                <div className="rounded-lg md:order-1 m-3">
                     {firebaseAuth && notesStatus === "pending" && <MapLoadingSkeleton />}
                     {notes && notes.length !== 0 && <Map firebaseAuth={firebaseAuth}></Map>}
                 </div>

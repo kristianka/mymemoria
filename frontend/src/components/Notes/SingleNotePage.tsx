@@ -39,7 +39,6 @@ const SingleNote = ({ firebaseAuth }: props) => {
 
     const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
     if (!note) {
-        console.log("note not found");
         return <NotFound></NotFound>;
     }
 
@@ -65,22 +64,24 @@ const SingleNote = ({ firebaseAuth }: props) => {
     };
 
     document.title = `${note.title} | Notes`;
-
     return (
         <div>
-            <div className="grid grid-cols-2 m-3">
-                <div className="grid grid-cols-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
+                <div className="m-3">
                     <div key={note.id} className="card bg-base-100">
                         <div className="card-body">
                             <h2 className="card-title text-3xl">{note.title}</h2>
-                            <p className="trunacte text-ellipsis text-ll">{note.content}</p>
-                            <div className="card-actions justify-end"></div>
+                            <p className="trunacte text-ellipsis text-xl whitespace-pre-line">
+                                {note.content}
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 rounded-lg">
+                <div className="grid grid-cols-1 rounded-lg md:order-1 m-3">
                     {firebaseAuth && notesStatus !== "success" && <MapLoadingSkeleton />}
-                    {note && <SingleNoteMap note={note} />}
+                    {note.location.coordinates[0] !== 0 && note.location.coordinates[1] !== 0 && (
+                        <SingleNoteMap note={note} />
+                    )}
                     <div className="grid grid-cols-2 mt-5">
                         <div className="">
                             <button
@@ -99,13 +100,13 @@ const SingleNote = ({ firebaseAuth }: props) => {
                             </button>
                         </div>
                         <div className="grid grid-cols-2">
-                            <div className="">
-                                <InboxArrowDownIcon className="h-7 w-7 text-blue-500" />
+                            <div className="tooltip" data-tip="Created at">
+                                <InboxArrowDownIcon className="m-auto h-7 w-7 text-blue-500" />
                                 <p>{new Date(note.createdAt).toLocaleString()} </p>
                             </div>
                             {note?.modifiedAt && (
-                                <div className="">
-                                    <PencilSquareIcon className="h-7 w-7 text-blue-500" />
+                                <div className="tooltip" data-tip="Last modified at">
+                                    <PencilSquareIcon className="m-auto h-7 w-7 text-blue-500" />
                                     <p>{new Date(note?.modifiedAt).toLocaleString()}</p>
                                 </div>
                             )}

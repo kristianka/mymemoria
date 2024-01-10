@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FireBaseUserInterface } from "../../types";
 import notesService from "../../services/notes";
-import AddingNoteMap from "./AddingNoteMap";
+import AddingNoteMap from "./AddNoteMap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface AddNoteProps {
@@ -22,7 +22,7 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
         setTitle(e.target.value);
     };
 
-    const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value);
     };
 
@@ -65,41 +65,73 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
 
     return (
         <div>
-            <AddingNoteMap setLat={setLat} setLng={setLng}></AddingNoteMap>
-            <div className="container m-auto">
-                <div className="form-control">
-                    <label className="label">
-                        <span className="label-text">Title</span>
-                    </label>
-                    <input
-                        onChange={handleTitleChange}
-                        value={title}
-                        type="text"
-                        placeholder="Title"
-                        id="noteTitle"
-                        className="input input-bordered w-full max-w-xs"
-                    />
+            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1 m-3">
+                <div className="md:m-10">
+                    <h1 className="text-center normal-case text-2xl">Add note</h1>
+                    <form className="space-y-6" action="#" method="POST">
+                        <div>
+                            <label
+                                htmlFor="title"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                            >
+                                Title
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    value={title}
+                                    onChange={handleTitleChange}
+                                    name="title"
+                                    type="text"
+                                    required
+                                    id="noteTitle"
+                                    placeholder="Title"
+                                    className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex items-center justify-between">
+                                <label
+                                    htmlFor="content"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
+                                    Content
+                                </label>
+                            </div>
+                            <div className="mt-2">
+                                <textarea
+                                    value={content}
+                                    onChange={handleContentChange}
+                                    name="content"
+                                    required
+                                    id="noteContent"
+                                    placeholder="Content"
+                                    rows={10}
+                                    className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text">Content</span>
+                <div>
+                    <label
+                        htmlFor="location"
+                        className="block text-sm font-medium leading-6 text-gray-900 mt-5"
+                    >
+                        Location
                     </label>
-                    <input
-                        onChange={handleContentChange}
-                        value={content}
-                        type="text"
-                        placeholder="Content"
-                        id="noteContent"
-                        className="input input-bordered w-full max-w-xs"
-                    />
+                    <div className="mt-2"></div>
+                    <AddingNoteMap setLat={setLat} setLng={setLng}></AddingNoteMap>
+                    <button
+                        onClick={submit}
+                        type="submit"
+                        id="saveNoteButton"
+                        className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                    >
+                        Add note
+                    </button>
                 </div>
-
-                <button id="saveNoteButton" onClick={submit} className="btn">
-                    Add
-                </button>
             </div>
-
-            <h1>Add Note</h1>
         </div>
     );
 };

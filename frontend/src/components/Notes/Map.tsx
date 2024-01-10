@@ -3,9 +3,9 @@ import mapboxgl, { LngLat, LngLatLike } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FireBaseUserInterface } from "../types";
-import useNotes from "../hooks/useNotes";
-import useUser from "../hooks/useUser";
+import { FireBaseUserInterface } from "../../types";
+import useNotes from "../../hooks/useNotes";
+import useUser from "../../hooks/useUser";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
@@ -79,22 +79,7 @@ const Map = ({ firebaseAuth }: props) => {
     }
 
     return (
-        <div>
-            {notes.length === 0 ? (
-                <div>
-                    <h2>
-                        No notes? Create one by pressing that + next to your name on the up-right
-                        corner!
-                    </h2>
-                </div>
-            ) : (
-                <div
-                    className="h-100"
-                    ref={mapContainer}
-                    style={{ height: "25rem", borderRadius: 5 }}
-                />
-            )}
-        </div>
+        <div className="h-100" ref={mapContainer} style={{ height: "25rem", borderRadius: 5 }} />
     );
 };
 

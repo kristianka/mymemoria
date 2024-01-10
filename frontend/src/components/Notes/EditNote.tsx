@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import NotFound from "../NotFound";
 import notesService from "../../services/notes";
+import EditNoteMap from "./EditNoteMap";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -21,6 +22,9 @@ const EditNote = ({ firebaseAuth }: props) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [lat, setLat] = useState(0);
+    const [lng, setLng] = useState(0);
+    document.title = "Edit note | Notes";
 
     useEffect(() => {
         if (!firebaseAuth) {
@@ -28,16 +32,17 @@ const EditNote = ({ firebaseAuth }: props) => {
         }
     }, [firebaseAuth, navigate]);
 
-    // set valuess
+    const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
+
+    // set values
     useEffect(() => {
-        const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
         if (note) {
             setTitle(note.title);
             setContent(note.content);
+            setLng(note.location.coordinates[0]);
+            setLat(note.location.coordinates[1]);
         }
-    }, [id, notes]);
-
-    document.title = "Edit note | Notes";
+    }, [id, note, notes]);
 
     const updateNoteMutation = useMutation({
         mutationFn: notesService.update,
@@ -45,6 +50,7 @@ const EditNote = ({ firebaseAuth }: props) => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
             setTitle("");
             setContent("");
+            toast.success("Note updated successfully");
             navigate(`/notes/${id}`);
         }
     });
@@ -58,8 +64,6 @@ const EditNote = ({ firebaseAuth }: props) => {
         return <div>Something went wrong, please try again later</div>;
     }
 
-    const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
-
     if (!note) {
         return <NotFound></NotFound>;
     }
@@ -68,7 +72,7 @@ const EditNote = ({ firebaseAuth }: props) => {
         setTitle(e.target.value);
     };
 
-    const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value);
     };
 
@@ -79,16 +83,21 @@ const EditNote = ({ firebaseAuth }: props) => {
                 toast.error("Please fill in all fields");
                 return;
             }
+            const location = {
+                lat,
+                lng
+            };
+
             if (!id) {
                 return;
             }
             const obj = {
                 id,
                 title,
-                content
+                content,
+                location
             };
             updateNoteMutation.mutate(obj);
-            toast.success("Note updated successfully");
         } catch (error) {
             toast.error("Error updating note, please try again later.");
             console.log(error);
@@ -96,38 +105,75 @@ const EditNote = ({ firebaseAuth }: props) => {
     };
 
     return (
-        <div className="container mx-auto px-4 align-content: center">
-            <h1>Edit note</h1>
-            <div className="form-control w-full max-w-xs">
-                <label className="label">
-                    <span className="label-text">Title</span>
-                </label>
-                <input
-                    onChange={handleTitleChange}
-                    value={title}
-                    type="text"
-                    placeholder="Title"
-                    id="noteTitle"
-                    className="input input-bordered w-full max-w-xs"
-                />
-            </div>
-            <div className="form-control w-full max-w-xs">
-                <label className="label">
-                    <span className="label-text">Content</span>
-                </label>
-                <input
-                    onChange={handleContentChange}
-                    value={content}
-                    type="text"
-                    placeholder="Content"
-                    id="noteContent"
-                    className="input input-bordered w-full max-w-xs"
-                />
-            </div>
+        <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1 m-3">
+                <div className="md:m-10">
+                    <h1 className="text-center normal-case text-2xl">Edit note</h1>
+                    <form className="space-y-6" action="#" method="POST">
+                        <div>
+                            <label
+                                htmlFor="title"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                            >
+                                Title
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    value={title}
+                                    onChange={handleTitleChange}
+                                    name="title"
+                                    type="text"
+                                    required
+                                    id="noteTitle"
+                                    placeholder="Title"
+                                    className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex items-center justify-between">
+                                <label
+                                    htmlFor="content"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
+                                    Content
+                                </label>
+                            </div>
+                            <div className="mt-2">
+                                <textarea
+                                    value={content}
+                                    onChange={handleContentChange}
+                                    name="content"
+                                    required
+                                    id="noteContent"
+                                    placeholder="Content"
+                                    rows={10}
+                                    className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <label
+                        htmlFor="location"
+                        className="block text-sm font-medium leading-6 text-gray-900 mt-5"
+                    >
+                        Location
+                    </label>
+                    <div className="mt-2"></div>
+                    <EditNoteMap note={note} setLat={setLat} setLng={setLng} />
 
-            <button id="editNoteButton" onClick={submit} className="btn">
-                Add
-            </button>
+                    <button
+                        onClick={submit}
+                        type="submit"
+                        id="editNoteButton"
+                        className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                    >
+                        Edit note
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

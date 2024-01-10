@@ -96,13 +96,13 @@ describe("Note app", function () {
             it("registeration works", () => {
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-                cy.contains("You have 0 notes");
+                cy.contains("No notes yet");
             });
 
             it("registeration fails if email is already taken", () => {
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-                cy.contains("You have 0 notes");
+                cy.contains("No notes yet");
 
                 logoutUser();
 
@@ -142,7 +142,7 @@ describe("Note app", function () {
                 registerUser(CYPRESS_TEST_EMAIL, "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.wait(1000);
-                cy.contains("You have 0 notes");
+                cy.contains("No notes yet");
 
                 logoutUser();
                 // Visit the login page before each test
@@ -160,7 +160,7 @@ describe("Note app", function () {
                 loginUser(CYPRESS_TEST_EMAIL, "password123");
                 cy.contains("Logged in successfully!", { timeout: 6000 }).should("be.visible");
 
-                cy.contains("You have 0 note");
+                cy.contains("No notes yet");
             });
 
             it("login fails if email is invalid", () => {
@@ -209,7 +209,7 @@ describe("Note app", function () {
         });
 
         it("note page renders", () => {
-            cy.contains("You have 0 notes");
+            cy.contains("No notes yet");
             cy.get("#addNoteButton").should("be.visible");
         });
 
@@ -283,7 +283,7 @@ describe("Note app", function () {
                 // cy.contains("Are you sure you want to delete this note?");
                 // cy.contains("Yes").click();
                 cy.contains("Note deleted successfully", { timeout: 6000 }).should("be.visible");
-                cy.contains("You have 0 notes");
+                cy.contains("No notes yet");
             });
 
             it("notes don't show afte user logs out", () => {
