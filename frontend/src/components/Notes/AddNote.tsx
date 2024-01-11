@@ -4,6 +4,7 @@ import { FireBaseUserInterface } from "../../types";
 import notesService from "../../services/notes";
 import AddingNoteMap from "./AddNoteMap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 interface AddNoteProps {
     firebaseAuth: FireBaseUserInterface | null;
@@ -56,6 +57,10 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
                 content,
                 location
             };
+            if (!title || !content) {
+                toast.error("Please fill in title and content");
+                return;
+            }
             createNoteMutation.mutate(note);
         } catch (error) {
             console.log("Error adding note");

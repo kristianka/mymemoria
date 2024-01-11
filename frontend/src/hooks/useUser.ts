@@ -10,8 +10,10 @@ const useUser = (firebaseAuth: FireBaseUserInterface | null) => {
         enabled: !!firebaseAuth,
         queryFn: () => {
             const fetchData = async () => {
-                const user = await userService.getUser();
-                return user;
+                if (firebaseAuth) {
+                    const user = await userService.getUser(firebaseAuth.uid);
+                    return user;
+                }
             };
             return fetchData();
         },

@@ -8,14 +8,14 @@ const setToken = (newToken: string) => {
     token = `Bearer ${newToken}`;
 };
 
-const getUser = async () => {
+const getUser = async (id: string) => {
     const config = {
         headers: { Authorization: token }
     };
     if (!token) {
         return null;
     }
-    const res = await axios.get<BackendUserInterface>(baseUrl, config);
+    const res = await axios.get<BackendUserInterface>(`${baseUrl}/${id}`, config);
     return res.data;
 };
 
@@ -28,6 +28,9 @@ const update = async (obj: UpdateUserInterface) => {
     const config = {
         headers: { Authorization: token }
     };
+    if (!token) {
+        return null;
+    }
     return axios.put(`${baseUrl}/${obj.id}`, obj, config);
 };
 

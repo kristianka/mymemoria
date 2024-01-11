@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-import useUser from "../hooks/useUser";
+import { auth } from "../../firebase";
+import useUser from "../../hooks/useUser";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { FireBaseUserInterface } from "../types";
+import { FireBaseUserInterface } from "../../types";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;

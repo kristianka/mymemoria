@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBarPages/NavBar";
 import Footer from "./components/Footer/Footer";
 
 import LandingPage from "./components/Frontpage/LandingPage";
 import LoginPage from "./components/Frontpage/LoginPage";
 import RegisterPage from "./components/Frontpage/RegisterPage";
-import SettingsPage from "./components/SettingsPage";
-import ProfilePage from "./components/ProfilePage";
+import SettingsPage from "./components/NavBarPages/SettingsPage";
+import ProfilePage from "./components/NavBarPages/ProfilePage";
 import SingleNote from "./components/Notes/SingleNotePage";
 
 import Notes from "./components/Notes/Notes";

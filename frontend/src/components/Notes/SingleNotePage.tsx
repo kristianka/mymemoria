@@ -43,19 +43,22 @@ const SingleNote = ({ firebaseAuth }: props) => {
     }
 
     const deleteNote = async () => {
-        // double check
-        const confirmDelete = window.confirm("Are you sure you want to delete this note?");
-        if (!confirmDelete) return;
-        const res = await notesService.remove(note.id);
-        if (!res) {
+        try {
+            // double check
+            const confirmDelete = window.confirm("Are you sure you want to delete this note?");
+            if (!confirmDelete) return;
+            const res = await notesService.remove(note.id);
+            if (!res) {
+                toast.error("Error deleting note, please try again later.");
+                return;
+            }
+            // invalidate notes
+            queryClient.invalidateQueries({ queryKey: ["notes"] });
+            toast.success("Note deleted successfully");
+            navigate("/notes");
+        } catch (error) {
             toast.error("Error deleting note, please try again later.");
-            return;
         }
-        // invalidate notes
-        queryClient.invalidateQueries({ queryKey: ["notes"] });
-        toast.success("Note deleted successfully");
-        navigate("/notes");
-        console.log("deleted note");
     };
 
     const editNote = () => {
@@ -87,14 +90,14 @@ const SingleNote = ({ firebaseAuth }: props) => {
                             <button
                                 type="button"
                                 onClick={editNote}
-                                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                                className="text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                             >
                                 Edit note
                             </button>
                             <button
                                 type="button"
                                 onClick={deleteNote}
-                                className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                                className="text-white bg-gradient-to-br from-pink-500 to-orange-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                             >
                                 Delete note
                             </button>
