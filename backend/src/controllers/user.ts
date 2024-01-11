@@ -58,6 +58,10 @@ userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
         const paramFirebaseUserId = req.params.id;
         const { name } = req.body;
 
+        if (!name || typeof name !== "string") {
+            return res.status(400).json({ error: "Missing name or invalid" });
+        }
+
         if (paramFirebaseUserId !== firebaseUserId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
