@@ -7,26 +7,22 @@ import { getAdminInstance } from "../utils/firebaseConnection";
 
 const userRouter = Express.Router();
 
-userRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
-    try {
-        const userId = req.user?.user_id;
-        const user = await User.findOne({ fireBaseUid: userId }).populate("favouriteLocations");
-        if (!user || userId !== user.fireBaseUid) {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
-        return res.json(user);
-    } catch (error) {
-        console.log(error);
-        return next(error);
-    }
-});
-
+// backend receives the user id and token from firebase auth.
+// middleware getUserFromReq checks if the user exists
 userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        if (req.user?.id !== req.params.id) {
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
+        const paramFirebaseUserId = req.params.id;
+
+        if (paramFirebaseUserId !== firebaseUserId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        const user = await User.findById(req.user.id).populate("favouriteLocations");
+
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
+        if (!user || paramFirebaseUserId !== user.fireBaseUid) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
         return res.json(user);
     } catch (error) {
         console.log(error);
@@ -57,20 +53,21 @@ userRouter.post("/", async (req, res, next) => {
 // user can update name
 userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        console.log(req.user?.id, req.params.id);
-        if (req.user?.id !== req.params.id) {
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
+        const paramFirebaseUserId = req.params.id;
+        const { name } = req.body;
+
+        if (paramFirebaseUserId !== firebaseUserId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        const { name } = req.body;
-        if (!name) {
-            return res.status(400).json({ error: "Missing name" });
+
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
+        if (!user || paramFirebaseUserId !== user.fireBaseUid) {
+            return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const updatedUser = await User.findByIdAndUpdate(
-            req.user.id,
-            { name: name },
-            { new: true }
-        );
+        const updatedUser = await user.updateOne({ name: name }, { new: true });
         return res.json(updatedUser);
     } catch (error) {
         console.log(error);
@@ -81,17 +78,22 @@ userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 // user can delete their account
 userRouter.delete("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const userId = req.user?.user_id;
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
+        const paramFirebaseUserId = req.params.id;
 
-        const user = await User.findOne({ fireBaseUid: userId })
-            .populate("favouriteLocations")
-            .populate("notes");
-        if (!user || userId !== user.fireBaseUid) {
+        if (paramFirebaseUserId !== firebaseUserId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
+
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
+        if (!user || paramFirebaseUserId !== user.fireBaseUid) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
         const admin = getAdminInstance();
         // delete user from mongodb and from firebase
-        await user?.deleteOne();
+        await user.deleteOne();
         await admin.auth().deleteUser(user.fireBaseUid);
         // delete user's notes
         await Note.deleteMany({ user: user._id });

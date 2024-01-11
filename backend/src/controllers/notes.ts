@@ -10,15 +10,16 @@ const notesRouter = Express.Router();
 // get all user's notes
 notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const userId = req.user?.user_id;
-        const user = await User.findOne({ fireBaseUid: userId }).populate({
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
+        const user = await User.findOne({ fireBaseUid: firebaseUserId }).populate({
             path: "notes",
             populate: {
                 path: "location",
                 model: Location
             }
         });
-        if (!user || userId !== user.fireBaseUid) {
+        if (!user || firebaseUserId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }
         return res.json(user.notes);
@@ -28,13 +29,24 @@ notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     }
 });
 
-// get by id, not really used because you can just get all notes and filter by id
+// get note by id
 notesRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const user = await User.findById(req.user?.id);
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
+
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
         const note = await Note.findById(req.params.id);
 
-        if (req.user?.id !== user?.id) {
+        // ObjectIds to strings for comparison
+        const stringifiedUserId = user?._id.toString();
+        const stringifiedNoteUserId = note?.user?.toString();
+
+        if (
+            !user ||
+            firebaseUserId !== user.fireBaseUid ||
+            stringifiedUserId !== stringifiedNoteUserId
+        ) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
@@ -51,11 +63,14 @@ notesRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 // post note
 notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
         const { title, content, location } = req.body;
+
         if (!title || !content || !location) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-        const user = await User.findOne({ fireBaseUid: req.user?.uid });
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -89,14 +104,26 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
 // update note
 notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
         const { title, content, location } = req.body;
+
         if (!title || !content || !location) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-        const user = await User.findById(req.user?.id);
+
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
         const note = await Note.findById(req.params.id);
 
-        if (req.user?.id !== user?.id) {
+        // ObjectIds to strings for comparison
+        const stringifiedUserId = user?._id.toString();
+        const stringifiedNoteUserId = note?.user?.toString();
+
+        if (
+            !user ||
+            firebaseUserId !== user.fireBaseUid ||
+            stringifiedUserId !== stringifiedNoteUserId
+        ) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
@@ -125,10 +152,21 @@ notesRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 // delete note
 notesRouter.delete("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
-        const user = await User.findById(req.user?.id);
+        // req.user is handled by getUserFromReq middleware
+        const firebaseUserId = req.user?.user_id;
+
+        const user = await User.findOne({ fireBaseUid: firebaseUserId });
         const note = await Note.findById(req.params.id);
 
-        if (req.user?.id !== user?.id) {
+        // ObjectIds to strings for comparison
+        const stringifiedUserId = user?._id.toString();
+        const stringifiedNoteUserId = note?.user?.toString();
+
+        if (
+            !user ||
+            firebaseUserId !== user.fireBaseUid ||
+            stringifiedUserId !== stringifiedNoteUserId
+        ) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 

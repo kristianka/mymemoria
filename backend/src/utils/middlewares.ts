@@ -27,7 +27,12 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
         return res.status(400).json({ error: "Bad request" });
     } else if (error.message.includes("auth/invalid-disabled-field")) {
         return res.status(400).json({ error: "Bad request" });
+    } else if (error.message.includes("Decoding Firebase ID token failed")) {
+        return res.status(400).json({ error: "Invalid token" });
+    } else if (error.message.includes("Firebase ID token has invalid signature.")) {
+        return res.status(400).json({ error: "Invalid token" });
     }
+
     // mongoose errors
     if (error.message.includes("MongoConnectionException")) {
         return res.status(500).json({ error: "Server error. Please try again later" });
@@ -39,7 +44,9 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
 
     // normal errors
     if (error.message.includes("CastError")) {
-        return res.status(400).json({ error: "Incorrect formatting" });
+        return res.status(400).json({ error: "Bad request." });
+    } else if (error.message.includes("Cast to ObjectId failed for value")) {
+        return res.status(401).json({ error: "Bad request." });
     } else if (error.message.includes("ValidationError")) {
         return res.status(400).json({ error: `Received invalid data: ${error.message}` });
     } else if (error.message.includes("SyntaxError")) {
@@ -62,6 +69,7 @@ const getTokenFromReq = (req: AuthRequest, _res: Response, next: NextFunction) =
     next();
 };
 
+// matches received token with firebase auth
 const getUserFromReq = async (req: AuthRequest, _res: Response, next: NextFunction) => {
     if (!req.token) {
         return next();
@@ -77,8 +85,7 @@ const getUserFromReq = async (req: AuthRequest, _res: Response, next: NextFuncti
 };
 
 const unknownEndpoint = (_req: Request, res: Response) => {
-    console.log("in unknownEndpoint");
-    return res.status(404).send("Not found");
+    return res.status(404).json({ error: "Not found" });
 };
 
 export { getTokenFromReq, getUserFromReq, unknownEndpoint, errorHandler };

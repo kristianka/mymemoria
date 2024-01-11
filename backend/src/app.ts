@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import mongoSanitize from "express-mongo-sanitize";
 
 import { limiter, PORT } from "./utils/config";
 import { connectToMongo } from "./utils/mongoConnection";
@@ -15,7 +16,10 @@ import testingRouter from "./controllers/testing";
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(errorHandler);
+// To prevent NoSQL injection attacks
+// Data is saved as strings so XSS attacks shouldn't not possible
+// https://zanon.io/posts/nosql-injection-in-mongodb/
+app.use(mongoSanitize());
 
 connectToMongo();
 connectToFirebase();
