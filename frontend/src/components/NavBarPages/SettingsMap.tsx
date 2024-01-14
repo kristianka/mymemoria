@@ -23,7 +23,10 @@ const EditNoteMap = ({ user, setLat, setLng }: props) => {
         if (!mapContainer.current) return;
         if (!user) return;
 
-        const defaultCoordinates = user.defaultLocation.coordinates;
+        // usse user's default location if it exists, otherwise use helsinki railway station
+        const defaultCoordinates = user?.defaultLocation?.coordinates || [
+            24.94142734228444, 60.17117119051096
+        ];
 
         const initializeMap = () => {
             const mapInstance = new mapboxgl.Map({

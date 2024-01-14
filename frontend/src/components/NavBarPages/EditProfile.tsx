@@ -17,11 +17,11 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
         setName(e.target.value);
     };
 
-    const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const editName = async (e: React.MouseEvent<HTMLButtonElement>) => {
         try {
             e.preventDefault();
             if (!name) {
-                toast.error("Please fill in name");
+                toast.error("Please fill in name.");
                 return;
             }
             const updatedUser = {
@@ -32,7 +32,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
             await userService.update(updatedUser);
             // invalidate user
             queryClient.invalidateQueries({ queryKey: ["user"] });
-            toast.success("Name updated successfully");
+            toast.success("Name updated successfully!");
             // close modal
             const modal = document.getElementById("editNameModal");
             if (modal) {
@@ -45,12 +45,19 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
         }
     };
 
+    const closeModal = () => {
+        const modal = document.getElementById("editNameModal");
+        if (modal) {
+            const modalElement = document.getElementById("editNameModal") as HTMLDialogElement;
+            modalElement.close();
+        }
+    };
+
     return (
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1 mt-5">
-                <div className="md:m-10">
-                    {/* <h1 className="text-center normal-case text-2xl">Edit name</h1> */}
-                    <form className="space-y-6" action="#" method="POST">
+            <div className="mt-5">
+                <div className="">
+                    <form className="space-y-6" method="POST">
                         <div>
                             <label
                                 htmlFor="title"
@@ -71,14 +78,23 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                                 />
                             </div>
                         </div>
-                        <button
-                            onClick={submit}
-                            type="submit"
-                            id="saveNoteButton"
-                            className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
-                        >
-                            Update name
-                        </button>
+                        <div className="flex justify-between modal-action mt-3">
+                            <button
+                                onClick={editName}
+                                type="submit"
+                                id="updateNameButton"
+                                className="rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Update name
+                            </button>
+                            <button
+                                onClick={closeModal}
+                                id="closeModalButton"
+                                className="rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Close
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

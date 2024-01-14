@@ -7,6 +7,7 @@ import userService from "../../services/user";
 import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface, UpdateUserInterface } from "../../types";
 import SettingsMap from "./SettingsMap";
+import ErrorPage from "../ErrorPage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -21,25 +22,19 @@ const SettingsPage = ({ firebaseAuth }: props) => {
     const [lng, setLng] = useState(0);
 
     // if user is not logged in, redirect to front page
-    // useEffect to prevent infinite loop if server is down
     useEffect(() => {
-        if (!user && userStatus !== "pending") {
+        if (!firebaseAuth) {
             navigate("/");
         }
-    }, [user, userStatus, navigate]);
+    }, [firebaseAuth, navigate]);
 
-    useEffect(() => {
-        if (user) {
-            setLat(user.defaultLocation.coordinates[1]);
-            setLng(user.defaultLocation.coordinates[0]);
-        }
-        if (firebaseAuth && !user) {
-            navigate("/");
-        }
-    }, [firebaseAuth, navigate, user]);
+    if (userStatus === "pending") {
+        return <span className="loading loading-spinner loading-md"></span>;
+    }
 
-    if (firebaseAuth && !user) {
-        return <p>Loading...</p>;
+    if (userStatus === "error" || !user || !firebaseAuth) {
+        toast.error("Error getting user info, please try again later.");
+        return <ErrorPage />;
     }
 
     const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -73,12 +68,13 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                 <div className="md:m-10">
                     <h1 className="text-center normal-case text-2xl">Settings</h1>
                     <p className="mt-5 text-center text-gray-500">
-                        You can change your default map location when creating note here.
+                        Here you can change your default map location when creating a note. The
+                        default location is Helsinki Railway Station.
                     </p>
-                    <p className="mt-1 text-center text-gray-500">
+                    <p className="mt-3 text-center text-gray-500">
                         You can change your name or delete your account in{" "}
                         <Link to="/profile" className="text-blue-500">
-                            profile.
+                            profile page.
                         </Link>
                     </p>
                 </div>
@@ -93,7 +89,7 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                     <button
                         onClick={submit}
                         type="submit"
-                        id="saveNoteButton"
+                        id="saveLocationButton"
                         className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                     >
                         Save location

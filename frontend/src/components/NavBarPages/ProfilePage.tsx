@@ -18,6 +18,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
     const navigate = useNavigate();
 
+    // if user is not logged in, redirect to front page
     useEffect(() => {
         if (!firebaseAuth) {
             navigate("/");
@@ -45,7 +46,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         try {
             await userService.remove(firebaseAuth.uid);
             setFirebaseAuth(null);
-            toast.success("Account deleted successfully");
+            toast.success("Account deleted successfully.");
             navigate("/");
         } catch (error) {
             toast.error("Error deleting account, please try again later.");
@@ -68,11 +69,6 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Change your name</h3>
                         <EditProfile firebaseAuth={firebaseAuth} user={user} />
-                        <div className="modal-action">
-                            <form method="dialog">
-                                <button className="btn">Close</button>
-                            </form>
-                        </div>
                     </div>
                 </dialog>
                 <div className="m-3 bg-white border border-gray-200 rounded-lg">
@@ -101,6 +97,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                         <div className="flex mt-4 md:mt-6">
                             <button
                                 type="button"
+                                id="editNameButton"
                                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                 onClick={handleModalOpen}
                             >
@@ -109,6 +106,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
                             <button
                                 type="button"
+                                id="deleteAccountButton"
                                 className="text-white bg-gradient-to-br from-pink-500 to-orange-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                 onClick={deleteAccount}
                             >

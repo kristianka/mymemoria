@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { auth } from "../../firebase";
 import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface } from "../../types";
+import { toast } from "react-toastify";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -22,8 +23,10 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 setFirebaseAuth(null);
                 queryClient.clear();
                 navigate("/");
+                toast.success("Logged out successfully. 👋");
             } catch (error) {
                 console.error(error);
+                toast.success("Error while logging out. Please try again later.");
             }
         };
         handleLogout();
@@ -79,7 +82,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     <label className="" htmlFor="">
                         {user.name}
                     </label>
-                    <div className="userAvatar dropdown dropdown-end">
+                    <div id="dropdownMenu" className="userAvatar dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
                                 {/* api doesn't collect any data */}

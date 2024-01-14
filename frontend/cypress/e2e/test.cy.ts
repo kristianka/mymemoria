@@ -44,13 +44,14 @@ describe("Note app", function () {
 
     function logoutUser() {
         cy.get("body").then(($body) => {
-            if ($body.find(".userAvatar").length > 0) {
+            if ($body.find("#dropdownMenu").length > 0) {
                 // Open the dropdown menu
-                cy.get(".userAvatar").click();
+                cy.get("#dropdownMenu").click();
                 // Wait for the dropdown to open and the logout button to become visible
                 cy.get(".logoutButton").should("be.visible");
                 // Click the logout button
                 cy.get(".logoutButton").click();
+                cy.contains("Logged out successfully. 👋", { timeout: 6000 }).should("be.visible");
             }
         });
     }
@@ -199,7 +200,7 @@ describe("Note app", function () {
         });
     });
 
-    describe("NotePage (when logged in)", () => {
+    describe("When logged in", () => {
         beforeEach(() => {
             // create user before each test
             cy.visit("/register");
@@ -208,90 +209,156 @@ describe("Note app", function () {
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
         });
 
-        it("note page renders", () => {
-            cy.contains("No notes yet");
-            cy.get("#addNoteButton").should("be.visible");
-        });
+        describe("Note page", () => {
+            it("note page renders", () => {
+                cy.contains("No notes yet");
+                cy.get("#addNoteButton").should("be.visible");
+            });
 
-        it("user can add a note", () => {
-            cy.get("#addNoteButton").click();
-
-            cy.get("#noteTitle").type("Test note");
-            cy.get("#noteContent").type("Test note content");
-            // has to wait for the search results to load
-            cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
-            cy.get("#saveNoteButton").click();
-
-            cy.contains("You have 1 notes");
-            cy.contains("Test note");
-            cy.contains("Test note content");
-        });
-
-        describe("when there is a note", () => {
-            beforeEach(() => {
+            it("user can add a note", () => {
                 cy.get("#addNoteButton").click();
 
-                cy.get("#noteTitle").type("Test note by test user");
+                cy.get("#noteTitle").type("Test note");
                 cy.get("#noteContent").type("Test note content");
                 // has to wait for the search results to load
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
                 cy.contains("You have 1 notes");
-                cy.contains("Test note by test user");
+                cy.contains("Test note");
                 cy.contains("Test note content");
             });
 
-            it("you can add another note", () => {
-                cy.get("#addNoteButton").click();
+            describe("when there is a note", () => {
+                beforeEach(() => {
+                    cy.get("#addNoteButton").click();
 
-                cy.get("#noteTitle").type("Another note by test user");
-                cy.get("#noteContent").type("Another note content");
-                // has to wait for the search results to load
-                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
-                cy.get("#saveNoteButton").click();
+                    cy.get("#noteTitle").type("Test note by test user");
+                    cy.get("#noteContent").type("Test note content");
+                    // has to wait for the search results to load
+                    cy.get(".mapboxgl-ctrl-geocoder--input")
+                        .type("Tampere")
+                        .wait(1000)
+                        .type("{enter}");
+                    cy.get("#saveNoteButton").click();
 
-                cy.contains("You have 2 notes");
-                cy.contains("Another note by test user");
-                cy.contains("Another note content");
+                    cy.contains("You have 1 notes");
+                    cy.contains("Test note by test user");
+                    cy.contains("Test note content");
+                });
+
+                it("you can add another note", () => {
+                    cy.get("#addNoteButton").click();
+
+                    cy.get("#noteTitle").type("Another note by test user");
+                    cy.get("#noteContent").type("Another note content");
+                    // has to wait for the search results to load
+                    cy.get(".mapboxgl-ctrl-geocoder--input")
+                        .type("Tampere")
+                        .wait(1000)
+                        .type("{enter}");
+                    cy.get("#saveNoteButton").click();
+
+                    cy.contains("You have 2 notes");
+                    cy.contains("Another note by test user");
+                    cy.contains("Another note content");
+                });
+
+                it("you can open the note", () => {
+                    cy.get('[id^="toNoteButton"]').click();
+                    cy.contains("Test note by test user");
+                    cy.contains("Test note content");
+                });
+
+                it("you can edit the note", () => {
+                    cy.get('[id^="toNoteButton"]').click();
+                    cy.contains("Edit note").click();
+
+                    cy.get("#noteTitle").clear().type("Edited note by test user");
+                    cy.get("#noteContent").clear().type("Edited note content");
+                    cy.get("#editNoteButton").click();
+
+                    cy.visit("/");
+
+                    cy.contains("You have 1 notes");
+                    cy.contains("Edited note by test user");
+                    cy.contains("Edited note content");
+                });
+
+                it("you can delete the note", () => {
+                    cy.get('[id^="toNoteButton"]').click();
+                    cy.contains("Delete note").click();
+                    // cy.contains("Are you sure you want to delete this note?");
+                    // cy.contains("Yes").click();
+                    cy.contains("Note deleted successfully", { timeout: 6000 }).should(
+                        "be.visible"
+                    );
+                    cy.contains("No notes yet");
+                });
+
+                it("notes don't show afte user logs out", () => {
+                    logoutUser();
+                    cy.contains("Please sign in to use the application");
+                    cy.contains("Sign in");
+                    cy.contains("Create account");
+                    cy.get("#addNoteButton").should("not.exist");
+                });
+            });
+        });
+
+        describe("Profile page", () => {
+            beforeEach(() => {
+                cy.visit("/profile");
             });
 
-            it("you can open the note", () => {
-                cy.get('[id^="toNoteButton"]').click();
-                cy.contains("Test note by test user");
-                cy.contains("Test note content");
+            it("profile page renders", () => {
+                cy.contains("Profile");
+                cy.contains("Test user");
+                cy.contains(CYPRESS_TEST_EMAIL);
+                cy.get("#defaultLocation").should("not.exist");
+                cy.get("#editNameButton").should("be.visible");
+                cy.get("#deleteAccountButton").should("be.visible");
             });
 
-            it("you can edit the note", () => {
-                cy.get('[id^="toNoteButton"]').click();
-                cy.contains("Edit note").click();
-
-                cy.get("#noteTitle").clear().type("Edited note by test user");
-                cy.get("#noteContent").clear().type("Edited note content");
-                cy.get("#editNoteButton").click();
-
-                cy.visit("/");
-
-                cy.contains("You have 1 notes");
-                cy.contains("Edited note by test user");
-                cy.contains("Edited note content");
+            it("user can change their name", () => {
+                cy.get("#editNameButton").click();
+                cy.get("#name").clear().type("Edited name");
+                cy.get("#updateNameButton").click();
+                cy.contains("Name updated successfully!", { timeout: 6000 }).should("be.visible");
+                cy.contains("Edited name");
             });
 
-            it("you can delete the note", () => {
-                cy.get('[id^="toNoteButton"]').click();
-                cy.contains("Delete note").click();
-                // cy.contains("Are you sure you want to delete this note?");
-                // cy.contains("Yes").click();
-                cy.contains("Note deleted successfully", { timeout: 6000 }).should("be.visible");
-                cy.contains("No notes yet");
-            });
-
-            it("notes don't show afte user logs out", () => {
-                logoutUser();
+            it("user can delete their account", () => {
+                cy.get("#deleteAccountButton").click();
+                // alert doesn't popup with cypress so we have to click the button
+                cy.contains("Account deleted successfully.", { timeout: 6000 }).should(
+                    "be.visible"
+                );
                 cy.contains("Please sign in to use the application");
                 cy.contains("Sign in");
                 cy.contains("Create account");
                 cy.get("#addNoteButton").should("not.exist");
+            });
+        });
+
+        describe("Settings page", () => {
+            beforeEach(() => {
+                cy.visit("/settings");
+            });
+
+            it("settings page renders", () => {
+                cy.contains("Settings");
+                // has to wait for the search results to load
+                cy.get(".mapboxgl-ctrl-geocoder--input").should("be.visible");
+                cy.get("#saveLocationButton").should("be.visible");
+            });
+
+            it("user can change their default location", () => {
+                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
+                cy.get("#saveLocationButton").click();
+                cy.contains("Default map location updated successfully!", { timeout: 6000 }).should(
+                    "be.visible"
+                );
             });
         });
     });

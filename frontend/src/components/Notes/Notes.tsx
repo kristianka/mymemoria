@@ -50,8 +50,6 @@ const Notes = ({ firebaseAuth }: props) => {
     }, [notes, notesStatus]);
     document.title = "Your notes | Notes";
 
-    console.log(notes);
-
     if (notesStatus === "error" || userStatus === "error") {
         toast.error("Error getting notes, please try again later.");
         return <ErrorPage />;
