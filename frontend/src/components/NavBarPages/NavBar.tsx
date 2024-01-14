@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+
 import { auth } from "../../firebase";
 import useUser from "../../hooks/useUser";
-
-import { useQueryClient } from "@tanstack/react-query";
 import { FireBaseUserInterface } from "../../types";
 
 interface props {
@@ -19,12 +19,11 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
         const handleLogout = async () => {
             try {
                 await auth.signOut();
-                console.log("User logged out");
                 setFirebaseAuth(null);
                 queryClient.clear();
                 navigate("/");
             } catch (error) {
-                console.error("Error logging out", error);
+                console.error(error);
             }
         };
         handleLogout();
@@ -97,15 +96,20 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                             <li className="profileButton">
                                 <Link to="/profile" className="justify-between">
                                     Profile
-                                    <span className="badge">New</span>
                                 </Link>
                             </li>
                             <li className="settingsButton">
-                                <Link to="/settings">Settings</Link>
+                                <Link to="/settings" className="justify-between">
+                                    Settings
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link to="/notes">Your notes</Link>
                             </li>
                             <li className="logoutButton">
                                 <Link to="/" onClick={logout}>
-                                    Logout
+                                    Sign out
                                 </Link>
                             </li>
                         </ul>
@@ -114,7 +118,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
             ) : (
                 <div className="flex-none">
                     <Link to="/login" className="loginButton btn btn-ghost">
-                        Login
+                        Sign in
                     </Link>
                     <Link to="/register" className="registerButton btn btn-ghost">
                         Register

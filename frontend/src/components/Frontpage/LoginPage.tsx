@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../../firebase";
-
 import { toast } from "react-toastify";
-import { FireBaseUserInterface } from "../../types";
 import { FirebaseError } from "firebase/app";
+
+import { auth } from "../../firebase";
+import { FireBaseUserInterface } from "../../types";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;

@@ -1,17 +1,21 @@
-import Map from "./Map";
-import useNotes from "../../hooks/useNotes";
-import { FireBaseUserInterface, NoteInterface } from "../../types";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useUser from "../../hooks/useUser";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { PencilSquareIcon } from "@heroicons/react/20/solid";
+
+import { sortNotesByLastModified } from "./SortNotes/sortingNotes";
+import useNotes from "../../hooks/useNotes";
+import useUser from "../../hooks/useUser";
+import { FireBaseUserInterface, NoteInterface } from "../../types";
+
+import Map from "./Map";
 import NotesLoadingSkeleton from "./NotesLoadingSkeleton";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
-import { useEffect, useState } from "react";
-import { auth } from "../../firebase";
 import NoteCard from "./NoteCard";
-import { sortNotesByLastModified } from "./SortNotes/sortingNotes";
 import SortNotesDropdown from "./SortNotes/Dropdown";
 import LoadingSkeleton from "./SortNotes/LoadingSkeleton";
+import ErrorPage from "../ErrorPage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -50,36 +54,21 @@ const Notes = ({ firebaseAuth }: props) => {
 
     if (notesStatus === "error" || userStatus === "error") {
         toast.error("Error getting notes, please try again later.");
-        return (
-            <div className="p-5">
-                <h1 className="text-center normal-case text-2xl">
-                    Sorry, something went wrong. Please try again later.
-                </h1>
-                <p className="text-center normal-case text-l p-3">
-                    Your session might've expired. You can refresh the page or you can try signing
-                    out:
-                </p>
-                <div className="flex justify-center">
-                    <button
-                        onClick={() => {
-                            auth.signOut();
-                        }}
-                        className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                    >
-                        Sign out
-                    </button>
-                </div>
-            </div>
-        );
+        return <ErrorPage />;
     }
 
     if (notesStatus === "success" && notes?.length === 0) {
         return (
-            <div className="p-5">
+            <div className="m-auto">
                 <h1 className="text-center normal-case text-3xl">No notes yet</h1>
                 <p className="text-center normal-case text-xl p-3">
-                    Click on the "+" -icon next to your name to add one
+                    Click the icon below to create your first note! ✏️
                 </p>
+                <div className="flex-1 text-center">
+                    <Link to="/notes/add" className="btn btn-ghost rounded-lg">
+                        <PencilSquareIcon className="w-10 h-10" />
+                    </Link>
+                </div>
             </div>
         );
     }

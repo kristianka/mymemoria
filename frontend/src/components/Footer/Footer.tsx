@@ -36,11 +36,7 @@ const Footer = () => {
                     target="_blank"
                     href="https://github.com/kristianka/fullstack-project"
                 >
-                    <img
-                        src="../../../public/github-mark.svg"
-                        alt="github logo"
-                        className="w-10 h-10"
-                    />
+                    <img src="/github-mark.svg" alt="github logo" className="w-10 h-10" />
                 </a>
             </nav>
             <nav className="ml-auto">

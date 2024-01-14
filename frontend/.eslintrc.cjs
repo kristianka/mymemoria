@@ -7,11 +7,15 @@ module.exports = {
         "plugin:react-hooks/recommended",
         "prettier"
     ],
-    ignorePatterns: ["dist", ".eslintrc.cjs"],
+    ignorePatterns: ["dist", ".eslintrc.cjs", "cypress/**", "vite.config.ts", "cypress.config.ts"],
     parser: "@typescript-eslint/parser",
-    plugins: ["react-refresh"],
+    parserOptions: {
+        project: "./tsconfig.json"
+    },
+    plugins: ["react-refresh", "@typescript-eslint"],
     rules: {
         "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-        quotes: [1, "double"]
+        quotes: [1, "double"],
+        "@typescript-eslint/no-unsafe-member-access": "error"
     }
 };

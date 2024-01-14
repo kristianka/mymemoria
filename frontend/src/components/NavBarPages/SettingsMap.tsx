@@ -4,28 +4,26 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { NoteInterface, GeocoderResultInterface } from "../../types";
+import { BackendUserInterface, GeocoderResultInterface } from "../../types";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
 interface props {
     setLat: (lat: number) => void;
     setLng: (lng: number) => void;
-    note: NoteInterface;
+    user: BackendUserInterface | null | undefined;
 }
 
-const EditNoteMap = ({ note, setLat, setLng }: props) => {
+const EditNoteMap = ({ user, setLat, setLng }: props) => {
     const mapContainer = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
     const [marker, setMarker] = useState<mapboxgl.Marker | null>(null);
 
     useEffect(() => {
         if (!mapContainer.current) return;
+        if (!user) return;
 
-        // use note's location if it exists, otherwise use helsinki railway station
-        const defaultCoordinates = note?.location?.coordinates || [
-            24.94142734228444, 60.17117119051096
-        ];
+        const defaultCoordinates = user.defaultLocation.coordinates;
 
         const initializeMap = () => {
             const mapInstance = new mapboxgl.Map({
@@ -43,20 +41,17 @@ const EditNoteMap = ({ note, setLat, setLng }: props) => {
                 mapboxgl: mapboxgl
             });
 
-            // Add marker if coordinates are not 0
-            if (note.location.coordinates[0] !== 0 || note.location.coordinates[1] !== 0) {
-                const newMarker = new mapboxgl.Marker()
-                    .setLngLat(defaultCoordinates as LngLatLike)
-                    .addTo(mapInstance);
-                setMarker(newMarker);
-            }
+            const newMarker = new mapboxgl.Marker()
+                .setLngLat(defaultCoordinates as LngLatLike)
+                .addTo(mapInstance);
+            setMarker(newMarker);
 
             geocoder.on("result", (e: GeocoderResultInterface) => {
                 // Get the coordinates from the geocoding result
                 const coordinates = e.result.center;
                 mapInstance.flyTo({
                     center: coordinates,
-                    zoom: 14 // Adjust the zoom level as needed
+                    zoom: 14
                 });
 
                 const newMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(mapInstance);
@@ -71,6 +66,11 @@ const EditNoteMap = ({ note, setLat, setLng }: props) => {
                 if (!e.originalEvent || !("result" in e.originalEvent)) {
                     const coordinates = e.lngLat;
                     if (coordinates !== undefined || coordinates !== null) {
+                        mapInstance.flyTo({
+                            center: coordinates,
+                            zoom: 12
+                        });
+
                         // Remove existing marker if present
                         if (marker) {
                             marker.remove();
@@ -101,10 +101,18 @@ const EditNoteMap = ({ note, setLat, setLng }: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker, setLat, setLng, note]);
+    }, [map, marker, setLat, setLng, user]);
 
     return (
-        <div className="h-100" ref={mapContainer} style={{ height: "400px", borderRadius: 5 }} />
+        <div>
+            {user && (
+                <div
+                    className="h-100"
+                    ref={mapContainer}
+                    style={{ height: "400px", borderRadius: 5 }}
+                />
+            )}
+        </div>
     );
 };
 

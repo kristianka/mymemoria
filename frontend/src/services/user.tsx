@@ -25,6 +25,7 @@ const register = async (newUser: object) => {
 };
 
 const update = async (obj: UpdateUserInterface) => {
+    console.log("obj", obj);
     const config = {
         headers: { Authorization: token }
     };

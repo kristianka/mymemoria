@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import userService from "../../services/user";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 
+import userService from "../../services/user";
+import { auth } from "../../firebase";
+import { FireBaseUserInterface } from "../../types";
+
 interface props {
-    firebaseAuth: object | null;
+    firebaseAuth: FireBaseUserInterface | null;
 }
 
 const RegisterPage = ({ firebaseAuth }: props) => {

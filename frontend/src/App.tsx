@@ -72,7 +72,7 @@ const App = () => {
                         />
                     }
                 />
-                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/settings" element={<SettingsPage firebaseAuth={firebaseAuth} />} />
                 <Route path="/register" element={<RegisterPage firebaseAuth={firebaseAuth} />} />
                 <Route path="/info" element={<InfoPage />} />
                 {/* 404 for any other route */}

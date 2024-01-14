@@ -16,10 +16,7 @@ const SingleNoteMap = ({ note }: props) => {
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
     const [marker, setMarker] = useState<mapboxgl.Marker | null>(null);
 
-    const defaultCoordinates =
-        note && (note.location.coordinates[0] !== 0 || note.location.coordinates[1] !== 0)
-            ? note.location?.coordinates
-            : [23.761, 61.4978]; // Tampere, Finland;
+    const defaultCoordinates = note.location.coordinates;
 
     useEffect(() => {
         const initializeMap = async () => {
@@ -60,7 +57,7 @@ const SingleNoteMap = ({ note }: props) => {
         if (!map) {
             initializeMap();
         }
-        console.log("marker", marker?.getLngLat().toArray());
+
         if (marker?.getLngLat().toArray() !== note.location.coordinates) {
             marker?.setLngLat(note.location.coordinates);
         }

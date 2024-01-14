@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
+
 import { NoteInterface } from "../../../types";
 import { sortNotesByCreationTime, sortNotesByLastModified } from "./sortingNotes";
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
 
 interface props {
     notes: NoteInterface[];

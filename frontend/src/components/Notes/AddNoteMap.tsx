@@ -1,8 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { LngLatLike } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useNavigate } from "react-router-dom";
+
+import { FireBaseUserInterface, GeocoderResultInterface } from "../../types";
+import useUser from "../../hooks/useUser";
+import MapLoadingSkeleton from "./MapLoadingSkeleton";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
@@ -14,21 +19,38 @@ interface LngLat {
 interface props {
     setLat: (lat: number) => void;
     setLng: (lng: number) => void;
+    firebaseAuth: FireBaseUserInterface | null;
 }
 
-const AddingNoteMap = (props: props) => {
+const AddingNoteMap = ({ firebaseAuth, setLat, setLng }: props) => {
+    const { data: user, status: userStatus } = useUser(firebaseAuth);
+    const navigate = useNavigate();
+
     const mapContainer = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
     const [marker, setMarker] = useState<mapboxgl.Marker | null>(null);
+
+    // if user is not logged in, redirect to front page
+    // useEffect to prevent infinite loop if server is down
+    useEffect(() => {
+        if (!user && userStatus !== "pending") {
+            navigate("/");
+        }
+    }, [user, userStatus, navigate]);
 
     useEffect(() => {
         const initializeMap = () => {
             if (!mapContainer.current) return;
 
+            // usse user's default location if it exists, otherwise use helsinki railway station
+            const defaultCoordinates = user?.defaultLocation?.coordinates || [
+                24.94142734228444, 60.17117119051096
+            ];
+
             const mapInstance = new mapboxgl.Map({
                 container: mapContainer.current,
                 style: "mapbox://styles/mapbox/outdoors-v12",
-                center: [23.761, 61.4978], // Tampere, Finland
+                center: defaultCoordinates as LngLatLike,
                 zoom: 12
             });
 
@@ -40,24 +62,31 @@ const AddingNoteMap = (props: props) => {
                 mapboxgl: mapboxgl
             });
 
-            geocoder.on("result", (e) => {
+            const newMarker = new mapboxgl.Marker()
+                .setLngLat(defaultCoordinates as LngLatLike)
+                .addTo(mapInstance);
+            setMarker(newMarker);
+
+            geocoder.on("result", (e: GeocoderResultInterface) => {
+                console.log("e", e);
                 // Get the coordinates from the geocoding result
                 const coordinates = e.result.center;
                 mapInstance.flyTo({
                     center: coordinates,
-                    zoom: 14 // Adjust the zoom level as needed
+                    zoom: 14
                 });
 
                 const newMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(mapInstance);
                 setMarker(newMarker);
 
-                props.setLng(coordinates[0]);
-                props.setLat(coordinates[1]);
+                setLng(coordinates[0]);
+                setLat(coordinates[1]);
             });
 
             mapInstance.on("click", (e) => {
                 // Check if the click event is not associated with a geocoding result
                 if (!e.originalEvent || !("result" in e.originalEvent)) {
+                    console.log("e", e);
                     const coordinates: LngLat = e.lngLat;
                     if (coordinates !== undefined || coordinates !== null) {
                         // Remove existing marker if present
@@ -71,8 +100,8 @@ const AddingNoteMap = (props: props) => {
                             .addTo(mapInstance);
                         setMarker(newMarker);
 
-                        props.setLat(coordinates.lat);
-                        props.setLng(coordinates.lng);
+                        setLat(coordinates.lat);
+                        setLng(coordinates.lng);
                     }
                 }
             });
@@ -90,10 +119,19 @@ const AddingNoteMap = (props: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker, props]);
+    }, [map, marker, user, setLat, setLng]);
 
     return (
-        <div className="h-100" ref={mapContainer} style={{ height: "400px", borderRadius: 5 }} />
+        <div>
+            {firebaseAuth && userStatus === "pending" && <MapLoadingSkeleton />}
+            {user && (
+                <div
+                    className="h-100"
+                    ref={mapContainer}
+                    style={{ height: "400px", borderRadius: 5 }}
+                />
+            )}
+        </div>
     );
 };
 

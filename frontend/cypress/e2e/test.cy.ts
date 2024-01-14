@@ -74,8 +74,8 @@ describe("Note app", function () {
     describe("LandingPage", () => {
         it("front page requires to login/registeration", function () {
             cy.visit("/");
-            cy.contains("Please login to use the application");
-            cy.contains("Login");
+            cy.contains("Please sign in to use the application");
+            cy.contains("Sign in");
             cy.contains("Create account");
             cy.get("#addNoteButton").should("not.exist");
         });
@@ -106,8 +106,8 @@ describe("Note app", function () {
 
                 logoutUser();
 
-                cy.contains("Please login to use the application");
-                cy.contains("Login");
+                cy.contains("Please sign in to use the application");
+                cy.contains("Sign in");
                 cy.contains("Create account");
                 cy.get("#addNoteButton").should("not.exist");
                 cy.visit("/register");
@@ -288,8 +288,8 @@ describe("Note app", function () {
 
             it("notes don't show afte user logs out", () => {
                 logoutUser();
-                cy.contains("Please login to use the application");
-                cy.contains("Login");
+                cy.contains("Please sign in to use the application");
+                cy.contains("Sign in");
                 cy.contains("Create account");
                 cy.get("#addNoteButton").should("not.exist");
             });

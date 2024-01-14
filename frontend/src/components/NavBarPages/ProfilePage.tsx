@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import useUser from "../../hooks/useUser";
-import { FireBaseUserInterface } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import useUser from "../../hooks/useUser";
+import { FireBaseUserInterface } from "../../types";
 import userService from "../../services/user";
 import EditProfile from "./EditProfile";
+import ErrorPage from "../ErrorPage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -28,7 +30,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
     if (userStatus === "error" || !user || !firebaseAuth) {
         toast.error("Error getting user info, please try again later.");
-        return <div>Something went wrong, please try again later</div>;
+        return <ErrorPage />;
     }
 
     document.title = "Profile | Notes";
@@ -41,7 +43,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         if (!confirmDelete) return;
         // delete account
         try {
-            await userService.remove(firebaseAuth?.id);
+            await userService.remove(firebaseAuth.uid);
             setFirebaseAuth(null);
             toast.success("Account deleted successfully");
             navigate("/");

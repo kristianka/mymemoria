@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
 import { FireBaseUserInterface } from "../../types";
 import notesService from "../../services/notes";
 import AddingNoteMap from "./AddNoteMap";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 
 interface AddNoteProps {
     firebaseAuth: FireBaseUserInterface | null;
 }
-const AddNote = (firebaseAuth: AddNoteProps) => {
+
+const AddNote = ({ firebaseAuth }: AddNoteProps) => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
+
+    console.log(lat, lng);
 
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -39,9 +43,11 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
         mutationFn: notesService.create,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
-            setTitle("");
-            setContent("");
+            toast.success(`Added note ${title} successfully!`);
             navigate("/notes");
+        },
+        onError: () => {
+            toast.error("Error adding note, please try again later.");
         }
     });
 
@@ -63,8 +69,8 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
             }
             createNoteMutation.mutate(note);
         } catch (error) {
-            console.log("Error adding note");
-            console.log(error);
+            console.error(error);
+            toast.error("Error adding note, please try again later.");
         }
     };
 
@@ -126,7 +132,7 @@ const AddNote = (firebaseAuth: AddNoteProps) => {
                         Location
                     </label>
                     <div className="mt-2"></div>
-                    <AddingNoteMap setLat={setLat} setLng={setLng}></AddingNoteMap>
+                    <AddingNoteMap setLat={setLat} setLng={setLng} firebaseAuth={firebaseAuth} />
                     <button
                         onClick={submit}
                         type="submit"

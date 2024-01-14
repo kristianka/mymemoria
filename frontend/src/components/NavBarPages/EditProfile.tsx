@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
 import userService from "../../services/user";
 import { BackendUserInterface, FireBaseUserInterface } from "../../types";
 
@@ -23,12 +24,12 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                 toast.error("Please fill in name");
                 return;
             }
-            const newUser = {
+            const updatedUser = {
                 id: firebaseAuth.uid,
-                name: name
+                name: name,
+                defaultLocation: user.defaultLocation
             };
-            const res = await userService.update(newUser);
-            console.log("res", res);
+            await userService.update(updatedUser);
             // invalidate user
             queryClient.invalidateQueries({ queryKey: ["user"] });
             toast.success("Name updated successfully");

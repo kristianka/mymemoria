@@ -1,9 +1,10 @@
 import { useRef, useEffect } from "react";
-import mapboxgl, { LngLat, LngLatLike } from "mapbox-gl";
+import mapboxgl, { LngLatLike } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FireBaseUserInterface } from "../../types";
+
+import { FireBaseUserInterface, GeocoderResultInterface } from "../../types";
 import useNotes from "../../hooks/useNotes";
 import useUser from "../../hooks/useUser";
 
@@ -17,13 +18,14 @@ const Map = ({ firebaseAuth }: props) => {
     const { data: user } = useUser(firebaseAuth);
     const { data: notes } = useNotes(user || null);
     const mapContainer = useRef<HTMLDivElement>(null);
-
+    console.log("Map");
+    // if there are no notes, zoom to user's default location
     const defaultCoordinates =
         notes &&
         notes.length > 0 &&
         (notes[0].location.coordinates[0] !== 0 || notes[0].location.coordinates[1] !== 0)
             ? notes[0].location?.coordinates
-            : [23.761, 61.4978]; // Tampere, Finland;
+            : user?.defaultLocation.coordinates;
 
     useEffect(() => {
         const initializeMap = async () => {
@@ -43,8 +45,8 @@ const Map = ({ firebaseAuth }: props) => {
                     mapboxgl: mapboxgl
                 });
 
-                geocoder.on("result", (e) => {
-                    const coordinates: LngLat = e.result.center;
+                geocoder.on("result", (e: GeocoderResultInterface) => {
+                    const coordinates = e.result.center;
                     new mapboxgl.Marker().setLngLat(coordinates);
                 });
 
@@ -70,17 +72,13 @@ const Map = ({ firebaseAuth }: props) => {
             });
         };
         initializeMap();
-        // on purpose, we want to run this only once
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [notes]);
+    }, [defaultCoordinates, notes]);
 
     if (!notes) {
         return null;
     }
 
-    return (
-        <div className="h-100" ref={mapContainer} style={{ height: "25rem", borderRadius: 5 }} />
-    );
+    return <div ref={mapContainer} style={{ height: "25rem", borderRadius: 5 }} />;
 };
 
 export default Map;

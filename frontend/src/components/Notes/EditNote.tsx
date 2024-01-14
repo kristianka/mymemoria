@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FireBaseUserInterface, NoteInterface } from "../../types";
-import useUser from "../../hooks/useUser";
-import useNotes from "../../hooks/useNotes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
+import useUser from "../../hooks/useUser";
+import useNotes from "../../hooks/useNotes";
 import NotFound from "../NotFound";
 import notesService from "../../services/notes";
 import EditNoteMap from "./EditNoteMap";
@@ -100,7 +101,7 @@ const EditNote = ({ firebaseAuth }: props) => {
             updateNoteMutation.mutate(obj);
         } catch (error) {
             toast.error("Error updating note, please try again later.");
-            console.log(error);
+            console.error(error);
         }
     };
 

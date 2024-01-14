@@ -1,3 +1,5 @@
+import { UserMetadata } from "firebase/auth";
+
 export interface NoteInterface {
     id: string;
     title: string;
@@ -9,8 +11,6 @@ export interface NoteInterface {
     createdAt: string;
     modifiedAt?: string;
 }
-
-import { UserMetadata } from "firebase/auth";
 
 export interface FireBaseUserInterface {
     email: string | null;
@@ -24,7 +24,9 @@ export interface BackendUserInterface {
     fireBaseUid: string;
     name: string;
     notes: NoteInterface[];
-    favouriteLocations: string[];
+    defaultLocation: {
+        coordinates: [number, number];
+    };
 }
 
 // user id is automatically added to the note on backend
@@ -40,6 +42,9 @@ export interface CreateNoteInterface {
 export interface UpdateUserInterface {
     id: string;
     name: string;
+    defaultLocation: {
+        coordinates: [number, number];
+    };
 }
 
 export interface UpdateNoteInterface {
@@ -49,5 +54,11 @@ export interface UpdateNoteInterface {
     location: {
         lat: number;
         lng: number;
+    };
+}
+
+export interface GeocoderResultInterface {
+    result: {
+        center: [number, number];
     };
 }

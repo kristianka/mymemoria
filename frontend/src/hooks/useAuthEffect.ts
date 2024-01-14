@@ -25,7 +25,7 @@ const useAuthEffect = (
                         notesService.setToken(token);
                         setFirebaseAuth(firebaseObject);
                     })
-                    .catch((error) => {
+                    .catch((error: Error) => {
                         if (error.message.includes("auth/id-token-expired")) {
                             toast.error("Your session has expired. Please log in again.");
                         } else {
