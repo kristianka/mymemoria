@@ -10,13 +10,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // user can favourite a location
-    favouriteLocations: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Location"
-        }
-    ],
+    defaultLocation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Location"
+    },
     notes: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -4,6 +4,7 @@ import { getUserFromReq } from "../utils/middlewares";
 import { AuthRequest } from "../types";
 import { Note } from "../models/note";
 import { getAdminInstance } from "../utils/firebaseConnection";
+import { Location } from "../models/location";
 
 const userRouter = Express.Router();
 
@@ -19,7 +20,9 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const user = await User.findOne({ fireBaseUid: firebaseUserId });
+        const user = await User.findOne({ fireBaseUid: firebaseUserId }).populate({
+            path: "defaultLocation"
+        });
         if (!user || paramFirebaseUserId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }
@@ -37,9 +40,16 @@ userRouter.post("/", async (req, res, next) => {
             return res.status(400).json({ error: "Missing name or uid" });
         }
 
+        // default location is railway station helsinki. longitude, latitude
+        const defaultLocation = new Location({
+            coordinates: [24.94146985205316, 60.17110699565623]
+        });
+
+        const savedLocation = await defaultLocation.save();
         const user = new User({
             fireBaseUid: uid,
-            name: name
+            name: name,
+            defaultLocation: savedLocation._id
         });
 
         const savedUser = await user.save();
@@ -50,28 +60,54 @@ userRouter.post("/", async (req, res, next) => {
     }
 });
 
-// user can update name
+// user can update name and default location
 userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
     try {
         // req.user is handled by getUserFromReq middleware
         const firebaseUserId = req.user?.user_id;
         const paramFirebaseUserId = req.params.id;
-        const { name } = req.body;
+        const { name, defaultLocation } = req.body;
+        const defaultCoordinates = defaultLocation.coordinates;
 
+        // check that name is ok
         if (!name || typeof name !== "string") {
-            return res.status(400).json({ error: "Missing name or invalid" });
+            return res.status(400).json({ error: "Missing name or invalid value" });
+        }
+
+        console.log(defaultCoordinates);
+
+        // check that default location is ok
+        if (
+            !defaultCoordinates ||
+            typeof defaultCoordinates[0] !== "number" ||
+            typeof defaultCoordinates[1] !== "number"
+        ) {
+            return res.status(400).json({ error: "Missing default location or invalid value" });
         }
 
         if (paramFirebaseUserId !== firebaseUserId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const user = await User.findOne({ fireBaseUid: firebaseUserId });
+        const user = await User.findOne({ fireBaseUid: firebaseUserId }).populate({
+            path: "defaultLocation"
+        });
+
         if (!user || paramFirebaseUserId !== user.fireBaseUid) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const updatedUser = await user.updateOne({ name: name }, { new: true });
+        // if request contains default location, save it to db
+        if (defaultCoordinates) {
+            const loc = new Location({
+                coordinates: defaultCoordinates
+            });
+
+            const savedLocation = await loc.save();
+            user.defaultLocation = savedLocation._id;
+        }
+        user.name = name;
+        const updatedUser = await user.save();
         return res.json(updatedUser);
     } catch (error) {
         console.log(error);

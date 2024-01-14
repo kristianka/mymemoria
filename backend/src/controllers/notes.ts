@@ -75,7 +75,7 @@ notesRouter.post("/", getUserFromReq, async (req: AuthRequest, res, next) => {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // note the order!!!
+        // note the order: longitude, latitude
         const loc = new Location({
             coordinates: [location.lng, location.lat]
         });
