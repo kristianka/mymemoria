@@ -68,7 +68,6 @@ const AddingNoteMap = ({ firebaseAuth, setLat, setLng }: props) => {
             setMarker(newMarker);
 
             geocoder.on("result", (e: GeocoderResultInterface) => {
-                console.log("e", e);
                 // Get the coordinates from the geocoding result
                 const coordinates = e.result.center;
                 mapInstance.flyTo({
@@ -86,7 +85,6 @@ const AddingNoteMap = ({ firebaseAuth, setLat, setLng }: props) => {
             mapInstance.on("click", (e) => {
                 // Check if the click event is not associated with a geocoding result
                 if (!e.originalEvent || !("result" in e.originalEvent)) {
-                    console.log("e", e);
                     const coordinates: LngLat = e.lngLat;
                     if (coordinates !== undefined || coordinates !== null) {
                         // Remove existing marker if present

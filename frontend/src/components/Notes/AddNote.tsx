@@ -18,8 +18,6 @@ const AddNote = ({ firebaseAuth }: AddNoteProps) => {
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
 
-    console.log(lat, lng);
-
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 

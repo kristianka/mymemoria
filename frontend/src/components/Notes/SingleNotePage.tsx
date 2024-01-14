@@ -63,7 +63,6 @@ const SingleNote = ({ firebaseAuth }: props) => {
 
     const editNote = () => {
         navigate(`/notes/${note.id}/edit`);
-        console.log("edit note");
     };
 
     document.title = `${note.title} | Notes`;

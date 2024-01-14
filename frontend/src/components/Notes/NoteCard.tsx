@@ -5,6 +5,7 @@ import { NoteInterface } from "../../types";
 interface props {
     note: NoteInterface;
 }
+
 const NoteCard = ({ note }: props) => {
     return (
         <div className="card bg-base-100">

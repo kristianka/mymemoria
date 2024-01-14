@@ -37,13 +37,14 @@ if (env === "production") {
     firebaseConfig = firebaseConfigProd;
 } else if (env === "development") {
     firebaseConfig = firebaseConfigDev;
+    console.log("ENV is", env);
 } else if (env === "testing") {
     toast.info(`Using ${env} environment`);
     firebaseConfig = firebaseConfigTesting;
+    console.log("ENV is", env);
 } else {
     throw new Error(`Invalid env: ${env}`);
 }
-console.log("ENV is", env);
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);

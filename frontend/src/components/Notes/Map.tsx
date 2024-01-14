@@ -18,7 +18,6 @@ const Map = ({ firebaseAuth }: props) => {
     const { data: user } = useUser(firebaseAuth);
     const { data: notes } = useNotes(user || null);
     const mapContainer = useRef<HTMLDivElement>(null);
-    console.log("Map");
     // if there are no notes, zoom to user's default location
     const defaultCoordinates =
         notes &&
