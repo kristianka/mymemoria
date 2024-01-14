@@ -24,7 +24,6 @@ notesRouter.get("/", getUserFromReq, async (req: AuthRequest, res, next) => {
         }
         return res.json(user.notes);
     } catch (error) {
-        console.log(error);
         return next(error);
     }
 });

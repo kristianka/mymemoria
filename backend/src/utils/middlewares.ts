@@ -48,7 +48,7 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
     } else if (error.message.includes("Cast to ObjectId failed for value")) {
         return res.status(401).json({ error: "Bad request." });
     } else if (error.message.includes("ValidationError")) {
-        return res.status(400).json({ error: `Received invalid data: ${error.message}` });
+        return res.status(400).json({ error: `Received invalid data}` });
     } else if (error.message.includes("SyntaxError")) {
         return res.status(400).json({ error: "Bad request" });
     } else if (error.message.includes("TypeError")) {

@@ -28,7 +28,6 @@ userRouter.get("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
         }
         return res.json(user);
     } catch (error) {
-        console.log(error);
         return next(error);
     }
 });
@@ -55,7 +54,6 @@ userRouter.post("/", async (req, res, next) => {
         const savedUser = await user.save();
         return res.status(201).json(savedUser);
     } catch (error) {
-        console.log(error);
         return next(error);
     }
 });
@@ -67,22 +65,11 @@ userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
         const firebaseUserId = req.user?.user_id;
         const paramFirebaseUserId = req.params.id;
         const { name, defaultLocation } = req.body;
-        const defaultCoordinates = defaultLocation.coordinates;
+        const defaultCoordinates = defaultLocation?.coordinates;
 
         // check that name is ok
         if (!name || typeof name !== "string") {
             return res.status(400).json({ error: "Missing name or invalid value" });
-        }
-
-        console.log(defaultCoordinates);
-
-        // check that default location is ok
-        if (
-            !defaultCoordinates ||
-            typeof defaultCoordinates[0] !== "number" ||
-            typeof defaultCoordinates[1] !== "number"
-        ) {
-            return res.status(400).json({ error: "Missing default location or invalid value" });
         }
 
         if (paramFirebaseUserId !== firebaseUserId) {
@@ -99,6 +86,15 @@ userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
 
         // if request contains default location, save it to db
         if (defaultCoordinates) {
+            // check that default location is ok
+            if (
+                !defaultCoordinates ||
+                typeof defaultCoordinates[0] !== "number" ||
+                typeof defaultCoordinates[1] !== "number"
+            ) {
+                return res.status(400).json({ error: "Missing default location or invalid value" });
+            }
+
             const loc = new Location({
                 coordinates: defaultCoordinates
             });
@@ -110,7 +106,6 @@ userRouter.put("/:id", getUserFromReq, async (req: AuthRequest, res, next) => {
         const updatedUser = await user.save();
         return res.json(updatedUser);
     } catch (error) {
-        console.log(error);
         return next(error);
     }
 });
@@ -139,7 +134,6 @@ userRouter.delete("/:id", getUserFromReq, async (req: AuthRequest, res, next) =>
         await Note.deleteMany({ user: user._id });
         return res.status(204).end();
     } catch (error) {
-        console.log(error);
         return next(error);
     }
 });
