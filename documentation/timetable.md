@@ -41,7 +41,9 @@
 |4.12.2023|5|Update footer, make UI responsive, add ability to delete account. Add ability to format text with new lines when adding note. Fix bugs and other misc changes|
 |11.1.2024|8|Fix security issues on backend, add ability to sort notes. Fix bugs and other misc changes.|
 |13.11.2023|6|Add default location for notes. Add server status and info page. Change linting options. Fix bugs and other misc changes|
+|14.11.2023|3|Start documentation and fixing final bugs|
+|15.11.2023|2|Finish documentation and project|
 
-<h2>Total: 232 hours</h2>
+<h2>Total: 237 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
