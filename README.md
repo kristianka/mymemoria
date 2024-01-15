@@ -62,6 +62,7 @@ Adding a note
 ![Adding a note](documentation/img/add-note-page.png)
 
 Adding a note on mobile / small screens (scrollable)
+
 ![Adding note on mobile](documentation/img/add-note-page-mobile.png)
 
 Single note view
@@ -98,6 +99,10 @@ This project uses Cypress for E2E testing. Almost every aspect has a E2E test, e
 Backend has been throughly tested with Hoppscotch when changes have been made to it. Automated testing seems to be impossible due to auth being handled by Firebase Auth and you need your ID and token for every request.
 
 See [here](./frontend/cypress/e2e/test.cy.ts) for tests.
+
+<h2>Time used</h2>
+
+See [here](./documentation/timetable.md).
 
 <h2>What I learned and thoughts about the project</h2>
 
