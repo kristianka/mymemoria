@@ -43,7 +43,8 @@
 |13.01.2024|6|Add default location for notes. Add server status and info page. Change linting options. Fix bugs and other misc changes|
 |14.01.2024|3|Start documentation and fixing final bugs|
 |15.01.2024|2|Finish documentation and project|
+|23.01.2023|5|Improve UX and backend code|
 
-<h2>Total: 237 hours</h2>
+<h2>Total: 242 hours</h2>
 
 <h3>Format for dates is DD/MM/YYYY</h3>
