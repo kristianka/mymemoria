@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import mongoSanitize from "express-mongo-sanitize";
+import "express-async-errors";
 
 import { limiter, PORT } from "./utils/config";
 import { connectToMongo } from "./utils/mongoConnection";

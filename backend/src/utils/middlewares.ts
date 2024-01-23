@@ -55,8 +55,14 @@ const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunc
         return res.status(400).json({ error: "Bad request." });
     }
 
-    // continue to 404
-    return next(error);
+    // continue to 404. don't reveal internal errors to user
+    if (process.env.NODE_ENV === "production") {
+        return res
+            .status(500)
+            .json({ error: "An unexpected error has occurred. Please try again later." });
+    } else {
+        return next(error);
+    }
 };
 
 const getTokenFromReq = (req: AuthRequest, _res: Response, next: NextFunction) => {
