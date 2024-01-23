@@ -41,9 +41,9 @@ const InfoPage = () => {
                         Please checkout the readme in the GitHub repository for answers.
                     </h2>
                     <p className="m-5 text-center normal-case text-gray-500">
-                        The documentation folder in the{" "}
+                        The readme file in the{" "}
                         <a
-                            href="https://github.com/kristianka/fullstack-project/blob/main/documentation"
+                            href="https://github.com/kristianka/fullstack-project/blob/main/README.md"
                             className="text-blue-500"
                         >
                             GitHub repository

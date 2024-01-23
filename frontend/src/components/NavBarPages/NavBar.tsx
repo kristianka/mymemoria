@@ -96,22 +96,29 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content mt-3 z-[10] p-2 shadow bg-base-100 rounded-box w-52"
                         >
-                            <li className="profileButton">
-                                <Link to="/profile" className="justify-between">
+                            {" "}
+                            <li className="">
+                                <Link to="/notes" className="py-2">
+                                    Your notes
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/notes/add" className="py-2">
+                                    New note
+                                </Link>
+                            </li>
+                            <li className="border-t border-gray-200 profileButton">
+                                <Link to="/profile" className="py-2 justify-between">
                                     Profile
                                 </Link>
                             </li>
                             <li className="settingsButton">
-                                <Link to="/settings" className="justify-between">
+                                <Link to="/settings" className="py-2 justify-between">
                                     Settings
                                 </Link>
                             </li>
-
-                            <li>
-                                <Link to="/notes">Your notes</Link>
-                            </li>
-                            <li className="logoutButton">
-                                <Link to="/" onClick={logout}>
+                            <li className="border-t border-gray-200 logoutButton">
+                                <Link to="/" className="py-2" onClick={logout}>
                                     Sign out
                                 </Link>
                             </li>

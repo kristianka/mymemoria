@@ -30,7 +30,12 @@ const NoteCard = ({ note }: props) => {
                             </p>
                         </>
                     )}
-                    <Link id={`toNoteButton=${note.id}`} to={`/notes/${note.id}`}>
+                    <Link
+                        id={`toNoteButton=${note.id}`}
+                        className="tooltip"
+                        data-tip="Open note"
+                        to={`/notes/${note.id}`}
+                    >
                         <ChevronRightIcon className="h-10 w-10 text-blue-500" />
                     </Link>
                 </div>

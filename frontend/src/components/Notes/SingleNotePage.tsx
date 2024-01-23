@@ -1,7 +1,7 @@
 import { FireBaseUserInterface, NoteInterface } from "../../types";
 import useNotes from "../../hooks/useNotes";
-import { useNavigate, useParams } from "react-router-dom";
-import { PencilSquareIcon, InboxArrowDownIcon } from "@heroicons/react/20/solid";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { PencilSquareIcon, InboxArrowDownIcon, ChevronLeftIcon } from "@heroicons/react/20/solid";
 import NotFound from "../NotFound";
 import useUser from "../../hooks/useUser";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import notesService from "../../services/notes";
 import { useQueryClient } from "@tanstack/react-query";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
 import SingleNoteMap from "./SingleNoteMap";
+import ErrorPage from "../ErrorPage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -33,8 +34,8 @@ const SingleNote = ({ firebaseAuth }: props) => {
     }
 
     if (notesStatus === "error") {
-        toast.error("Error getting notes, please try again later.");
-        return <div>Something went wrong, please try again later</div>;
+        toast.error("Error getting note, please try again later.");
+        return <ErrorPage />;
     }
 
     const note: NoteInterface | undefined = notes?.find((note) => note.id === id);
@@ -54,7 +55,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
             }
             // invalidate notes
             queryClient.invalidateQueries({ queryKey: ["notes"] });
-            toast.success("Note deleted successfully");
+            toast.success("Note deleted successfully.");
             navigate("/notes");
         } catch (error) {
             toast.error("Error deleting note, please try again later.");
@@ -76,6 +77,16 @@ const SingleNote = ({ firebaseAuth }: props) => {
                             <p className="trunacte text-ellipsis text-xl whitespace-pre-line">
                                 {note.content}
                             </p>
+                            <div className="card-actions justify-start mt-10">
+                                <Link
+                                    id={"toNotesButton"}
+                                    className="tooltip"
+                                    data-tip="Back to notes"
+                                    to={"/"}
+                                >
+                                    <ChevronLeftIcon className="h-10 w-10 text-blue-500" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +112,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
                                 Delete note
                             </button>
                         </div>
-                        <div className="grid grid-cols-2">
+                        <div className="grid grid-cols-3">
                             <div className="tooltip" data-tip="Created at">
                                 <InboxArrowDownIcon className="m-auto h-7 w-7 text-blue-500" />
                                 <p>{new Date(note.createdAt).toLocaleString()} </p>

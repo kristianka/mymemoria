@@ -62,6 +62,16 @@ const SettingsPage = ({ firebaseAuth }: props) => {
         }
     };
 
+    const cancelChanges = () => {
+        const confirmCancel = window.confirm(
+            "Are you sure you want to return? All changes will be lost!"
+        );
+        if (!confirmCancel) return;
+        setLat(0);
+        setLng(0);
+        navigate("/notes");
+    };
+
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1 m-3">
@@ -86,14 +96,27 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                         Location
                     </label>
                     <SettingsMap setLat={setLat} setLng={setLng} user={user} />
-                    <button
-                        onClick={submit}
-                        type="submit"
-                        id="saveLocationButton"
-                        className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
-                    >
-                        Save location
-                    </button>
+                    <div className="grid grid-cols-2">
+                        <div className="mr-5">
+                            <button
+                                onClick={cancelChanges}
+                                id="cancelChangesButton"
+                                className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-pink-500 to-orange-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                        <div className="ml-5">
+                            <button
+                                onClick={submit}
+                                type="submit"
+                                id="saveLocationButton"
+                                className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Save location
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

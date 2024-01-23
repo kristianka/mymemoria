@@ -14,8 +14,10 @@ import NotesLoadingSkeleton from "./NotesLoadingSkeleton";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
 import NoteCard from "./NoteCard";
 import SortNotesDropdown from "./SortNotes/Dropdown";
-import LoadingSkeleton from "./SortNotes/LoadingSkeleton";
+import SortNotesLoadingSkeleton from "./SortNotes/SortNotesLoadingSkeleton";
 import ErrorPage from "../ErrorPage";
+import NewNoteButton from "./NewNoteButton";
+import NewNoteLoadingSkeleton from "./NewNoteButtonLoadingSkeleton";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -32,10 +34,10 @@ const Notes = ({ firebaseAuth }: props) => {
     // if user is not logged in, redirect to front page
     // useEffect to prevent infinite loop if server is down
     useEffect(() => {
-        if (!user && userStatus !== "pending") {
+        if ((!user && userStatus !== "pending") || !firebaseAuth) {
             navigate("/");
         }
-    }, [user, userStatus, navigate]);
+    }, [user, userStatus, navigate, firebaseAuth]);
 
     useEffect(() => {
         // set notes from react query to state
@@ -64,7 +66,7 @@ const Notes = ({ firebaseAuth }: props) => {
                 </p>
                 <div className="flex-1 text-center">
                     <Link to="/notes/add" className="btn btn-ghost rounded-lg">
-                        <PencilSquareIcon className="w-10 h-10" />
+                        <PencilSquareIcon className="w-10 h-10 text-blue-500" />
                     </Link>
                 </div>
             </div>
@@ -93,13 +95,19 @@ const Notes = ({ firebaseAuth }: props) => {
                     {firebaseAuth && notesStatus === "pending" && (
                         <>
                             <MapLoadingSkeleton />
-                            <LoadingSkeleton />
+                            <div className="flex">
+                                <SortNotesLoadingSkeleton />
+                                <NewNoteLoadingSkeleton />
+                            </div>
                         </>
                     )}
                     {notes && notes.length !== 0 && (
                         <>
                             <Map firebaseAuth={firebaseAuth} />
-                            <SortNotesDropdown notes={notes} setSortedNotes={setSortedNotes} />
+                            <div className="flex">
+                                <SortNotesDropdown notes={notes} setSortedNotes={setSortedNotes} />
+                                <NewNoteButton />
+                            </div>
                         </>
                     )}
                 </div>

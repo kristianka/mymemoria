@@ -1,4 +1,4 @@
-const LoadingSkeleton = () => {
+const SortNotesLoadingSkeleton = () => {
     return (
         <div className="mt-3 bg-gray-300 animate-pulse w-1/3 rounded-lg">
             <div className="bg-gray-300 animate-pulse rounded">
@@ -11,4 +11,4 @@ const LoadingSkeleton = () => {
     );
 };
 
-export default LoadingSkeleton;
+export default SortNotesLoadingSkeleton;

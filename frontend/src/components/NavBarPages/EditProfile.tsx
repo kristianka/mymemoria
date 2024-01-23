@@ -45,7 +45,8 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
         }
     };
 
-    const closeModal = () => {
+    const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         const modal = document.getElementById("editNameModal");
         if (modal) {
             const modalElement = document.getElementById("editNameModal") as HTMLDialogElement;
@@ -80,19 +81,19 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                         </div>
                         <div className="flex justify-between modal-action mt-3">
                             <button
+                                onClick={closeModal}
+                                id="closeModalButton"
+                                className="rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Close
+                            </button>
+                            <button
                                 onClick={editName}
                                 type="submit"
                                 id="updateNameButton"
                                 className="rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
                                 Update name
-                            </button>
-                            <button
-                                onClick={closeModal}
-                                id="closeModalButton"
-                                className="rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
-                            >
-                                Close
                             </button>
                         </div>
                     </form>

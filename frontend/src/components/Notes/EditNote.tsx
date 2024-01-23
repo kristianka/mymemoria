@@ -51,8 +51,12 @@ const EditNote = ({ firebaseAuth }: props) => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
             setTitle("");
             setContent("");
-            toast.success("Note updated successfully");
+            toast.success("Note updated successfully.");
             navigate(`/notes/${id}`);
+        },
+        onError: (error) => {
+            console.error(error);
+            toast.error("Error updating note, please try again later.");
         }
     });
 
@@ -61,8 +65,7 @@ const EditNote = ({ firebaseAuth }: props) => {
     }
 
     if (notesStatus === "error") {
-        toast.error("Error getting note, please try again later.");
-        return <div>Something went wrong, please try again later</div>;
+        navigate("/notes");
     }
 
     if (!note) {
@@ -78,31 +81,38 @@ const EditNote = ({ firebaseAuth }: props) => {
     };
 
     const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        try {
-            e.preventDefault();
-            if (!title || !content) {
-                toast.error("Please fill in all fields");
-                return;
-            }
-            const location = {
-                lat,
-                lng
-            };
-
-            if (!id) {
-                return;
-            }
-            const obj = {
-                id,
-                title,
-                content,
-                location
-            };
-            updateNoteMutation.mutate(obj);
-        } catch (error) {
-            toast.error("Error updating note, please try again later.");
-            console.error(error);
+        e.preventDefault();
+        if (!title || !content) {
+            toast.error("Please fill in all fields");
+            return;
         }
+        const location = {
+            lat,
+            lng
+        };
+
+        if (!id) {
+            return;
+        }
+        const obj = {
+            id,
+            title,
+            content,
+            location
+        };
+        updateNoteMutation.mutate(obj);
+    };
+
+    const cancelChanges = () => {
+        const confirmCancel = window.confirm(
+            "Are you sure you want to return? All changes will be lost!"
+        );
+        if (!confirmCancel) return;
+        setTitle("");
+        setContent("");
+        setLat(0);
+        setLng(0);
+        navigate(`/notes/${id}`);
     };
 
     return (
@@ -164,15 +174,27 @@ const EditNote = ({ firebaseAuth }: props) => {
                     </label>
                     <div className="mt-2"></div>
                     <EditNoteMap note={note} setLat={setLat} setLng={setLng} />
-
-                    <button
-                        onClick={submit}
-                        type="submit"
-                        id="editNoteButton"
-                        className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
-                    >
-                        Edit note
-                    </button>
+                    <div className="grid grid-cols-2">
+                        <div className="mr-5">
+                            <button
+                                onClick={cancelChanges}
+                                id="cancelChangesButton"
+                                className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-pink-500 to-orange-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Cancel changes
+                            </button>
+                        </div>
+                        <div className="ml-5">
+                            <button
+                                onClick={submit}
+                                type="submit"
+                                id="editNoteButton"
+                                className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
+                            >
+                                Save note
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
