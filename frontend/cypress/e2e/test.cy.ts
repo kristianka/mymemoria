@@ -296,7 +296,7 @@ describe("Note app", function () {
                     cy.contains("No notes yet");
                 });
 
-                it("notes don't show afte user logs out", () => {
+                it("notes don't show after user logs out", () => {
                     logoutUser();
                     cy.contains("Please sign in to use the application");
                     cy.contains("Sign in");
@@ -360,6 +360,40 @@ describe("Note app", function () {
                     "be.visible"
                 );
             });
+        });
+    });
+
+    describe("Redirected to front page when not logged in", () => {
+        it("note page redirects to front page", () => {
+            cy.visit("/notes");
+            cy.contains("Please sign in to use the application");
+            cy.contains("Sign in");
+            cy.contains("Create account");
+            cy.get("#addNoteButton").should("not.exist");
+        });
+
+        it("add note page redirects to front page", () => {
+            cy.visit("/notes/add");
+            cy.contains("Please sign in to use the application");
+            cy.contains("Sign in");
+            cy.contains("Create account");
+            cy.get("#addNoteButton").should("not.exist");
+        });
+
+        it("profile page redirects to front page", () => {
+            cy.visit("/profile");
+            cy.contains("Please sign in to use the application");
+            cy.contains("Sign in");
+            cy.contains("Create account");
+            cy.get("#addNoteButton").should("not.exist");
+        });
+
+        it("settings page redirects to front page", () => {
+            cy.visit("/settings");
+            cy.contains("Please sign in to use the application");
+            cy.contains("Sign in");
+            cy.contains("Create account");
+            cy.get("#addNoteButton").should("not.exist");
         });
     });
 });
