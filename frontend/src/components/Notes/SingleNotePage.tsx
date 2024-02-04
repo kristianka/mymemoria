@@ -112,7 +112,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
                                 Delete note
                             </button>
                         </div>
-                        <div className="grid grid-cols-3">
+                        <div className="grid grid-cols-2">
                             <div className="tooltip" data-tip="Created at">
                                 <InboxArrowDownIcon className="m-auto h-7 w-7 text-blue-500" />
                                 <p>{new Date(note.createdAt).toLocaleString()} </p>
