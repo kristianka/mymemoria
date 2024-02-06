@@ -61,16 +61,14 @@ const SingleNoteMap = ({ note }: props) => {
         if (marker?.getLngLat().toArray() !== note.location.coordinates) {
             marker?.setLngLat(note.location.coordinates);
         }
+
         return () => {
             // Clear marker but do not remove the map instance
             if (marker) {
                 marker.remove();
             }
         };
-
-        // on purpose, we want to run this only once
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [note]);
+    }, [defaultCoordinates, map, marker, note]);
 
     if (!note) {
         return null;

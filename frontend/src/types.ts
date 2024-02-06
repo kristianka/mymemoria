@@ -62,3 +62,12 @@ export interface GeocoderResultInterface {
         center: [number, number];
     };
 }
+
+export interface GeolocationPositionInterface {
+    coords: {
+        latitude: number;
+        longitude: number;
+    };
+    timestamp: number;
+    type: string;
+}

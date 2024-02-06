@@ -37,6 +37,17 @@ const Map = ({ firebaseAuth }: props) => {
                 zoom: 12
             });
 
+            // you can get your current location by clicking the gps button on the bottom right
+            const geolocateControl = new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: false,
+                showUserHeading: true
+            });
+
+            mapInstance.addControl(geolocateControl, "bottom-right");
+
             mapInstance.on("load", () => {
                 // Add geocoder
                 const geocoder = new MapboxGeocoder({

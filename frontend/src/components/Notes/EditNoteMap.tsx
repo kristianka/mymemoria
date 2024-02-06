@@ -66,6 +66,38 @@ const EditNoteMap = ({ note, setLat, setLng }: props) => {
                 setLat(coordinates[1]);
             });
 
+            // you can get your current location by clicking the gps button on the bottom right
+            const geolocateControl = new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: false,
+                showUserHeading: true
+            });
+
+            geolocateControl.on("geolocate", (e) => {
+                // Remove existing marker if present
+                if (marker) {
+                    marker.remove();
+                }
+
+                // really hacky due to lackluster typescript support!!
+                if (e !== undefined && "coords" in e) {
+                    const { latitude, longitude } = e.coords as GeolocationCoordinates;
+                    if (isNaN(latitude) || isNaN(longitude)) return;
+                    // Set new marker
+                    const newMarker = new mapboxgl.Marker()
+                        .setLngLat([longitude, latitude] as LngLatLike)
+                        .addTo(mapInstance);
+                    setMarker(newMarker);
+
+                    setLng(longitude);
+                    setLat(latitude);
+                }
+            });
+
+            mapInstance.addControl(geolocateControl, "bottom-right");
+
             mapInstance.on("click", (e) => {
                 // Check if the click event is not associated with a geocoding result
                 if (!e.originalEvent || !("result" in e.originalEvent)) {
