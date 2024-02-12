@@ -1,8 +1,8 @@
-<h1>Fullstackopen project - Notes app</h1>
+<h1>Fullstackopen project - Notes app 📓</h1>
 
-This is the repository for my fullstack project Notes app, which includes the documentation, the frontend and the backend. See below for screenshots and info.
+This is the repository for my fullstack project Notes app, which includes the documentation, the frontend and the backend. See below for more screenshots and info.
 
-Deployed at https://fullstack-project-rxtv.onrender.com/.
+Deployed at https://fullstack-project-rxtv.onrender.com/. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
 
 <h1>Info</h1>
 
@@ -45,6 +45,8 @@ All the code in frontend and backend are made with TypeScript and with latest li
 -   The app is designed for all screens, UI scales properly on mobile and PC.
 
 <h2>Screenshots</h2>
+<details>
+<summary>Click here to show</summary>
 
 Frontpage
 ![Frontpage](documentation/img/front-page.png)
@@ -74,6 +76,9 @@ Editing note
 Frontpage after two notes
 ![Frontpage after two notes](documentation/img/notes-page-with-two-notes.png)
 
+Frontpage loading skeleton
+![Frontpage loading skeleton](documentation/img/notes-page-loading-skeleton.png)
+
 Profile page
 ![Profile page](documentation/img/profile-page.png)
 
@@ -85,6 +90,8 @@ Settings page
 
 Info page
 ![Info page](documentation/img/info-page.png)
+
+</details>
 
 <h2>Running</h2>
 
