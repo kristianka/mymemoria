@@ -1,12 +1,20 @@
-<h1>Fullstackopen project - Notes app 📓</h1>
+<h1>📓 Fullstackopen project - Journal App 📝</h1>
 
-This is the repository for my fullstack project Notes app, which includes the documentation, the frontend and the backend. See below for more screenshots and info.
+> Create journals/notes to different locations all over the world 🌍
 
-Deployed at https://fullstack-project-rxtv.onrender.com/. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
+![Frontpage after two notes](documentation/img/notes-page-with-two-notes.png)
+
+
+
+❓ This is the repository for my fullstack project Journal app which took over 200 hours to make! This readme includes the documentation, the code for the frontend and the backend. See below for more screenshots and info.
+
+💻 Deployed at https://fullstack-project-rxtv.onrender.com/. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
+
+⭐ New! I have made a React Native port of this app, see here! https://github.com/kristianka/journal_app
 
 <h1>Info</h1>
 
-<h2>Technologies used</h2>
+<h2>Technologies used 🔧</h2>
 
 All the code in frontend and backend are made with TypeScript and with latest libraries and standards.
 
@@ -20,7 +28,7 @@ All the code in frontend and backend are made with TypeScript and with latest li
 
 -   User authentication powered by Firebase Authentication.
 
--   Automated testing powered by Cypress. See here for test coverage.
+-   Automated testing powered by Cypress. Every page and major function has a E2E test.
 
 <h3>Backend</h3>
 
@@ -28,7 +36,7 @@ All the code in frontend and backend are made with TypeScript and with latest li
 
 -   Automated testing powered by Cypress. API testing done manually with Hoppscotch.
 
-<h2>Main features</h2>
+<h2>Main features ⭐</h2>
 
 -   Create user / login with Firebase Authentication. You can reset password if forgotten.
 
@@ -44,9 +52,7 @@ All the code in frontend and backend are made with TypeScript and with latest li
 
 -   The app is designed for all screens, UI scales properly on mobile and PC.
 
-<h2>Screenshots</h2>
-<details>
-<summary>Click here to show</summary>
+<h2>Screenshots 📷</h2>
 
 Frontpage
 ![Frontpage](documentation/img/front-page.png)
@@ -91,15 +97,14 @@ Settings page
 Info page
 ![Info page](documentation/img/info-page.png)
 
-</details>
 
-<h2>Running</h2>
+<h2>Running the app 🏃</h2>
 
 This project has three different Firebase Auth and MongoDB credentials: development, testing and production.
 
 See [here](./documentation/running.md) for information how to run.
 
-<h2>Test coverage</h2>
+<h2>Test coverage 🔬</h2>
 
 This project uses Cypress for E2E testing. Almost every aspect has a E2E test, excluding some map elements where automated testing isn't possible due to Mapbox's limitations.
 
@@ -107,14 +112,14 @@ Backend has been throughly tested with Hoppscotch when changes have been made to
 
 See [here](./frontend/cypress/e2e/test.cy.ts) for tests.
 
-<h2>Time used</h2>
+<h2>Time used ⏱️</h2>
 
 See [here](./documentation/timetable.md).
 
-<h2>What I learned and thoughts about the project</h2>
+<h2>What I learned and thoughts about the project 🎓</h2>
 
 See [here](./documentation/afterthoughts.md).
 
-<h2>Bug reports and other</h2>
+<h2>Bug reports and other 🐛</h2>
 
 Please open a GitHub issue [here.](https://github.com/kristianka/fullstack-project/issues)
