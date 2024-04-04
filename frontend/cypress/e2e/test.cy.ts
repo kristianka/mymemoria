@@ -11,6 +11,14 @@ describe("Note app", function () {
     }
 
     function registerUser(email: string, name: string, password: string) {
+        cy.visit("/register");
+
+        // Wait for the form to load
+        cy.get('input[type="email"]').should("be.visible");
+        cy.get('input[type="text"]').should("be.visible");
+        cy.get("#password").should("be.visible");
+        cy.get("#confirmPassword").should("be.visible");
+
         // clear the form
         cy.get('input[type="email"]').clear();
         cy.get('input[type="text"]').clear();
@@ -203,7 +211,6 @@ describe("Note app", function () {
     describe("When logged in", () => {
         beforeEach(() => {
             // create user before each test
-            cy.visit("/register");
             registerUser(CYPRESS_TEST_EMAIL, "Test user", "password123");
             cy.wait(1000);
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
