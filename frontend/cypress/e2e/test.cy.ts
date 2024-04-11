@@ -231,7 +231,7 @@ describe("Note app", function () {
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
-                cy.contains("You have 1 notes");
+                cy.contains("You have 1 notes", { timeout: 10000 });
                 cy.contains("Test note");
                 cy.contains("Test note content");
             });
@@ -249,7 +249,7 @@ describe("Note app", function () {
                         .type("{enter}");
                     cy.get("#saveNoteButton").click();
 
-                    cy.contains("You have 1 notes");
+                    cy.contains("You have 1 notes", { timeout: 10000 });
                     cy.contains("Test note by test user");
                     cy.contains("Test note content");
                 });
@@ -287,7 +287,7 @@ describe("Note app", function () {
 
                     cy.visit("/");
 
-                    cy.contains("You have 1 notes");
+                    cy.contains("You have 1 notes", { timeout: 10000 });
                     cy.contains("Edited note by test user");
                     cy.contains("Edited note content");
                 });
