@@ -8,16 +8,12 @@ COPY . .
 
 RUN npm install
 
+RUN npm run build:production
+CMD ["npm", "run", "start:built-production"]
 
-# production, not used because deployed live.
-
-# RUN npm run build:production
-# CMD ["npm", "run", "start:built-production"]
-
-# we'll use testing env instead
-RUN npm run build:testing
-
-CMD ["npm", "run", "start:built-testing"]
+# testing env if you want
+# RUN npm run build:testing
+# CMD ["npm", "run", "start:built-testing"]
 
 # Running
 # docker build -t backend .
