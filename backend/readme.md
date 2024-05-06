@@ -1,1 +1,1 @@
-Running the backend `npm run dev`
+[See running readme](../documentation/running.md)
