@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
         build: {
             outDir: "./dist"
         },
+        watch: {
+            usePolling: true
+        },
         server: {
             port: 5173,
             proxy: {

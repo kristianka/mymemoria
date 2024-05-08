@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./frontend/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 5173:5173
+    container_name: fullstack-front
+    env_file:
+      - ./frontend/.env
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    container_name: fullstack-back
+    env_file:
+      - ./backend/.env
+
+# you might run into issues if you have node_modules installed locally
+# also if you are having issues, delete related docker images, builds, volumes, and containers
+
+# my impressions so far is that I will probably not use Docker for development, but for production is great
+# typescript throws a lot of errors and doesn't like if you don't have node_modules installed locally
+# https://github.com/vitejs/vite/discussions/16102
