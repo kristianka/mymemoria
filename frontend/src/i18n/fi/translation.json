@@ -70,9 +70,9 @@
     "refresh": "Päivitä",
     "pageNotFound": "Sivua ei löytynyt",
     "pageNotFoundInfo": "Pahoittelut, sivua ei löytynyt. Tarkista osoite tai yritä myöhemmin uudelleen.",
-    "goBackToHomepage": "Palaa etusivulle"
+    "goBackToHomepage": "Palaa etusivulle",
+    "lastModified": "Viimeksi muokattu",
+    "creationTimeNewestFirst": "Luontiaika (uusin ensin)",
+    "creationTimeOldestFirst": "Luontiaika (vanhin ensin)"
 
-
-
-    
 }
