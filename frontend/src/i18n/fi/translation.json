@@ -22,5 +22,16 @@
     "forgotPassword": "Unohditko salasanasi?",
     "resetPassword": "Nollaa salasana",
     "name": "Nimi",
-    "confirmPassword": "Vahvista salasana"
+    "confirmPassword": "Vahvista salasana",
+    "changeLanguage": "Vaihda kieli",
+    "loggedOutSuccessfully": "Kirjauduttu ulos onnistuneesti, nähdään pian!",
+    "loggedOutError": "Virhe kirjauduttaessa ulos. Yritä myöhemmin uudelleen.",
+    "loggedInSuccessfully": "Kirjauduttu sisään onnistuneesti",
+    "invalidCredentials": "Virheelliset tunnistetiedot. Yritä uudelleen.",
+    "pleaseFillAllFields": "Täytä kaikki kentät.",
+    "invalidEmail": "Virheellinen sähköpostiosoite. Yritä uudelleen.",
+    "passwordResetEmailSent": "Salasanan nollausviesti lähetetty. Tarkista sähköpostisi!",
+    "passwordResetError": "Virhe salasanan nollausta lähettäessä. Yritä myöhemmin uudelleen.",
+    "passwordResetInfo": "Voit lähettää uuden nollauslinkin minuutin kuluttua, jos et saanut sähköpostia. Tarkista roskapostikansiosi.",
+    "missingEmail": "Anna sähköpostiosoite."
 }

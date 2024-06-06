@@ -26,10 +26,10 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 setFirebaseAuth(null);
                 queryClient.clear();
                 navigate("/");
-                toast.success("Logged out successfully. 👋");
+                toast.success(`${t("loggedOutSuccessfully")} 👋`);
             } catch (error) {
                 console.error(error);
-                toast.success("Error while logging out. Please try again later.");
+                toast.success(t("loggedOutError"));
             }
         };
         handleLogout();
@@ -140,7 +140,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                         {t("signIn")}
                     </Link>
                     <Link to="/register" className="registerButton btn btn-ghost">
-                        {t("createAccount")}
+                        {t("createAnAccount")}
                     </Link>
                 </div>
             )}

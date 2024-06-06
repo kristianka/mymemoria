@@ -22,7 +22,18 @@
     "forgotPassword": "Forgot your password?",
     "resetPassword": "Reset password",
     "name": "Name",
-    "confirmPassword": "Confirm password"
+    "confirmPassword": "Confirm password",
+    "changeLanguage": "Change language",
+    "loggedOutSuccessfully": "Logged out successfully, see you soon!",
+    "loggedOutError": "Error while logging out. Please try again later.",
+    "loggedInSuccessfully": "Logged in successfully!",
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "pleaseFillAllFields": "Please fill in all the fields.",
+    "invalidEmail": "Invalid email address. Please try again.",
+    "passwordResetEmailSent": "Password reset email sent. Check your inbox!",
+    "passwordResetError": "Error while sending password reset email. Please try again later.",
+    "passwordResetInfo": "You can send a new reset link in a minute if you didn't receive the email. Please check your spam folder.",
+    "missingEmail": "Please provide an email address."
 
 
 }

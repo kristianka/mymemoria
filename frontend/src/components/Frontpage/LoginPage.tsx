@@ -44,21 +44,21 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             };
 
             setFirebaseAuth(neededUserData);
-            toast.success("Logged in successfully! 😃");
+            toast.success(`${t("loggedInSuccessfully")}😃`);
             navigate("/");
         } catch (error) {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/invalid-email") {
-                    toast.error("Invalid email. Please try again.");
+                    toast.error(t("invalidEmail"));
                     return;
                 }
                 if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
-                    toast.error("Please fill in all the fields.");
+                    toast.error(t("fillInAllFields"));
                     return;
                 }
                 if (error.code === "auth/invalid-credential") {
-                    toast.error("Invalid credentials. Please try again.");
+                    toast.error(t("invalidCredentials"));
                     return;
                 }
             }
@@ -71,10 +71,8 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         e.preventDefault();
         try {
             await sendPasswordResetEmail(auth, email);
-            toast.success(
-                "Password reset email sent. Please check your your spam folder if you can't find it."
-            );
-            toast.info("You can send another one in a minute if you didn't receive it.");
+            toast.success(t("passwordResetEmailSent"));
+            toast.info(t("passwordResetInfo"));
             // cooldown for 1 minute
             setIsPasswordResettingCooldown(true);
             setTimeout(() => {
@@ -84,21 +82,21 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/invalid-email") {
-                    toast.error("Invalid email. Please try again.");
+                    toast.error(t("invalidEmail"));
                     return;
                 }
                 if (error.code === "auth/missing-email") {
-                    toast.error("Please fill in email to reset it.");
+                    toast.error(t("missingEmail"));
                     return;
                 }
             }
-            toast.error("Error sending password reset email. Please try again later.");
+            toast.error(t("passwordResetEmailError"));
             console.error(error);
         }
     };
 
     useEffect(() => {
-        document.title = "Login | Notes";
+        document.title = t("login") + " | " + t("notes");
         if (firebaseAuth) {
             navigate("/");
         }
