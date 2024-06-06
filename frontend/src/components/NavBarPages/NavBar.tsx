@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 import { auth } from "../../firebase";
 import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface } from "../../types";
-import { toast } from "react-toastify";
+import { changeLanguage } from "../../misc";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -12,6 +14,7 @@ interface props {
 }
 
 const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
+    const { t } = useTranslation();
     const { data: user } = useUser(firebaseAuth);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -38,7 +41,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
             <div className="navbar bg-base-100">
                 <div className="flex-1">
                     <Link to="/" className="btn btn-ghost normal-case text-xl">
-                        Notes
+                        {t("notes")}
                     </Link>
                 </div>
                 <div className="flex-none">
@@ -69,9 +72,14 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
         <div className="navbar bg-base-100">
             <div className="flex-1">
                 <Link to="/" className="btn btn-ghost normal-case text-xl">
-                    Notes
+                    {t("notes")}
                 </Link>
             </div>
+            <button className="mr-3 rounded-md bg-gray-100 p-3" onClick={changeLanguage}>
+                {t("changeLanguage")}
+            </button>
+
+            {/* user is logged in */}
             {user ? (
                 <div className="flex-none">
                     <Link id="addNoteButton" to="/notes/add/">
@@ -99,39 +107,40 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                             {" "}
                             <li className="">
                                 <Link to="/notes" className="py-2">
-                                    Your notes
+                                    {t("yourNotes")}
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/notes/add" className="py-2">
-                                    New note
+                                    {t("newNote")}
                                 </Link>
                             </li>
                             <li className="border-t border-gray-200 profileButton">
                                 <Link to="/profile" className="py-2 justify-between">
-                                    Profile
+                                    {t("profile")}
                                 </Link>
                             </li>
                             <li className="settingsButton">
                                 <Link to="/settings" className="py-2 justify-between">
-                                    Settings
+                                    {t("settings")}
                                 </Link>
                             </li>
                             <li className="border-t border-gray-200 logoutButton">
                                 <Link to="/" className="py-2" onClick={logout}>
-                                    Sign out
+                                    {t("signOut")}
                                 </Link>
                             </li>
                         </ul>
                     </div>
                 </div>
             ) : (
+                // user isn't logged in
                 <div className="flex-none">
                     <Link to="/login" className="loginButton btn btn-ghost">
-                        Sign in
+                        {t("signIn")}
                     </Link>
                     <Link to="/register" className="registerButton btn btn-ghost">
-                        Register
+                        {t("createAccount")}
                     </Link>
                 </div>
             )}

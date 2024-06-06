@@ -1,0 +1,21 @@
+{
+    "notes": "Notes",
+    "note": "Note",
+    "login": "Login",
+    "logout": "Logout",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "username": "Username",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "yourNotes": "Your notes",
+    "newNote": "New note",
+    "profile": "Profile",
+    "settings": "Settings",
+    "createAccount": "Create account",
+    "landingPageHint": "Create an account to start taking notes with location data"
+
+
+}

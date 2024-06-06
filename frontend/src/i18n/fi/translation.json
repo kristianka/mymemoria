@@ -1,0 +1,19 @@
+{
+    "notes": "Muistiinpanot",
+    "note": "Muistiinpano",
+    "login": "Kirjaudu",
+    "logout": "Kirjaudu ulos",
+    "signIn": "Kirjaudu sisään",
+    "signUp": "Luo tili",
+    "signOut": "Kirjaudu ulos",
+    "username": "Käyttäjänimi",
+    "register": "Rekisteröidy",
+    "email": "Sähköposti",
+    "password": "Salasana",
+    "yourNotes": "Sinun muistiinpanosi",
+    "newNote": "Uusi muistiinpano",
+    "profile": "Profiili",
+    "settings": "Asetukset",
+    "createAccount": "Luo tili",
+    "landingPageHint": "Luo tili aloittaaksesi muistiinpanojen tekemisen sijaintitiedon kanssa"
+}
