@@ -108,5 +108,9 @@
     "readmeTip1": "Please checkout the readme in the GitHub repository for answers.",
     "readmeTip2": "The readme file in the",
     "readmeTip3": "GitHub repository",
-    "readmeTip4": "should answer all of your questions. If it doesn't, you can open a request from the footer. Please note that it will be public. Thank you!"
+    "readmeTip4": "should answer all of your questions. If it doesn't, you can open a request from the footer. Please note that it will be public. Thank you!",
+    "editNoteLong": "Edit note",
+    "noteUpdatedSuccessfully": "Note updated successfully.",
+    "noteUpdateError": "Error updating note. Please try again later.",
+    "cancelChanges": "Cancel changes"
 }

@@ -108,5 +108,9 @@
     "readmeTip1": "Tarkista readme GitHub-repositoriosta vastauksia varten.",
     "readmeTip2": "Readme-tiedosto",
     "readmeTip3": "GitHub-repositoriossa",
-    "readmeTip4": "vastaa usein kysyttyihin kysymyksiin. Jos ei, voit lähettää palautetta tai ilmoittaa virheestä. Huomaa että se on julkinen. Kiitos!"
+    "readmeTip4": "vastaa usein kysyttyihin kysymyksiin. Jos ei, voit lähettää palautetta tai ilmoittaa virheestä. Huomaa että se on julkinen. Kiitos!",
+    "editNoteLong": "Muokkaa muistiinpanoa",
+    "noteUpdatedSuccessfully": "Muistiinpano päivitetty onnistuneesti.",
+    "noteUpdateError": "Virhe muistiinpanon päivittämisessä. Yritä myöhemmin uudelleen.",
+    "cancelChanges": "Peruuta muutokset"
 }
