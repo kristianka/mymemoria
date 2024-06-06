@@ -22,25 +22,25 @@ const ChangeLanguageDropdown = () => {
 
     return (
         <>
-            <div className="dropdown dropdown-start">
+            <div className="m-1 dropdown dropdown-start">
                 <label tabIndex={0} className="btn bg-base-100 rounded-lg">
                     <span className={`fi fi-${selectedLanguage}`}></span>
                     <p>{t("changeLanguage")}</p>
                 </label>
                 <div
-                    className="menu menu-sm dropdown-content z-[10] p-2 shadow bg-base-100 rounded-box w-56"
+                    className="menu menu-sm dropdown-content mt-1 z-[10] p-2 shadow bg-base-100 rounded-box w-56"
                     aria-labelledby="dropdownDefaultButton"
                 >
                     <button
                         onClick={() => handleLanguageChange("en")}
-                        className="block px-4 py-2 hover:bg-gray-200 text-left"
+                        className="rounded-md block px-4 py-2 hover:bg-gray-200 text-left"
                     >
                         <span className="mr-2 fi fi-gb"></span>
                         English
                     </button>
                     <button
                         onClick={() => handleLanguageChange("fi")}
-                        className="block px-4 py-2 hover:bg-gray-200 text-left"
+                        className="rounded-md block px-4 py-2 hover:bg-gray-200 text-left"
                     >
                         <span className="mr-2 fi fi-fi"></span>
                         Finnish
