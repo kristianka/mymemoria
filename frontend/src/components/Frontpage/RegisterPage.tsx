@@ -42,12 +42,12 @@ const RegisterPage = ({ firebaseAuth }: props) => {
             e.preventDefault();
 
             if (!email || !password || !name || !confirmPassword) {
-                toast.error("Please fill in all the fields.");
+                toast.error(t("pleaseFillAllFields"));
                 return;
             }
 
             if (password !== confirmPassword) {
-                toast.error("Passwords do not match. Please try again.");
+                toast.error(t("passwordsDoNotMatch"));
                 return;
             }
 
@@ -64,32 +64,32 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                 throw new Error("Error creating user in MongoDB");
             }
 
-            toast.success("Registered successfully! Welcome!");
+            toast.success(t("registeredSuccessfully") + "😃");
         } catch (error) {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
-                    toast.error("Please fill in all the fields.");
+                    toast.error(t("fillInAllFields"));
                     return;
                 }
                 if (error.code === "auth/email-already-in-use") {
-                    toast.error("Email already in use. Please try again with a different email.");
+                    toast.error(t("emailInUse"));
                     return;
                 }
 
                 if (error.code === "auth/invalid-email") {
-                    toast.error("Invalid email. Please try again.");
+                    toast.error(t("invalidEmail"));
                     return;
                 }
 
                 if (error.code === "auth/weak-password") {
-                    toast.error("Weak password. Please try again.");
+                    toast.error(t("weakPassword"));
                     return;
                 }
             }
 
             // If you get here, the problem is with the custom backend and not Firebase
-            toast.error("Error while registering, please try again later.");
+            toast.error(t("registerError"));
             // Delete the user in Firebase Authentication if the backend fails
             if (auth.currentUser) {
                 await auth.currentUser.delete();
@@ -99,7 +99,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
 
     // if user is already logged in, redirect to home page
     useEffect(() => {
-        document.title = "Register | Notes";
+        document.title = t("register") + " | " + t("notes");
         if (firebaseAuth) {
             navigate("/");
         }

@@ -33,7 +33,13 @@
     "passwordResetEmailSent": "Password reset email sent. Check your inbox!",
     "passwordResetError": "Error while sending password reset email. Please try again later.",
     "passwordResetInfo": "You can send a new reset link in a minute if you didn't receive the email. Please check your spam folder.",
-    "missingEmail": "Please provide an email address."
+    "missingEmail": "Please provide an email address.",
+    "passwordsDoNotMatch": "Passwords do not match. Please try again.",
+    "registeredSuccessfully": "Registered successfully! Welcome!",
+    "registerError": "Error while registering. Please try again later.",
+    "weakPassword": "Weak password. Please try again.",
+    "emailInUse": "Email is already in use. Please try again."
+
 
 
 }
