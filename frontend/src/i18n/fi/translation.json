@@ -14,6 +14,13 @@
     "newNote": "Uusi muistiinpano",
     "profile": "Profiili",
     "settings": "Asetukset",
-    "createAccount": "Luo tili",
-    "landingPageHint": "Luo tili aloittaaksesi muistiinpanojen tekemisen sijaintitiedon kanssa"
+    "createAnAccount": "Luo tili",
+    "landingPageHint": "Luo tili aloittaaksesi muistiinpanojen tekemisen sijaintitiedon kanssa",
+    "signInToYourAccount": "Kirjaudu sisään tilillesi",
+    "dontHaveAnAccount": "Eikö sinulla ole tiliä?",
+    "alreadyHaveAnAccount": "Onko sinulla jo tili?",
+    "forgotPassword": "Unohditko salasanasi?",
+    "resetPassword": "Nollaa salasana",
+    "name": "Nimi",
+    "confirmPassword": "Vahvista salasana"
 }

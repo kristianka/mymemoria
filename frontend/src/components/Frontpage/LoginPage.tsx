@@ -6,6 +6,7 @@ import { FirebaseError } from "firebase/app";
 
 import { auth } from "../../firebase";
 import { FireBaseUserInterface } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -13,6 +14,7 @@ interface props {
 }
 
 const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     // avoids button spam via frontend, but of course it can be spammed via backend
@@ -107,7 +109,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in to your account
+                        {t("signInToYourAccount")}
                     </h2>
                 </div>
 
@@ -118,7 +120,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 htmlFor="email"
                                 className="block text-sm font-medium leading-6 text-gray-900"
                             >
-                                Email
+                                {t("email")}
                             </label>
                             <div className="mt-2">
                                 <input
@@ -139,7 +141,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                     htmlFor="password"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
-                                    Password
+                                    {t("password")}
                                 </label>
                             </div>
                             <div className="mt-2">
@@ -162,28 +164,28 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Sign in
+                                {t("signIn")}
                             </button>
                         </div>
                     </form>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
-                        Don't have an account?{" "}
+                        {t("dontHaveAnAccount")}{" "}
                         <a
                             href="/register"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                         >
-                            Register
+                            {t("signUp")}
                         </a>
                     </p>
                     <p className="mt-1 text-center text-sm text-gray-500">
-                        Forgot your password?{" "}
+                        {t("forgotPassword")}{" "}
                         <button
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                             onClick={handleForgotPassword}
                             disabled={isPasswordResettingCooldown}
                         >
-                            Reset password
+                            {t("resetPassword")}
                         </button>
                     </p>
                 </div>

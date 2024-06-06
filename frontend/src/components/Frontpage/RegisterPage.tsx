@@ -7,12 +7,14 @@ import { FirebaseError } from "firebase/app";
 import userService from "../../services/user";
 import { auth } from "../../firebase";
 import { FireBaseUserInterface } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
 }
 
 const RegisterPage = ({ firebaseAuth }: props) => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -109,7 +111,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                 <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                            Create an account
+                            {t("createAnAccount")}
                         </h2>
                     </div>
 
@@ -120,7 +122,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                                     htmlFor="email"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
-                                    Email
+                                    {t("email")}
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -140,7 +142,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                                     htmlFor="name"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
-                                    Name
+                                    {t("name")}
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -162,7 +164,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                                         htmlFor="password"
                                         className="block text-sm font-medium leading-6 text-gray-900"
                                     >
-                                        Password
+                                        {t("password")}
                                     </label>
                                 </div>
                                 <div className="mt-2">
@@ -182,7 +184,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                                         htmlFor="password"
                                         className="block text-sm font-medium leading-6 text-gray-900"
                                     >
-                                        Confirm password
+                                        {t("confirmPassword")}
                                     </label>
                                 </div>
                                 <div className="mt-2">
@@ -205,18 +207,18 @@ const RegisterPage = ({ firebaseAuth }: props) => {
                                     onClick={handleRegister}
                                     className="flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                                 >
-                                    Register
+                                    {t("register")}
                                 </button>
                             </div>
                         </form>
 
                         <p className="mt-10 text-center text-sm text-gray-500">
-                            Already have an account?{" "}
+                            {t("alreadyHaveAnAccount")}{" "}
                             <a
                                 href="/login"
                                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                             >
-                                Login
+                                {t("signIn")}
                             </a>
                         </p>
                     </div>

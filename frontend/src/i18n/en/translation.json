@@ -14,8 +14,15 @@
     "newNote": "New note",
     "profile": "Profile",
     "settings": "Settings",
-    "createAccount": "Create account",
-    "landingPageHint": "Create an account to start taking notes with location data"
+    "createAnAccount": "Create an account",
+    "landingPageHint": "Create an account to start taking notes with location data",
+    "signInToYourAccount": "Sign in to your account",
+    "dontHaveAnAccount": "Don't have an account?",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "forgotPassword": "Forgot your password?",
+    "resetPassword": "Reset password",
+    "name": "Name",
+    "confirmPassword": "Confirm password"
 
 
 }

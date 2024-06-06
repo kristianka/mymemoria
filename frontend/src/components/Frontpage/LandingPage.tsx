@@ -19,7 +19,7 @@ const LandingPage = () => {
                         {t("signIn")}
                     </Link>
                     <Link to="/register" className="text-sm font-semibold text-gray-900">
-                        {t("createAccount")} <span aria-hidden="true">&rarr;</span>
+                        {t("createAnAccount")} <span aria-hidden="true">&rarr;</span>
                     </Link>
                 </div>
             </div>
