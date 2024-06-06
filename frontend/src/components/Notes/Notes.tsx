@@ -18,12 +18,14 @@ import SortNotesLoadingSkeleton from "./SortNotes/SortNotesLoadingSkeleton";
 import ErrorPage from "../ErrorPage";
 import NewNoteButton from "./NewNoteButton";
 import NewNoteLoadingSkeleton from "./NewNoteButtonLoadingSkeleton";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
 }
 
 const Notes = ({ firebaseAuth }: props) => {
+    const { t } = useTranslation();
     // get user from backend after firebaseAuth is fetched from firebase
     const { data: user, status: userStatus } = useUser(firebaseAuth);
     // pass user to useNotes. If user is null, useNotes will return null
@@ -50,20 +52,18 @@ const Notes = ({ firebaseAuth }: props) => {
             setSortedNotes(null);
         }
     }, [notes, notesStatus]);
-    document.title = "Your notes | Notes";
+    document.title = t("yourNotes") + " | " + t("notes");
 
     if (notesStatus === "error" || userStatus === "error") {
-        toast.error("Error getting notes, please try again later.");
+        toast.error(t("errorGettingNotes"));
         return <ErrorPage />;
     }
 
     if (notesStatus === "success" && notes?.length === 0) {
         return (
             <div className="m-auto">
-                <h1 className="text-center normal-case text-3xl">No notes yet</h1>
-                <p className="text-center normal-case text-xl p-3">
-                    Click the icon below to create your first note! ✏️
-                </p>
+                <h1 className="text-center normal-case text-3xl">{t("noNotesYet")}</h1>
+                <p className="text-center normal-case text-xl p-3">{t("noNotesYetInfo")} ✏️</p>
                 <div className="flex-1 text-center">
                     <Link to="/notes/add" className="btn btn-ghost rounded-lg">
                         <PencilSquareIcon className="w-10 h-10 text-blue-500" />
@@ -78,9 +78,9 @@ const Notes = ({ firebaseAuth }: props) => {
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
                 <div className="divide-y m-3">
                     <div className="pt-5 pb-5 bg-white">
-                        <h1 className="text-center normal-case text-2xl">Your notes</h1>
-                        <p className="text-center normal-case text-l">
-                            You have {notes?.length} notes
+                        <h1 className="text-center normal-case text-2xl">{t("yourNotes")}</h1>
+                        <p className="mt-1 text-gray-600 text-center normal-case text-md">
+                            {t("youHave")} {notes?.length} {t("notesHeader")}
                         </p>
                     </div>
                     {/* render three loading skeletons */}

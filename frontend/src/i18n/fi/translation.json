@@ -1,5 +1,5 @@
 {
-    "notes": "Muistiinpanot",
+    "notes": "Muistio",
     "note": "Muistiinpano",
     "login": "Kirjaudu",
     "logout": "Kirjaudu ulos",
@@ -82,8 +82,20 @@
     "title": "Otsikko",
     "content": "Sisältö",
     "saveNote": "Tallenna muistiinpano",
-    "search": "Hae"
-    
-
-
+    "search": "Hae",
+    "noNotesYet": "Ei muistiinpanoja vielä",
+    "noNotesYetInfo": "Luo ensimmäinen muistiinpanosi klikkaamalla alla olevaa kuvaketta!",
+    "youHave": "Sinulla on",
+    "notesHeader": "muistiinpanoa",
+    "errorGettingNotes": "Virhe muistiinpanojen hakemisessa. Yritä myöhemmin uudelleen.",
+    "errorGettingNote": "Virhe muistiinpanon hakemisessa. Yritä myöhemmin uudelleen.",
+    "backToNotes": "Takaisin",
+    "editNote": "Muokkaa",
+    "deleteNote": "Poista",
+    "deleteNoteWarning": "Oletko varma, että haluat poistaa tämän muistiinpanon? Tämä toiminto on peruuttamaton!",
+    "noteDeletedSuccessfully": "Muistiinpano poistettu onnistuneesti.",
+    "noteDeletedError": "Virhe muistiinpanon poistamisessa. Yritä myöhemmin uudelleen.",
+    "createdAt": "Luotu",
+    "genericError": "Jotain meni pieleen. Yritä myöhemmin uudelleen.",
+    "serverDown": "Palvelin on alhaalla. Yritä myöhemmin uudelleen."
 }

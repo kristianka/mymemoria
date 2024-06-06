@@ -11,12 +11,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
 import SingleNoteMap from "./SingleNoteMap";
 import ErrorPage from "../ErrorPage";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
 }
 
 const SingleNote = ({ firebaseAuth }: props) => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { data: user } = useUser(firebaseAuth);
     const { data: notes, status: notesStatus } = useNotes(user || null);
@@ -34,7 +36,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
     }
 
     if (notesStatus === "error") {
-        toast.error("Error getting note, please try again later.");
+        toast.error(t("errorGettingNote"));
         return <ErrorPage />;
     }
 
@@ -46,19 +48,19 @@ const SingleNote = ({ firebaseAuth }: props) => {
     const deleteNote = async () => {
         try {
             // double check
-            const confirmDelete = window.confirm("Are you sure you want to delete this note?");
+            const confirmDelete = window.confirm(t("deleteNoteWarning"));
             if (!confirmDelete) return;
             const res = await notesService.remove(note.id);
             if (!res) {
-                toast.error("Error deleting note, please try again later.");
+                toast.error(t("noteDeletedError"));
                 return;
             }
             // invalidate notes
             queryClient.invalidateQueries({ queryKey: ["notes"] });
-            toast.success("Note deleted successfully.");
+            toast.success(t("noteDeletedSuccessfully"));
             navigate("/notes");
         } catch (error) {
-            toast.error("Error deleting note, please try again later.");
+            toast.error(t("noteDeletedError"));
         }
     };
 
@@ -66,7 +68,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
         navigate(`/notes/${note.id}/edit`);
     };
 
-    document.title = `${note.title} | Notes`;
+    document.title = `${note.title} | ${t("notes")}`;
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
@@ -81,7 +83,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
                                 <Link
                                     id={"toNotesButton"}
                                     className="tooltip"
-                                    data-tip="Back to notes"
+                                    data-tip={t("backToNotes")}
                                     to={"/"}
                                 >
                                     <ChevronLeftIcon className="h-10 w-10 text-blue-500" />
@@ -102,23 +104,23 @@ const SingleNote = ({ firebaseAuth }: props) => {
                                 onClick={editNote}
                                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                             >
-                                Edit note
+                                {t("editNote")}
                             </button>
                             <button
                                 type="button"
                                 onClick={deleteNote}
                                 className="text-white bg-gradient-to-br from-pink-500 to-orange-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                             >
-                                Delete note
+                                {t("deleteNote")}
                             </button>
                         </div>
                         <div className="grid grid-cols-2">
-                            <div className="tooltip" data-tip="Created at">
+                            <div className="tooltip" data-tip={t("createdAt")}>
                                 <InboxArrowDownIcon className="m-auto h-7 w-7 text-blue-500" />
                                 <p>{new Date(note.createdAt).toLocaleString()} </p>
                             </div>
                             {note?.modifiedAt && (
-                                <div className="tooltip" data-tip="Last modified at">
+                                <div className="tooltip" data-tip={t("lastModified")}>
                                     <PencilSquareIcon className="m-auto h-7 w-7 text-blue-500" />
                                     <p>{new Date(note?.modifiedAt).toLocaleString()}</p>
                                 </div>
