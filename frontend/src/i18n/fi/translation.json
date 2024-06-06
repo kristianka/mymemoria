@@ -73,6 +73,17 @@
     "goBackToHomepage": "Palaa etusivulle",
     "lastModified": "Viimeksi muokattu",
     "creationTimeNewestFirst": "Luontiaika (uusin ensin)",
-    "creationTimeOldestFirst": "Luontiaika (vanhin ensin)"
+    "creationTimeOldestFirst": "Luontiaika (vanhin ensin)",
+    "addNote": "Lisää muistiinpano",
+    "addedNote": "Lisätty muistiinpano",
+    "successfully": "onnistuneesti",
+    "addedNoteError": "Virhe muistiinpanon lisäämisessä. Yritä myöhemmin uudelleen.",
+    "addNoteCancelWarning": "Oletko varma, että haluat peruuttaa? Muutoksesi eivät tallennu.",
+    "title": "Otsikko",
+    "content": "Sisältö",
+    "saveNote": "Tallenna muistiinpano",
+    "search": "Hae"
+    
+
 
 }

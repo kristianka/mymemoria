@@ -73,10 +73,14 @@
     "goBackToHomepage": "Go back to the homepage",
     "lastModified": "Last modified",
     "creationTimeNewestFirst": "Creation time (newest first)",
-    "creationTimeOldestFirst": "Creation time (oldest first)"
-
-
-
-
-
+    "creationTimeOldestFirst": "Creation time (oldest first)",
+    "addNote": "Add note",
+    "addedNote": "Added note",
+    "successfully": "successfully",
+    "addedNoteError": "Error adding note. Please try again later.",
+    "addNoteCancelWarning": "Are you sure you want to cancel? Your changes will not be saved.",
+    "title": "Title",
+    "content": "Content",
+    "saveNote": "Save note",
+    "search": "Search"
 }

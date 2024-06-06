@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { FireBaseUserInterface, GeocoderResultInterface } from "../../types";
 import useUser from "../../hooks/useUser";
 import MapLoadingSkeleton from "./MapLoadingSkeleton";
+import { useTranslation } from "react-i18next";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
@@ -23,6 +24,7 @@ interface props {
 }
 
 const AddingNoteMap = ({ firebaseAuth, setLat, setLng }: props) => {
+    const { t } = useTranslation();
     const { data: user, status: userStatus } = useUser(firebaseAuth);
     const navigate = useNavigate();
 
@@ -59,7 +61,8 @@ const AddingNoteMap = ({ firebaseAuth, setLat, setLng }: props) => {
             // Add geocoder
             const geocoder = new MapboxGeocoder({
                 accessToken: mapboxgl.accessToken as string,
-                mapboxgl: mapboxgl
+                mapboxgl: mapboxgl,
+                placeholder: t("search")
             });
 
             const newMarker = new mapboxgl.Marker()
