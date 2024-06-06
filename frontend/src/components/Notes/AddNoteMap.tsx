@@ -151,7 +151,7 @@ const AddingNoteMap = ({ firebaseAuth, setLat, setLng }: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker, user, setLat, setLng]);
+    }, [map, marker, user, setLat, setLng, t]);
 
     return (
         <div>

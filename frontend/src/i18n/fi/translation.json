@@ -112,5 +112,6 @@
     "editNoteLong": "Muokkaa muistiinpanoa",
     "noteUpdatedSuccessfully": "Muistiinpano päivitetty onnistuneesti.",
     "noteUpdateError": "Virhe muistiinpanon päivittämisessä. Yritä myöhemmin uudelleen.",
-    "cancelChanges": "Peruuta muutokset"
+    "cancelChanges": "Peruuta muutokset",
+    "new": "Uusi"
 }

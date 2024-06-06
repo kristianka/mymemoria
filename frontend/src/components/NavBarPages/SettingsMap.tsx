@@ -139,7 +139,7 @@ const EditNoteMap = ({ user, setLat, setLng }: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker, setLat, setLng, user]);
+    }, [map, marker, setLat, setLng, t, user]);
 
     return (
         <div>

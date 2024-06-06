@@ -136,7 +136,7 @@ const EditNoteMap = ({ note, setLat, setLng }: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker, setLat, setLng, note]);
+    }, [map, marker, setLat, setLng, note, t]);
 
     return (
         <div className="h-100" ref={mapContainer} style={{ height: "400px", borderRadius: 5 }} />

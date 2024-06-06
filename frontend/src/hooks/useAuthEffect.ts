@@ -44,7 +44,7 @@ const useAuthEffect = (
 
         // Cleanup the observer when the component unmounts
         return () => unsubscribe();
-    }, [setFirebaseAuth, setLoading]);
+    }, [setFirebaseAuth, setLoading, t]);
 };
 
 export default useAuthEffect;

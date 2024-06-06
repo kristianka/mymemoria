@@ -112,5 +112,6 @@
     "editNoteLong": "Edit note",
     "noteUpdatedSuccessfully": "Note updated successfully.",
     "noteUpdateError": "Error updating note. Please try again later.",
-    "cancelChanges": "Cancel changes"
+    "cancelChanges": "Cancel changes",
+    "new": "New"
 }

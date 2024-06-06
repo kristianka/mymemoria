@@ -19,6 +19,8 @@ const InfoPage = () => {
 
     useEffect(() => {
         healthcheck();
+        // causes infinite loop without
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
