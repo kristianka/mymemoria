@@ -38,7 +38,22 @@
     "registeredSuccessfully": "Registered successfully! Welcome!",
     "registerError": "Error while registering. Please try again later.",
     "weakPassword": "Weak password. Please try again.",
-    "emailInUse": "Email is already in use. Please try again."
+    "emailInUse": "Email is already in use. Please try again.",
+    "pleaseFillInName": "Please fill in your name.",
+    "nameUpdatedSuccessfully": "Name updated successfully!",
+    "nameUpdateError": "Error while updating name. Please try again later.",
+    "close": "Close",
+    "updateName": "Update name",
+    "deleteAccount": "Delete account",
+    "editName": "Edit name",
+    "lastSignedIn": "Last signed in",
+    "accountCreatedAt": "Account created at",
+    "changeYourName": "Change your name",
+    "errorGettingUserInfo": "Error getting user info. Please try again later.",
+    "accountDeletedSuccessfully": "Account deleted successfully.",
+    "accountDeletedGoodbye": "Thanks for trying out the app!",
+    "deleteAccountError": "Error deleting account. Please try again later.",
+    "deleteAccountWarning": "Are you sure you want to delete your account? This action is irreversible and all your data will be lost!"
 
 
 

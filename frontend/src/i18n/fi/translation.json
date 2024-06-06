@@ -33,5 +33,26 @@
     "passwordResetEmailSent": "Salasanan nollausviesti lähetetty. Tarkista sähköpostisi!",
     "passwordResetError": "Virhe salasanan nollausta lähettäessä. Yritä myöhemmin uudelleen.",
     "passwordResetInfo": "Voit lähettää uuden nollauslinkin minuutin kuluttua, jos et saanut sähköpostia. Tarkista roskapostikansiosi.",
-    "missingEmail": "Anna sähköpostiosoite."
+    "missingEmail": "Anna sähköpostiosoite.",
+    "passwordsDoNotMatch": "Salasanat eivät täsmää. Yritä uudelleen.",
+    "registeredSuccessfully": "Rekisteröityminen onnistui! Tervetuloa!",
+    "registerError": "Virhe rekisteröityessä. Yritä myöhemmin uudelleen.",
+    "weakPassword": "Heikko salasana. Yritä uudelleen.",
+    "emailInUse": "Sähköpostiosoite on jo käytössä. Yritä uudelleen.",
+    "pleaseFillInName": "Anna nimesi.",
+    "nameUpdatedSuccessfully": "Nimi päivitetty onnistuneesti!",
+    "nameUpdateError": "Virhe nimen päivittämisessä. Yritä myöhemmin uudelleen.",
+    "close": "Sulje",
+    "updateName": "Päivitä nimi",
+    "deleteAccount": "Poista tili",
+    "editName": "Muokkaa nimeä",
+    "lastSignedIn": "Viimeisin kirjautuminen",
+    "accountCreatedAt": "Tili luotu",
+    "changeYourName": "Vaihda nimesi",
+    "errorGettingUserInfo": "Virhe käyttäjätietojen hakemisessa. Yritä myöhemmin uudelleen.",
+    "accountDeletedSuccessfully": "Tili poistettu onnistuneesti.",
+    "accountDeletedGoodbye": "Kiitos sovelluksen kokeilemisesta!",
+    "deleteAccountError": "Virhe tilin poistamisessa. Yritä myöhemmin uudelleen.",
+    "deleteAccountWarning": "Oletko varma, että haluat poistaa tilisi? Tämä toiminto on peruuttamaton ja kaikki tietosi menetetään!"
+    
 }

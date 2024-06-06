@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 import userService from "../../services/user";
 import { BackendUserInterface, FireBaseUserInterface } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface props {
     user: BackendUserInterface;
@@ -11,6 +12,7 @@ interface props {
 }
 
 const EditProfile = ({ user, firebaseAuth }: props) => {
+    const { t } = useTranslation();
     const [name, setName] = useState(user.name);
     const queryClient = useQueryClient();
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +23,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
         try {
             e.preventDefault();
             if (!name) {
-                toast.error("Please fill in name.");
+                toast.error(t("pleaseFillInName"));
                 return;
             }
             const updatedUser = {
@@ -32,7 +34,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
             await userService.update(updatedUser);
             // invalidate user
             queryClient.invalidateQueries({ queryKey: ["user"] });
-            toast.success("Name updated successfully!");
+            toast.success(t("nameUpdatedSuccessfully"));
             // close modal
             const modal = document.getElementById("editNameModal");
             if (modal) {
@@ -41,7 +43,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
             }
         } catch (error) {
             console.log(error);
-            toast.error("Error updating name, please try again later.");
+            toast.error(t("nameUpdateError"));
         }
     };
 
@@ -64,7 +66,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                                 htmlFor="title"
                                 className="block text-sm font-medium leading-6 text-gray-900"
                             >
-                                Name
+                                {t("name")}
                             </label>
                             <div className="mt-2">
                                 <input
@@ -74,7 +76,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                                     type="text"
                                     required
                                     id="name"
-                                    placeholder="Name"
+                                    placeholder={t("name")}
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -85,7 +87,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                                 id="closeModalButton"
                                 className="rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Close
+                                {t("close")}
                             </button>
                             <button
                                 onClick={editName}
@@ -93,7 +95,7 @@ const EditProfile = ({ user, firebaseAuth }: props) => {
                                 id="updateNameButton"
                                 className="rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Update name
+                                {t("updateName")}
                             </button>
                         </div>
                     </form>
