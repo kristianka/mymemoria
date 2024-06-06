@@ -9,6 +9,7 @@ import { FireBaseUserInterface, UpdateUserInterface } from "../../types";
 import SettingsMap from "./SettingsMap";
 import ErrorPage from "../ErrorPage";
 import { useTranslation } from "react-i18next";
+import ChangeLanguageDropdown from "./ChangeLanguage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -84,6 +85,9 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                             {t("settingsPageInfo3")}
                         </Link>
                     </p>
+                    <div className="text-center m-5">
+                        <ChangeLanguageDropdown />
+                    </div>
                 </div>
                 <div>
                     <label

@@ -96,11 +96,12 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
     };
 
     useEffect(() => {
-        document.title = t("login") + " | " + t("notes");
         if (firebaseAuth) {
             navigate("/");
         }
     }, [navigate, firebaseAuth]);
+
+    document.title = t("login") + " | " + t("notes");
 
     return (
         <div>

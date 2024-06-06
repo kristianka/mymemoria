@@ -99,11 +99,12 @@ const RegisterPage = ({ firebaseAuth }: props) => {
 
     // if user is already logged in, redirect to home page
     useEffect(() => {
-        document.title = t("register") + " | " + t("notes");
         if (firebaseAuth) {
             navigate("/");
         }
     }, [navigate, firebaseAuth]);
+
+    document.title = t("register") + " | " + t("notes");
 
     return (
         <div className="container mx-auto">

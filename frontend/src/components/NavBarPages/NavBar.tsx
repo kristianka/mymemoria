@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { auth } from "../../firebase";
 import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface } from "../../types";
-import { changeLanguage } from "../../misc";
+import ChangeLanguageDropdown from "./ChangeLanguage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -75,10 +75,6 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     {t("notes")}
                 </Link>
             </div>
-            <button className="mr-3 rounded-md bg-gray-100 p-3" onClick={changeLanguage}>
-                {t("changeLanguage")}
-            </button>
-
             {/* user is logged in */}
             {user ? (
                 <div className="flex-none">
@@ -136,6 +132,8 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
             ) : (
                 // user isn't logged in
                 <div className="flex-none">
+                    {/* when signed in, language setting is in settings */}
+                    <ChangeLanguageDropdown />
                     <Link to="/login" className="loginButton btn btn-ghost">
                         {t("signIn")}
                     </Link>
