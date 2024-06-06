@@ -64,7 +64,13 @@
     "location": "Sijainti",
     "cancel": "Peruuta",
     "save": "Tallenna",
-    "defaultLocation": "Oletussijainti"
+    "defaultLocation": "Oletussijainti",
+    "somethingWentWrong": "Pahoittelut, jotain meni pieleen. Yritä myöhemmin uudelleen.",
+    "expiredSession": "Istuntosi on mahdollisesti vanhentunut. Kirjaudu sisään uudelleen tai päivitä sivu.",
+    "refresh": "Päivitä",
+    "pageNotFound": "Sivua ei löytynyt",
+    "pageNotFoundInfo": "Pahoittelut, sivua ei löytynyt. Tarkista osoite tai yritä myöhemmin uudelleen.",
+    "goBackToHomepage": "Palaa etusivulle"
 
 
 

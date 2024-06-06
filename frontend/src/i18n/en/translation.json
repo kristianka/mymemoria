@@ -64,7 +64,13 @@
     "location": "Location",
     "cancel": "Cancel",
     "save": "Save",
-    "defaultLocation": "Default location"
+    "defaultLocation": "Default location",
+    "somethingWentWrong": "Sorry, something went wrong. Please try again later.",
+    "expiredSession": "Your session might have expired. Please log in again or refresh the page.",
+    "refresh": "Refresh",
+    "pageNotFound": "Page not found",
+    "pageNotFoundInfo": "Sorry, we couldn't find the page you were looking for. Please check the URL or try again later.",
+    "goBackToHomepage": "Go back to the homepage"
 
 
 
