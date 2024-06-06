@@ -1,15 +1,13 @@
 import axios from "axios";
-import { useTranslation } from "react-i18next";
-const baseUrl = "/api/info";
 import { toast } from "react-toastify";
+const baseUrl = "/api/info";
 
-const serverHealthCheck = async () => {
-    const { t } = useTranslation();
+const serverHealthCheck = async (t: (key: string) => string) => {
     try {
         const res = await axios.get(`${baseUrl}/health`);
         return res.status;
     } catch (error) {
-        toast.error(t("serverError"));
+        toast.error(t("serverDown"));
     }
 };
 

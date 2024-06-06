@@ -97,5 +97,16 @@
     "noteDeletedError": "Error deleting note. Please try again later.",
     "createdAt": "Created at",
     "genericError": "An error occurred. Please try again later.",
-    "serverDown": "Server is down. Please try again later."
+    "serverDown": "Server is down. Please try again later.",
+    "notesApp": "Notes app",
+    "info": "Info",
+    "reportABug": "Report a bug",
+    "sendFeedback": "Send feedback",
+    "sourceCode": "Source code",
+    "backToTop": "Back to top",
+    "serverStatus": "Server status",
+    "readmeTip1": "Please checkout the readme in the GitHub repository for answers.",
+    "readmeTip2": "The readme file in the",
+    "readmeTip3": "GitHub repository",
+    "readmeTip4": "should answer all of your questions. If it doesn't, you can open a request from the footer. Please note that it will be public. Thank you!"
 }

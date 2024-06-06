@@ -97,5 +97,16 @@
     "noteDeletedError": "Virhe muistiinpanon poistamisessa. Yritä myöhemmin uudelleen.",
     "createdAt": "Luotu",
     "genericError": "Jotain meni pieleen. Yritä myöhemmin uudelleen.",
-    "serverDown": "Palvelin on alhaalla. Yritä myöhemmin uudelleen."
+    "serverDown": "Palvelin on alhaalla. Yritä myöhemmin uudelleen.",
+    "notesApp": "Muistiosovellus",
+    "info": "Info",
+    "reportABug": "Ilmoita virheestä",
+    "sendFeedback": "Lähetä palautetta",
+    "sourceCode": "Lähdekoodi",
+    "backToTop": "Takaisin ylös",
+    "serverStatus": "Palvelimen tila",
+    "readmeTip1": "Tarkista readme GitHub-repositoriosta vastauksia varten.",
+    "readmeTip2": "Readme-tiedosto",
+    "readmeTip3": "GitHub-repositoriossa",
+    "readmeTip4": "vastaa usein kysyttyihin kysymyksiin. Jos ei, voit lähettää palautetta tai ilmoittaa virheestä. Huomaa että se on julkinen. Kiitos!"
 }
