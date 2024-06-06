@@ -53,6 +53,20 @@
     "accountDeletedSuccessfully": "Tili poistettu onnistuneesti.",
     "accountDeletedGoodbye": "Kiitos sovelluksen kokeilemisesta!",
     "deleteAccountError": "Virhe tilin poistamisessa. Yritä myöhemmin uudelleen.",
-    "deleteAccountWarning": "Oletko varma, että haluat poistaa tilisi? Tämä toiminto on peruuttamaton ja kaikki tietosi menetetään!"
+    "deleteAccountWarning": "Oletko varma, että haluat poistaa tilisi? Tämä toiminto on peruuttamaton ja kaikki tietosi menetetään!",
+    "pleaseSelectALocation": "Valitse sijainti",
+    "defaultMapLocationUpdated": "Oletussijainti päivitetty onnistuneesti!",
+    "defaultMapLocationUpdateError": "Virhe oletussijainnin päivittämisessä. Yritä myöhemmin uudelleen.",
+    "defaultMapLocationCancelWarning": "Oletko varma, että haluat peruuttaa? Muutoksesi eivät tallennu.",
+    "settingsPageInfo": "Tällä sivulla voit muokata sovelluksen asetuksia. Oletussijainti on Helsingin rautatieasema.",
+    "settingsPageInfo2": "Voit muuttaa nimeäsi tai poistaa tilisi kohdasta",
+    "settingsPageInfo3": "profiili.",
+    "location": "Sijainti",
+    "cancel": "Peruuta",
+    "save": "Tallenna",
+    "defaultLocation": "Oletussijainti"
+
+
+
     
 }

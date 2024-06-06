@@ -8,12 +8,14 @@ import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface, UpdateUserInterface } from "../../types";
 import SettingsMap from "./SettingsMap";
 import ErrorPage from "../ErrorPage";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
 }
 
 const SettingsPage = ({ firebaseAuth }: props) => {
+    const { t } = useTranslation();
     const { data: user, status: userStatus } = useUser(firebaseAuth);
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -33,7 +35,7 @@ const SettingsPage = ({ firebaseAuth }: props) => {
     }
 
     if (userStatus === "error" || !user || !firebaseAuth) {
-        toast.error("Error getting user info, please try again later.");
+        toast.error(t("errorGettingUserInfo"));
         return <ErrorPage />;
     }
 
@@ -41,7 +43,7 @@ const SettingsPage = ({ firebaseAuth }: props) => {
         try {
             e.preventDefault();
             if (!lat || !lng) {
-                toast.error("Please select a location");
+                toast.error(t("pleaseSelectLocation"));
                 return;
             }
 
@@ -55,17 +57,15 @@ const SettingsPage = ({ firebaseAuth }: props) => {
             await userService.update(updatedUser);
             // invalidate user
             queryClient.invalidateQueries({ queryKey: ["user"] });
-            toast.success("Default map location updated successfully!");
+            toast.success(t("defaultMapLocationUpdated"));
         } catch (error) {
             console.error(error);
-            toast.error("Error updating default map location, please try again later.");
+            toast.error(t("defaultMapLocationUpdateError"));
         }
     };
 
     const cancelChanges = () => {
-        const confirmCancel = window.confirm(
-            "Are you sure you want to return? All changes will be lost!"
-        );
+        const confirmCancel = window.confirm(t("defaultMapLocationCancelWarning"));
         if (!confirmCancel) return;
         setLat(0);
         setLng(0);
@@ -76,15 +76,12 @@ const SettingsPage = ({ firebaseAuth }: props) => {
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1 m-3">
                 <div className="md:m-10">
-                    <h1 className="text-center normal-case text-2xl">Settings</h1>
-                    <p className="mt-5 text-center text-gray-500">
-                        Here you can change your default map location when creating a note. The
-                        default location is Helsinki Railway Station.
-                    </p>
+                    <h1 className="text-center normal-case text-2xl">{t("settings")}</h1>
+                    <p className="mt-5 text-center text-gray-500">{t("settingsPageInfo")}</p>
                     <p className="mt-3 text-center text-gray-500">
-                        You can change your name or delete your account in{" "}
+                        {t("settingsPageInfo2")}{" "}
                         <Link to="/profile" className="text-blue-500">
-                            profile page.
+                            {t("settingsPageInfo3")}
                         </Link>
                     </p>
                 </div>
@@ -93,7 +90,7 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                         htmlFor="location"
                         className="block text-sm font-medium leading-6 text-gray-900 mt-5"
                     >
-                        Location
+                        {t("defaultLocation")}
                     </label>
                     <SettingsMap setLat={setLat} setLng={setLng} user={user} />
                     <div className="grid grid-cols-2">
@@ -103,7 +100,7 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                                 id="cancelChangesButton"
                                 className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-pink-500 to-orange-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Cancel
+                                {t("cancel")}
                             </button>
                         </div>
                         <div className="ml-5">
@@ -113,7 +110,7 @@ const SettingsPage = ({ firebaseAuth }: props) => {
                                 id="saveLocationButton"
                                 className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Save location
+                                {t("save")}
                             </button>
                         </div>
                     </div>

@@ -53,7 +53,19 @@
     "accountDeletedSuccessfully": "Account deleted successfully.",
     "accountDeletedGoodbye": "Thanks for trying out the app!",
     "deleteAccountError": "Error deleting account. Please try again later.",
-    "deleteAccountWarning": "Are you sure you want to delete your account? This action is irreversible and all your data will be lost!"
+    "deleteAccountWarning": "Are you sure you want to delete your account? This action is irreversible and all your data will be lost!",
+    "pleaseSelectALocation": "Please select a location",
+    "defaultMapLocationUpdated": "Default map location updated successfully!",
+    "defaultMapLocationUpdateError": "Error updating default map location. Please try again later.",
+    "defaultMapLocationCancelWarning": "Are you sure you want to cancel? Your changes will not be saved.",
+    "settingsPageInfo": "Here you can change your default map location when creating a note. The default location is Helsinki Railway Station.",
+    "settingsPageInfo2": "You can change your name or delete your account in",
+    "settingsPageInfo3": "the profile page.",
+    "location": "Location",
+    "cancel": "Cancel",
+    "save": "Save",
+    "defaultLocation": "Default location"
+
 
 
 

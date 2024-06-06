@@ -116,7 +116,6 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     </div>
                 </div>
             </div>
-            {/* <EditProfile /> */}
         </div>
     );
 };
