@@ -8,9 +8,10 @@
 
 ❓ This is the repository for my fullstack project Journal app which took over 200 hours to make! This readme includes the documentation, the code for the frontend and the backend. See below for more screenshots and info.
 
-💻 Deployed at https://fullstack-project-rxtv.onrender.com/. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
+💻 Deployed at https://fullstack-project-rxtv.onrender.com/. Note that it may take few minutes to connect since Render automatically spins down free apps. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
 
-⭐ New! I have made a React Native port of this app, see here! https://github.com/kristianka/journal_app
+>[!TIP]
+>  ⭐ New features! This app now has i18n translations! Languages are English and Finnish. There are other changes too, see releases for full patch notes!
 
 <h1>Info</h1>
 
@@ -51,6 +52,16 @@ All the code in frontend and backend are made with TypeScript and with latest li
 -   Set default map location for your notes.
 
 -   The app is designed for all screens, UI scales properly on mobile and PC.
+
+-   Fully translated to English and Finnish.
+
+-   Code is optimised, properly commented and made logically.
+
+-   Proper testing.
+
+-   Proper CI/CD pipeline.
+
+-   Uses GitHub branches and pull requests.
 
 <h2>Screenshots 📷</h2>
 
