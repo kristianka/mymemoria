@@ -4,11 +4,13 @@ import notesService from "../services/notes";
 import userService from "../services/user";
 import { FireBaseUserInterface } from "../types";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const useAuthEffect = (
     setFirebaseAuth: React.Dispatch<React.SetStateAction<FireBaseUserInterface | null>>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+    const { t } = useTranslation();
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
             if (authUser) {
@@ -27,9 +29,9 @@ const useAuthEffect = (
                     })
                     .catch((error: Error) => {
                         if (error.message.includes("auth/id-token-expired")) {
-                            toast.error("Your session has expired. Please log in again.");
+                            toast.error(t("expiredSession"));
                         } else {
-                            toast.error("An error occurred. Please try again.");
+                            toast.error(t("genericError"));
                         }
                         setFirebaseAuth(null);
                     });
@@ -42,7 +44,7 @@ const useAuthEffect = (
 
         // Cleanup the observer when the component unmounts
         return () => unsubscribe();
-    }, [setFirebaseAuth, setLoading]);
+    }, [setFirebaseAuth, setLoading, t]);
 };
 
 export default useAuthEffect;

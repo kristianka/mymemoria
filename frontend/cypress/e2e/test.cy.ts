@@ -59,7 +59,9 @@ describe("Note app", function () {
                 cy.get(".logoutButton").should("be.visible");
                 // Click the logout button
                 cy.get(".logoutButton").click();
-                cy.contains("Logged out successfully. 👋", { timeout: 6000 }).should("be.visible");
+                cy.contains("Logged out successfully, see you soon! 👋", { timeout: 6000 }).should(
+                    "be.visible"
+                );
             }
         });
     }
@@ -83,9 +85,9 @@ describe("Note app", function () {
     describe("LandingPage", () => {
         it("front page requires to login/registeration", function () {
             cy.visit("/");
-            cy.contains("Please sign in to use the application");
+            cy.contains("Create an account to start taking notes with location data");
             cy.contains("Sign in");
-            cy.contains("Create account");
+            cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
         });
 
@@ -115,18 +117,18 @@ describe("Note app", function () {
 
                 logoutUser();
 
-                cy.contains("Please sign in to use the application");
+                cy.contains("Create an account to start taking notes with location data");
                 cy.contains("Sign in");
-                cy.contains("Create account");
+                cy.contains("Create an account");
                 cy.get("#addNoteButton").should("not.exist");
                 cy.visit("/register");
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
-                cy.contains("Email already in use");
+                cy.contains("Email is already in use. Please try again.");
             });
 
             it("registeration fails if email is invalid", () => {
                 registerUser("testuser", "Test User", "password123");
-                cy.contains("Invalid email");
+                cy.contains("Invalid email address. Please try again.");
             });
 
             it("registeration fails if password is weak", () => {
@@ -174,7 +176,7 @@ describe("Note app", function () {
 
             it("login fails if email is invalid", () => {
                 loginUser("testuser", "password123");
-                cy.contains("Invalid email.");
+                cy.contains("Invalid email address. Please try again.");
             });
 
             it("login fails if password is weak", () => {
@@ -189,7 +191,7 @@ describe("Note app", function () {
 
             it("login fails if email or password is empty", () => {
                 loginUser("", "password123");
-                cy.contains("Invalid email.");
+                cy.contains("Invalid email address. Please try again.");
                 loginUser(CYPRESS_TEST_EMAIL, "");
                 cy.contains("Please fill in all the fields.");
             });
@@ -279,7 +281,7 @@ describe("Note app", function () {
 
                 it("you can edit the note", () => {
                     cy.get('[id^="toNoteButton"]').click();
-                    cy.contains("Edit note").click();
+                    cy.contains("Edit").click();
 
                     cy.get("#noteTitle").clear().type("Edited note by test user");
                     cy.get("#noteContent").clear().type("Edited note content");
@@ -294,7 +296,7 @@ describe("Note app", function () {
 
                 it("you can delete the note", () => {
                     cy.get('[id^="toNoteButton"]').click();
-                    cy.contains("Delete note").click();
+                    cy.contains("Delete").click();
                     // cy.contains("Are you sure you want to delete this note?");
                     // cy.contains("Yes").click();
                     cy.contains("Note deleted successfully", { timeout: 6000 }).should(
@@ -305,9 +307,9 @@ describe("Note app", function () {
 
                 it("notes don't show after user logs out", () => {
                     logoutUser();
-                    cy.contains("Please sign in to use the application");
+                    cy.contains("Create an account to start taking notes with location data");
                     cy.contains("Sign in");
-                    cy.contains("Create account");
+                    cy.contains("Create an account");
                     cy.get("#addNoteButton").should("not.exist");
                 });
             });
@@ -341,9 +343,9 @@ describe("Note app", function () {
                 cy.contains("Account deleted successfully.", { timeout: 6000 }).should(
                     "be.visible"
                 );
-                cy.contains("Please sign in to use the application");
+                cy.contains("Create an account to start taking notes with location data");
                 cy.contains("Sign in");
-                cy.contains("Create account");
+                cy.contains("Create an account");
                 cy.get("#addNoteButton").should("not.exist");
             });
         });
@@ -373,33 +375,33 @@ describe("Note app", function () {
     describe("Redirected to front page when not logged in", () => {
         it("note page redirects to front page", () => {
             cy.visit("/notes");
-            cy.contains("Please sign in to use the application");
+            cy.contains("Create an account to start taking notes with location data");
             cy.contains("Sign in");
-            cy.contains("Create account");
+            cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
         });
 
         it("add note page redirects to front page", () => {
             cy.visit("/notes/add");
-            cy.contains("Please sign in to use the application");
+            cy.contains("Create an account to start taking notes with location data");
             cy.contains("Sign in");
-            cy.contains("Create account");
+            cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
         });
 
         it("profile page redirects to front page", () => {
             cy.visit("/profile");
-            cy.contains("Please sign in to use the application");
+            cy.contains("Create an account to start taking notes with location data");
             cy.contains("Sign in");
-            cy.contains("Create account");
+            cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
         });
 
         it("settings page redirects to front page", () => {
             cy.visit("/settings");
-            cy.contains("Please sign in to use the application");
+            cy.contains("Create an account to start taking notes with location data");
             cy.contains("Sign in");
-            cy.contains("Create account");
+            cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
         });
     });

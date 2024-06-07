@@ -1,13 +1,13 @@
 import axios from "axios";
-const baseUrl = "/api/info";
 import { toast } from "react-toastify";
+const baseUrl = "/api/info";
 
-const serverHealthCheck = async () => {
+const serverHealthCheck = async (t: (key: string) => string) => {
     try {
         const res = await axios.get(`${baseUrl}/health`);
         return res.status;
     } catch (error) {
-        toast.error("The server is down. Please try again later.");
+        toast.error(t("serverDown"));
     }
 };
 

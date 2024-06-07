@@ -7,6 +7,7 @@ import { FireBaseUserInterface } from "../../types";
 import userService from "../../services/user";
 import EditProfile from "./EditProfile";
 import ErrorPage from "../ErrorPage";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -14,6 +15,7 @@ interface props {
 }
 
 const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
+    const { t } = useTranslation();
     const { data: user, status: userStatus } = useUser(firebaseAuth);
 
     const navigate = useNavigate();
@@ -30,26 +32,24 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
     }
 
     if (userStatus === "error" || !user || !firebaseAuth) {
-        toast.error("Error getting user info, please try again later.");
+        toast.error(t("errorGettingUserInfo"));
         return <ErrorPage />;
     }
 
-    document.title = "Profile | Notes";
+    document.title = t("profile") + " | " + t("notes");
 
     const deleteAccount = async () => {
         // double check
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete your account? This cannot be undone and all notes will be lost!"
-        );
+        const confirmDelete = window.confirm(t("deleteAccountWarning"));
         if (!confirmDelete) return;
         // delete account
         try {
             await userService.remove(firebaseAuth.uid);
             setFirebaseAuth(null);
-            toast.success("Account deleted successfully.");
+            toast.success(t("accountDeletedSuccessfully") + " " + t("accountDeletedGoodbye"));
             navigate("/");
         } catch (error) {
-            toast.error("Error deleting account, please try again later.");
+            toast.error(t("errorDeletingAccount"));
         }
     };
 
@@ -67,7 +67,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             <div className="m-auto max-w-3xl">
                 <dialog id="editNameModal" className="modal">
                     <div className="modal-box">
-                        <h3 className="font-bold text-lg">Change your name</h3>
+                        <h3 className="font-bold text-lg">{t("changeYourName")}</h3>
                         <EditProfile firebaseAuth={firebaseAuth} user={user} />
                     </div>
                 </dialog>
@@ -83,13 +83,13 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                         <span className="text-sm text-gray-500">{firebaseAuth.email}</span>
                         {firebaseAuth.metadata?.creationTime && (
                             <span className="text-sm text-gray-500 mt-5">
-                                Account created at:{" "}
+                                {t("accountCreatedAt")}:{" "}
                                 {new Date(firebaseAuth.metadata.creationTime).toLocaleString()}
                             </span>
                         )}
                         {firebaseAuth.metadata?.lastSignInTime && (
                             <span className="text-sm text-gray-500">
-                                Last signed in:{" "}
+                                {t("lastSignedIn")}:{" "}
                                 {new Date(firebaseAuth.metadata.lastSignInTime).toLocaleString()}
                             </span>
                         )}
@@ -101,7 +101,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                 onClick={handleModalOpen}
                             >
-                                Edit name
+                                {t("editName")}
                             </button>
 
                             <button
@@ -110,13 +110,12 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 className="text-white bg-gradient-to-br from-pink-500 to-orange-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                 onClick={deleteAccount}
                             >
-                                Delete account
+                                {t("deleteAccount")}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* <EditProfile /> */}
         </div>
     );
 };

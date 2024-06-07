@@ -9,12 +9,14 @@ import useNotes from "../../hooks/useNotes";
 import NotFound from "../NotFound";
 import notesService from "../../services/notes";
 import EditNoteMap from "./EditNoteMap";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
 }
 
 const EditNote = ({ firebaseAuth }: props) => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { data: user } = useUser(firebaseAuth);
     const { data: notes, status: notesStatus } = useNotes(user || null);
@@ -25,7 +27,7 @@ const EditNote = ({ firebaseAuth }: props) => {
     const [content, setContent] = useState("");
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
-    document.title = "Edit note | Notes";
+    document.title = `${t("editNoteLong")} | ${t("notes")}`;
 
     useEffect(() => {
         if (!firebaseAuth) {
@@ -51,12 +53,12 @@ const EditNote = ({ firebaseAuth }: props) => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
             setTitle("");
             setContent("");
-            toast.success("Note updated successfully.");
+            toast.success(t("noteUpdatedSuccessfully"));
             navigate(`/notes/${id}`);
         },
         onError: (error) => {
             console.error(error);
-            toast.error("Error updating note, please try again later.");
+            toast.error(t("noteUpdateError"));
         }
     });
 
@@ -83,7 +85,7 @@ const EditNote = ({ firebaseAuth }: props) => {
     const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (!title || !content) {
-            toast.error("Please fill in all fields");
+            toast.error(t("pleaseFillAllFields"));
             return;
         }
         const location = {
@@ -104,9 +106,7 @@ const EditNote = ({ firebaseAuth }: props) => {
     };
 
     const cancelChanges = () => {
-        const confirmCancel = window.confirm(
-            "Are you sure you want to return? All changes will be lost!"
-        );
+        const confirmCancel = window.confirm(t("addNoteCancelWarning"));
         if (!confirmCancel) return;
         setTitle("");
         setContent("");
@@ -119,14 +119,14 @@ const EditNote = ({ firebaseAuth }: props) => {
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1 m-3">
                 <div className="md:m-10">
-                    <h1 className="text-center normal-case text-2xl">Edit note</h1>
+                    <h1 className="text-center normal-case text-2xl">{t("editNoteLong")}</h1>
                     <form className="space-y-6" action="#" method="POST">
                         <div>
                             <label
                                 htmlFor="title"
                                 className="block text-sm font-medium leading-6 text-gray-900"
                             >
-                                Title
+                                {t("title")}
                             </label>
                             <div className="mt-2">
                                 <input
@@ -147,7 +147,7 @@ const EditNote = ({ firebaseAuth }: props) => {
                                     htmlFor="content"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
-                                    Content
+                                    {t("content")}
                                 </label>
                             </div>
                             <div className="mt-2">
@@ -170,7 +170,7 @@ const EditNote = ({ firebaseAuth }: props) => {
                         htmlFor="location"
                         className="block text-sm font-medium leading-6 text-gray-900 mt-5"
                     >
-                        Location
+                        {t("location")}
                     </label>
                     <div className="mt-2"></div>
                     <EditNoteMap note={note} setLat={setLat} setLng={setLng} />
@@ -181,7 +181,7 @@ const EditNote = ({ firebaseAuth }: props) => {
                                 id="cancelChangesButton"
                                 className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-pink-500 to-orange-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Cancel changes
+                                {t("cancelChanges")}
                             </button>
                         </div>
                         <div className="ml-5">
@@ -191,7 +191,7 @@ const EditNote = ({ firebaseAuth }: props) => {
                                 id="editNoteButton"
                                 className="mt-3 flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Save note
+                                {t("saveNote")}
                             </button>
                         </div>
                     </div>

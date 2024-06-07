@@ -5,6 +5,7 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { BackendUserInterface, GeocoderResultInterface } from "../../types";
+import { useTranslation } from "react-i18next";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
@@ -15,6 +16,7 @@ interface props {
 }
 
 const EditNoteMap = ({ user, setLat, setLng }: props) => {
+    const { t } = useTranslation();
     const mapContainer = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
     const [marker, setMarker] = useState<mapboxgl.Marker | null>(null);
@@ -41,7 +43,8 @@ const EditNoteMap = ({ user, setLat, setLng }: props) => {
             // Add geocoder
             const geocoder = new MapboxGeocoder({
                 accessToken: mapboxgl.accessToken as string,
-                mapboxgl: mapboxgl
+                mapboxgl: mapboxgl,
+                placeholder: t("search")
             });
 
             const newMarker = new mapboxgl.Marker()
@@ -136,7 +139,7 @@ const EditNoteMap = ({ user, setLat, setLng }: props) => {
                 marker.remove();
             }
         };
-    }, [map, marker, setLat, setLng, user]);
+    }, [map, marker, setLat, setLng, t, user]);
 
     return (
         <div>

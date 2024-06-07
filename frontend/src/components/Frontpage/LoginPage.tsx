@@ -6,6 +6,7 @@ import { FirebaseError } from "firebase/app";
 
 import { auth } from "../../firebase";
 import { FireBaseUserInterface } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -13,6 +14,7 @@ interface props {
 }
 
 const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     // avoids button spam via frontend, but of course it can be spammed via backend
@@ -42,21 +44,21 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             };
 
             setFirebaseAuth(neededUserData);
-            toast.success("Logged in successfully! 😃");
+            toast.success(`${t("loggedInSuccessfully")}😃`);
             navigate("/");
         } catch (error) {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/invalid-email") {
-                    toast.error("Invalid email. Please try again.");
+                    toast.error(t("invalidEmail"));
                     return;
                 }
                 if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
-                    toast.error("Please fill in all the fields.");
+                    toast.error(t("pleaseFillAllFields"));
                     return;
                 }
                 if (error.code === "auth/invalid-credential") {
-                    toast.error("Invalid credentials. Please try again.");
+                    toast.error(t("invalidCredentials"));
                     return;
                 }
             }
@@ -69,10 +71,8 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         e.preventDefault();
         try {
             await sendPasswordResetEmail(auth, email);
-            toast.success(
-                "Password reset email sent. Please check your your spam folder if you can't find it."
-            );
-            toast.info("You can send another one in a minute if you didn't receive it.");
+            toast.success(t("passwordResetEmailSent"));
+            toast.info(t("passwordResetInfo"));
             // cooldown for 1 minute
             setIsPasswordResettingCooldown(true);
             setTimeout(() => {
@@ -82,32 +82,33 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             // Handle form errors. First, Firebase errors
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/invalid-email") {
-                    toast.error("Invalid email. Please try again.");
+                    toast.error(t("invalidEmail"));
                     return;
                 }
                 if (error.code === "auth/missing-email") {
-                    toast.error("Please fill in email to reset it.");
+                    toast.error(t("missingEmail"));
                     return;
                 }
             }
-            toast.error("Error sending password reset email. Please try again later.");
+            toast.error(t("passwordResetEmailError"));
             console.error(error);
         }
     };
 
     useEffect(() => {
-        document.title = "Login | Notes";
         if (firebaseAuth) {
             navigate("/");
         }
     }, [navigate, firebaseAuth]);
+
+    document.title = t("login") + " | " + t("notes");
 
     return (
         <div>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in to your account
+                        {t("signInToYourAccount")}
                     </h2>
                 </div>
 
@@ -118,7 +119,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 htmlFor="email"
                                 className="block text-sm font-medium leading-6 text-gray-900"
                             >
-                                Email
+                                {t("email")}
                             </label>
                             <div className="mt-2">
                                 <input
@@ -139,7 +140,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                     htmlFor="password"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
-                                    Password
+                                    {t("password")}
                                 </label>
                             </div>
                             <div className="mt-2">
@@ -162,28 +163,28 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-gradient-to-r from-red-400 via-purple-500 to-blue-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black-600"
                             >
-                                Sign in
+                                {t("signIn")}
                             </button>
                         </div>
                     </form>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
-                        Don't have an account?{" "}
+                        {t("dontHaveAnAccount")}{" "}
                         <a
                             href="/register"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                         >
-                            Register
+                            {t("signUp")}
                         </a>
                     </p>
                     <p className="mt-1 text-center text-sm text-gray-500">
-                        Forgot your password?{" "}
+                        {t("forgotPassword")}{" "}
                         <button
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                             onClick={handleForgotPassword}
                             disabled={isPasswordResettingCooldown}
                         >
-                            Reset password
+                            {t("resetPassword")}
                         </button>
                     </p>
                 </div>

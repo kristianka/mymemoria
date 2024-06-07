@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 import { auth } from "../../firebase";
 import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface } from "../../types";
-import { toast } from "react-toastify";
+import ChangeLanguageDropdown from "./ChangeLanguage";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -12,6 +14,7 @@ interface props {
 }
 
 const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
+    const { t } = useTranslation();
     const { data: user } = useUser(firebaseAuth);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -23,10 +26,10 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 setFirebaseAuth(null);
                 queryClient.clear();
                 navigate("/");
-                toast.success("Logged out successfully. 👋");
+                toast.success(`${t("loggedOutSuccessfully")} 👋`);
             } catch (error) {
                 console.error(error);
-                toast.success("Error while logging out. Please try again later.");
+                toast.success(t("loggedOutError"));
             }
         };
         handleLogout();
@@ -37,8 +40,8 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
         return (
             <div className="navbar bg-base-100">
                 <div className="flex-1">
-                    <Link to="/" className="btn btn-ghost normal-case text-xl">
-                        Notes
+                    <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
+                        {t("notes")}
                     </Link>
                 </div>
                 <div className="flex-none">
@@ -68,10 +71,11 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
     return (
         <div className="navbar bg-base-100">
             <div className="flex-1">
-                <Link to="/" className="btn btn-ghost normal-case text-xl">
-                    Notes
+                <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
+                    {t("notes")}
                 </Link>
             </div>
+            {/* user is logged in */}
             {user ? (
                 <div className="flex-none">
                     <Link id="addNoteButton" to="/notes/add/">
@@ -79,9 +83,11 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                             +
                         </label>
                     </Link>
-                    <label className="" htmlFor="">
-                        {user.name}
-                    </label>
+                    <Link to="/profile">
+                        <label className="m-1 rounded-md btn btn-ghost" htmlFor="">
+                            {user.name}
+                        </label>
+                    </Link>
                     <div id="dropdownMenu" className="userAvatar dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
@@ -94,44 +100,47 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                         </label>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-[10] p-2 shadow bg-base-100 rounded-box w-52"
+                            className="menu menu-sm dropdown-content mt-1 z-[10] p-2 shadow bg-base-100 rounded-box w-52"
                         >
                             {" "}
                             <li className="">
-                                <Link to="/notes" className="py-2">
-                                    Your notes
+                                <Link to="/notes" className="rounded-md py-2">
+                                    {t("yourNotes")}
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/notes/add" className="py-2">
-                                    New note
+                                <Link to="/notes/add" className="rounded-md py-2">
+                                    {t("newNote")}
                                 </Link>
                             </li>
                             <li className="border-t border-gray-200 profileButton">
-                                <Link to="/profile" className="py-2 justify-between">
-                                    Profile
+                                <Link to="/profile" className="rounded-md py-2 justify-between">
+                                    {t("profile")}
                                 </Link>
                             </li>
                             <li className="settingsButton">
-                                <Link to="/settings" className="py-2 justify-between">
-                                    Settings
+                                <Link to="/settings" className="rounded-md py-2 justify-between">
+                                    {t("settings")}
                                 </Link>
                             </li>
                             <li className="border-t border-gray-200 logoutButton">
-                                <Link to="/" className="py-2" onClick={logout}>
-                                    Sign out
+                                <Link to="/" className="rounded-md py-2" onClick={logout}>
+                                    {t("signOut")}
                                 </Link>
                             </li>
                         </ul>
                     </div>
                 </div>
             ) : (
+                // user isn't logged in
                 <div className="flex-none">
-                    <Link to="/login" className="loginButton btn btn-ghost">
-                        Sign in
+                    {/* when signed in, language setting is in settings */}
+                    <ChangeLanguageDropdown />
+                    <Link to="/login" className="m-1 rounded-md loginButton btn btn-ghost">
+                        {t("signIn")}
                     </Link>
-                    <Link to="/register" className="registerButton btn btn-ghost">
-                        Register
+                    <Link to="/register" className="m-1 rounded-md registerButton btn btn-ghost">
+                        {t("createAnAccount")}
                     </Link>
                 </div>
             )}

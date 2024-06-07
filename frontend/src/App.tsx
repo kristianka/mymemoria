@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
+import "./i18n/config";
 import NavBar from "./components/NavBarPages/NavBar";
 import Footer from "./components/Footer/Footer";
 
