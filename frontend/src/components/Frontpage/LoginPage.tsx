@@ -54,7 +54,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     return;
                 }
                 if (error.code === "auth/missing-email" || error.code === "auth/missing-password") {
-                    toast.error(t("fillInAllFields"));
+                    toast.error(t("pleaseFillAllFields"));
                     return;
                 }
                 if (error.code === "auth/invalid-credential") {
