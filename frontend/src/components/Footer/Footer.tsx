@@ -14,21 +14,21 @@ const Footer = () => {
     return (
         <footer className="mt-auto footer grid-rows-1 p-7 bg-base-200 text-base-content flex">
             <nav>
-                <header className="footer-title">{t("notesApp")}</header>
+                <header className="footer-title">{t("appUrl")}</header>
                 <Link className="hover:underline" to="/info">
                     {t("info")}
                 </Link>
                 <a
                     className="link link-hover"
                     target="_blank"
-                    href="https://github.com/kristianka/fullstack-project/issues/new?labels=bug"
+                    href="https://github.com/kristianka/mymemoria/issues/new?labels=bug"
                 >
                     {t("reportABug")}
                 </a>
                 <a
                     className="link link-hover"
                     target="_blank"
-                    href="https://github.com/kristianka/fullstack-project/issues/new?labels=enhancement"
+                    href="https://github.com/kristianka/mymemoria/issues/new?labels=enhancement"
                 >
                     {t("sendFeedback")}
                 </a>
@@ -38,7 +38,7 @@ const Footer = () => {
                 <a
                     className="link link-hover"
                     target="_blank"
-                    href="https://github.com/kristianka/fullstack-project"
+                    href="https://github.com/kristianka/mymemoria"
                 >
                     <img src="/github-mark.svg" alt="github logo" className="w-10 h-10" />
                 </a>

@@ -41,7 +41,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
             <div className="navbar bg-base-100">
                 <div className="flex-1">
                     <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
-                        {t("notes")}
+                        {t("appName")}
                     </Link>
                 </div>
                 <div className="flex-none">
@@ -72,7 +72,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
         <div className="navbar bg-base-100">
             <div className="flex-1">
                 <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
-                    {t("notes")}
+                    {t("appName")}
                 </Link>
             </div>
             {/* user is logged in */}

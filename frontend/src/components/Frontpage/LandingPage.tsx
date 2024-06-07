@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 
 const LandingPage = () => {
     const { t } = useTranslation();
-    document.title = t("notes");
+    document.title = t("appName");
     return (
         <div className="mt-auto grid min-h-full place-items-center">
             <div className="text-center">
                 <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                    {t("notes")}
+                    {t("appName")}
                 </h1>
-                <p className="mt-6 text-base leading-7 text-gray-600">{t("landingPageHint")}</p>
+                <p className="mt-6 text-base leading-7 text-gray-600">{t("appUrl")}</p>
+                <p className="text-base leading-7 text-gray-600">{t("landingPageHint")}</p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                     <Link
                         to="/login"
