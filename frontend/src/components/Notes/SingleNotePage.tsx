@@ -68,13 +68,13 @@ const SingleNote = ({ firebaseAuth }: props) => {
         navigate(`/notes/${note.id}/edit`);
     };
 
-    document.title = `${note.title} | ${t("notes")}`;
+    document.title = `${note.title} | ${t("appName")}`;
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
                 <div className="m-3">
                     <div key={note.id} className="card bg-base-100">
-                        <div className="card-body">
+                        <div className="card-body rounded-lg">
                             <h2 className="card-title text-3xl">{note.title}</h2>
                             <p className="trunacte text-ellipsis text-xl whitespace-pre-line">
                                 {note.content}

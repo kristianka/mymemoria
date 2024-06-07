@@ -101,7 +101,7 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         }
     }, [navigate, firebaseAuth]);
 
-    document.title = t("login") + " | " + t("notes");
+    document.title = t("login") + " | " + t("appName");
 
     return (
         <div>

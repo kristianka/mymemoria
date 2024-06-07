@@ -104,7 +104,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
         }
     }, [navigate, firebaseAuth]);
 
-    document.title = t("register") + " | " + t("notes");
+    document.title = t("register") + " | " + t("appName");
 
     return (
         <div className="container mx-auto">

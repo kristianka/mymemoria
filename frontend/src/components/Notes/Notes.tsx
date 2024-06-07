@@ -52,7 +52,7 @@ const Notes = ({ firebaseAuth }: props) => {
             setSortedNotes(null);
         }
     }, [notes, notesStatus]);
-    document.title = t("yourNotes") + " | " + t("notes");
+    document.title = t("yourNotes") + " | " + t("appName");
 
     if (notesStatus === "error" || userStatus === "error") {
         toast.error(t("errorGettingNotes"));
