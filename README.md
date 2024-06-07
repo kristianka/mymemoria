@@ -1,17 +1,20 @@
-<h1>📓 Fullstackopen project - Journal App 📝</h1>
+<h1>MyMemoria 📝</h1>
 
-> Create journals/notes to different locations all over the world 🌍
+Save your loved memories to different locations all over the world 🌍
 
 ![Frontpage after two notes](documentation/img/notes-page-with-two-notes.png)
 
+>[!WARNING]
+> The images in this readme are out of date now and will be updated ASAP
 
 
-❓ This is the repository for my fullstack project Journal app which took over 200 hours to make! This readme includes the documentation, the code for the frontend and the backend. See below for more screenshots and info.
 
-💻 Deployed at https://fullstack-project-rxtv.onrender.com/. Note that it may take few minutes to connect since Render automatically spins down free apps. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
+❓ This is the repository for my fullstack project MyMemoria, which took over 200 hours to make! This readme includes the documentation, the code for the frontend and the backend. See below for more screenshots and info. (Was named just fullstack project before)
+
+💻 Deployed at https://mymemoria.app/. Note that it may take few minutes to connect since Render automatically spins down free apps. You can use any email to register, it isn't verified. For demo purposes you can use for example `mail@example.com` and password `password123`.
 
 >[!TIP]
->  ⭐ New features! This app now has i18n translations! Languages are English and Finnish. There are other changes too, see releases for full patch notes!
+>  ⭐ New features! This app now has i18n translations! Rebranded to MyMemoria! There are other changes too, see releases for full patch notes! 
 
 <h1>Info</h1>
 
