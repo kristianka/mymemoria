@@ -70,7 +70,7 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
     return (
         <div className="navbar bg-base-100">
-            <div className="flex-1">
+            <div className="flex sm:flex-1">
                 <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
                     {t("appName")}
                 </Link>
@@ -133,15 +133,22 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                 </div>
             ) : (
                 // user isn't logged in
-                <div className="flex-none">
-                    {/* when signed in, language setting is in settings */}
+                <div className="flex flex-col sm:flex-row">
                     <ChangeLanguageDropdown />
-                    <Link to="/login" className="m-1 rounded-md loginButton btn btn-ghost">
-                        {t("signIn")}
-                    </Link>
-                    <Link to="/register" className="m-1 rounded-md registerButton btn btn-ghost">
-                        {t("createAnAccount")}
-                    </Link>
+
+                    {/* hide on small screens */}
+                    <div className="hidden sm:block">
+                        {/* when signed in, language setting is in settings */}
+                        <Link to="/login" className="m-1 rounded-md loginButton btn btn-ghost">
+                            {t("signIn")}
+                        </Link>
+                        <Link
+                            to="/register"
+                            className="m-1 rounded-md registerButton btn btn-ghost"
+                        >
+                            {t("createAnAccount")}
+                        </Link>
+                    </div>
                 </div>
             )}
         </div>

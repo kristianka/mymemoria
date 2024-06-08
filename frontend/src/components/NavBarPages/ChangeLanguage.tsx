@@ -28,7 +28,7 @@ const ChangeLanguageDropdown = () => {
                     <p>{t("changeLanguage")}</p>
                 </label>
                 <div
-                    className="menu menu-sm dropdown-content mt-1 z-[10] p-2 shadow bg-base-100 rounded-box w-56"
+                    className="menu menu-sm dropdown-content mt-1 z-[10] p-2 shadow bg-base-100 rounded-box"
                     aria-labelledby="dropdownDefaultButton"
                 >
                     <button
