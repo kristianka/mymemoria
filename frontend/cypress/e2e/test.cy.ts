@@ -100,7 +100,7 @@ describe("Memories app", function () {
                 cy.visit("/register");
             });
 
-            it("registeration form renders", () => {
+            it("it renders", () => {
                 cy.get('input[type="email"]');
                 cy.get('input[type="text"]');
                 cy.get('input[type="password"]');
@@ -163,7 +163,7 @@ describe("Memories app", function () {
                 cy.visit("/login");
             });
 
-            it("login form renders", () => {
+            it("it renders", () => {
                 cy.contains("Sign in to your account");
                 cy.get('input[type="email"]');
                 cy.get('input[type="password"]');
@@ -173,7 +173,6 @@ describe("Memories app", function () {
             it("login works", () => {
                 loginUser(CYPRESS_TEST_EMAIL, "password123");
                 cy.contains("Logged in successfully!", { timeout: 6000 }).should("be.visible");
-
                 cy.contains("No memories yet");
             });
 
@@ -221,14 +220,14 @@ describe("Memories app", function () {
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
         });
 
-        // note aka memory
-        describe("Note page", () => {
-            it("note page renders", () => {
+        // NotePage has list of memories
+        describe("NotePage)", () => {
+            it("it renders", () => {
                 cy.contains("No memories yet");
                 cy.get("#addNoteButton").should("be.visible");
             });
 
-            it("user can add a note", () => {
+            it("user can add a memory", () => {
                 cy.get("#addNoteButton").click();
 
                 cy.get("#noteTitle").type("Test memory");
@@ -242,12 +241,12 @@ describe("Memories app", function () {
                 cy.contains("Test memory content");
             });
 
-            describe("when there is a note", () => {
+            describe("when there is a memory", () => {
                 beforeEach(() => {
                     cy.get("#addNoteButton").click();
 
-                    cy.get("#noteTitle").type("Test note by test user");
-                    cy.get("#noteContent").type("Test note content");
+                    cy.get("#noteTitle").type("Test memory by test user");
+                    cy.get("#noteContent").type("Test memory content");
                     // has to wait for the search results to load
                     cy.get(".mapboxgl-ctrl-geocoder--input")
                         .type("Tampere")
@@ -256,15 +255,15 @@ describe("Memories app", function () {
                     cy.get("#saveNoteButton").click();
 
                     cy.contains("You have 1 memories", { timeout: 10000 });
-                    cy.contains("Test note by test user");
-                    cy.contains("Test note content");
+                    cy.contains("Test memory by test user");
+                    cy.contains("Test memory content");
                 });
 
-                it("you can add another note", () => {
+                it("you can add another memory", () => {
                     cy.get("#addNoteButton").click();
 
-                    cy.get("#noteTitle").type("Another note by test user");
-                    cy.get("#noteContent").type("Another note content");
+                    cy.get("#noteTitle").type("Another memory by test user");
+                    cy.get("#noteContent").type("Another memory content");
                     // has to wait for the search results to load
                     cy.get(".mapboxgl-ctrl-geocoder--input")
                         .type("Tampere")
@@ -273,17 +272,17 @@ describe("Memories app", function () {
                     cy.get("#saveNoteButton").click();
 
                     cy.contains("You have 2 memories");
-                    cy.contains("Another note by test user");
-                    cy.contains("Another note content");
+                    cy.contains("Another memory by test user");
+                    cy.contains("Another memory content");
                 });
 
-                it("you can open the note", () => {
+                it("you can open the memory", () => {
                     cy.get('[id^="toNoteButton"]').click();
-                    cy.contains("Test note by test user");
-                    cy.contains("Test note content");
+                    cy.contains("Test memory by test user");
+                    cy.contains("Test memory content");
                 });
 
-                it("you can edit the note", () => {
+                it("you can edit the memory", () => {
                     cy.get('[id^="toNoteButton"]').click();
                     cy.contains("Edit").click();
 
@@ -301,7 +300,7 @@ describe("Memories app", function () {
                 it("you can delete the memory", () => {
                     cy.get('[id^="toNoteButton"]').click();
                     cy.contains("Delete").click();
-                    // cy.contains("Are you sure you want to delete this note?");
+                    // cy.contains("Are you sure you want to delete this memory?");
                     // cy.contains("Yes").click();
                     cy.contains("Memory deleted successfully", { timeout: 6000 }).should(
                         "be.visible"
@@ -319,12 +318,13 @@ describe("Memories app", function () {
             });
         });
 
-        describe("Profile page", () => {
+        // ProfilePage has user's profile information
+        describe("ProfilePage", () => {
             beforeEach(() => {
                 cy.visit("/profile");
             });
 
-            it("profile page renders", () => {
+            it("it renders", () => {
                 cy.contains("Profile");
                 cy.contains("Test user");
                 cy.contains(CYPRESS_TEST_EMAIL);
@@ -354,12 +354,13 @@ describe("Memories app", function () {
             });
         });
 
-        describe("Settings page", () => {
+        // SettingsPage has user's settings, like language and default location
+        describe("SettingsPage", () => {
             beforeEach(() => {
                 cy.visit("/settings");
             });
 
-            it("settings page renders", () => {
+            it("it renders", () => {
                 cy.contains("Settings");
                 // has to wait for the search results to load
                 cy.get(".mapboxgl-ctrl-geocoder--input").should("be.visible");
@@ -376,8 +377,8 @@ describe("Memories app", function () {
         });
     });
 
-    describe("Redirected to front page when not logged in", () => {
-        it("note page redirects to front page", () => {
+    describe("Redirected to front page (LandingPage) when not logged in", () => {
+        it("NotePage redirects to front page", () => {
             cy.visit("/notes");
             cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
@@ -385,7 +386,7 @@ describe("Memories app", function () {
             cy.get("#addNoteButton").should("not.exist");
         });
 
-        it("add note page redirects to front page", () => {
+        it("AddNote page redirects to front page", () => {
             cy.visit("/notes/add");
             cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
@@ -393,7 +394,7 @@ describe("Memories app", function () {
             cy.get("#addNoteButton").should("not.exist");
         });
 
-        it("profile page redirects to front page", () => {
+        it("ProfilePage redirects to front page", () => {
             cy.visit("/profile");
             cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
@@ -401,7 +402,7 @@ describe("Memories app", function () {
             cy.get("#addNoteButton").should("not.exist");
         });
 
-        it("settings page redirects to front page", () => {
+        it("SettingsPage redirects to front page", () => {
             cy.visit("/settings");
             cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
