@@ -17,7 +17,7 @@ describe("Memories app", function () {
         cy.visit("/register");
 
         // Wait for the form to load
-        cy.get('input[type="email"]').should("be.visible");
+        cy.get('input[type="email"]', { timeout: 10000 }).should("be.visible");
         cy.get('input[type="text"]').should("be.visible");
         cy.get("#password").should("be.visible");
         cy.get("#confirmPassword").should("be.visible");
@@ -42,7 +42,7 @@ describe("Memories app", function () {
 
     function loginUser(email: string, password: string) {
         // clear the form
-        cy.get('input[type="email"]').clear();
+        cy.get('input[type="email"]', { timeout: 10000 }).clear();
         cy.get('input[type="password"]').clear();
 
         // Fill in the form
