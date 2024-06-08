@@ -27,7 +27,7 @@ const EditNote = ({ firebaseAuth }: props) => {
     const [content, setContent] = useState("");
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
-    document.title = `${t("editNoteLong")} | ${t("notes")}`;
+    document.title = `${t("editNoteLong")} | ${t("appName")}`;
 
     useEffect(() => {
         if (!firebaseAuth) {

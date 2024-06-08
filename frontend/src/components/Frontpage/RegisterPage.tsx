@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { Link } from "react-router-dom";
 
 import userService from "../../services/user";
 import { auth } from "../../firebase";
@@ -104,7 +105,7 @@ const RegisterPage = ({ firebaseAuth }: props) => {
         }
     }, [navigate, firebaseAuth]);
 
-    document.title = t("register") + " | " + t("notes");
+    document.title = t("register") + " | " + t("appName");
 
     return (
         <div className="container mx-auto">
@@ -215,12 +216,12 @@ const RegisterPage = ({ firebaseAuth }: props) => {
 
                         <p className="mt-10 text-center text-sm text-gray-500">
                             {t("alreadyHaveAnAccount")}{" "}
-                            <a
-                                href="/login"
+                            <Link
+                                to="/login"
                                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                             >
                                 {t("signIn")}
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>

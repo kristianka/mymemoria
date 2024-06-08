@@ -44,7 +44,7 @@ const InfoPage = () => {
                     <p className="m-5 text-center normal-case text-gray-500">
                         {t("readmeTip2")}{" "}
                         <a
-                            href="https://github.com/kristianka/fullstack-project/blob/main/README.md"
+                            href="https://github.com/kristianka/mymemoria/blob/main/README.md"
                             className="text-blue-500"
                         >
                             {t("readmeTip3")}

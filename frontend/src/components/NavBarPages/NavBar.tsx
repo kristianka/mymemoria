@@ -38,10 +38,10 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
     // loading skeleton
     if (firebaseAuth && !user) {
         return (
-            <div className="navbar bg-base-100">
+            <div className="navbar bg-base-100 overflow-x-auto">
                 <div className="flex-1">
                     <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
-                        {t("notes")}
+                        {t("appName")}
                     </Link>
                 </div>
                 <div className="flex-none">
@@ -70,9 +70,9 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
     return (
         <div className="navbar bg-base-100">
-            <div className="flex-1">
+            <div className="flex sm:flex-1">
                 <Link to="/" className="btn btn-ghost normal-case rounded-md text-xl">
-                    {t("notes")}
+                    {t("appName")}
                 </Link>
             </div>
             {/* user is logged in */}
@@ -132,17 +132,22 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
                     </div>
                 </div>
             ) : (
-                // user isn't logged in
-                <div className="flex-none">
-                    {/* when signed in, language setting is in settings */}
+                <>
                     <ChangeLanguageDropdown />
-                    <Link to="/login" className="m-1 rounded-md loginButton btn btn-ghost">
-                        {t("signIn")}
-                    </Link>
-                    <Link to="/register" className="m-1 rounded-md registerButton btn btn-ghost">
-                        {t("createAnAccount")}
-                    </Link>
-                </div>
+                    {/* // user isn't logged in */}
+                    <div className="flex overflow-x-auto">
+                        {/* when signed in, language setting is in settings */}
+                        <Link to="/login" className="m-1 rounded-md loginButton btn btn-ghost">
+                            {t("signIn")}
+                        </Link>
+                        <Link
+                            to="/register"
+                            className="m-1 rounded-md registerButton btn btn-ghost"
+                        >
+                            {t("createAnAccount")}
+                        </Link>
+                    </div>
+                </>
             )}
         </div>
     );
