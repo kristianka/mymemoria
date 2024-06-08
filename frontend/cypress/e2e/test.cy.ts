@@ -1,5 +1,8 @@
 /* eslint-disable quotes */
-describe("Note app", function () {
+
+// NOTE! This app was rebranded from "Notes app" to "Memories app" during development.
+// Some fields and navigation links might still contain the old name.
+describe("Memories app", function () {
     let CYPRESS_TEST_EMAIL = Cypress.env("CYPRESS_TEST_EMAIL");
     // if CYPRESS_TEST_EMAIL is undefined, try to get it from environment variables
     if (!CYPRESS_TEST_EMAIL) {
@@ -85,7 +88,7 @@ describe("Note app", function () {
     describe("LandingPage", () => {
         it("front page requires to login/registeration", function () {
             cy.visit("/");
-            cy.contains("Create an account to start taking notes with location data");
+            cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
             cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
@@ -107,17 +110,17 @@ describe("Note app", function () {
             it("registeration works", () => {
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-                cy.contains("No notes yet");
+                cy.contains("No memories yet");
             });
 
             it("registeration fails if email is already taken", () => {
                 registerUser(CYPRESS_TEST_EMAIL, "Test User", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
-                cy.contains("No notes yet");
+                cy.contains("No memories yet");
 
                 logoutUser();
 
-                cy.contains("Create an account to start taking notes with location data");
+                cy.contains("Create an account to start saving your memories");
                 cy.contains("Sign in");
                 cy.contains("Create an account");
                 cy.get("#addNoteButton").should("not.exist");
@@ -153,7 +156,7 @@ describe("Note app", function () {
                 registerUser(CYPRESS_TEST_EMAIL, "Test user", "password123");
                 cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
                 cy.wait(1000);
-                cy.contains("No notes yet");
+                cy.contains("No memories yet");
 
                 logoutUser();
                 // Visit the login page before each test
@@ -171,7 +174,7 @@ describe("Note app", function () {
                 loginUser(CYPRESS_TEST_EMAIL, "password123");
                 cy.contains("Logged in successfully!", { timeout: 6000 }).should("be.visible");
 
-                cy.contains("No notes yet");
+                cy.contains("No memories yet");
             });
 
             it("login fails if email is invalid", () => {
@@ -218,24 +221,25 @@ describe("Note app", function () {
             cy.contains("Registered successfully!", { timeout: 6000 }).should("be.visible");
         });
 
+        // note aka memory
         describe("Note page", () => {
             it("note page renders", () => {
-                cy.contains("No notes yet");
+                cy.contains("No memories yet");
                 cy.get("#addNoteButton").should("be.visible");
             });
 
             it("user can add a note", () => {
                 cy.get("#addNoteButton").click();
 
-                cy.get("#noteTitle").type("Test note");
-                cy.get("#noteContent").type("Test note content");
+                cy.get("#noteTitle").type("Test memory");
+                cy.get("#noteContent").type("Test memory content");
                 // has to wait for the search results to load
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
-                cy.contains("You have 1 notes", { timeout: 10000 });
-                cy.contains("Test note");
-                cy.contains("Test note content");
+                cy.contains("You have 1 memories", { timeout: 10000 });
+                cy.contains("Test memory");
+                cy.contains("Test memory content");
             });
 
             describe("when there is a note", () => {
@@ -251,7 +255,7 @@ describe("Note app", function () {
                         .type("{enter}");
                     cy.get("#saveNoteButton").click();
 
-                    cy.contains("You have 1 notes", { timeout: 10000 });
+                    cy.contains("You have 1 memories", { timeout: 10000 });
                     cy.contains("Test note by test user");
                     cy.contains("Test note content");
                 });
@@ -268,7 +272,7 @@ describe("Note app", function () {
                         .type("{enter}");
                     cy.get("#saveNoteButton").click();
 
-                    cy.contains("You have 2 notes");
+                    cy.contains("You have 2 memories");
                     cy.contains("Another note by test user");
                     cy.contains("Another note content");
                 });
@@ -283,31 +287,31 @@ describe("Note app", function () {
                     cy.get('[id^="toNoteButton"]').click();
                     cy.contains("Edit").click();
 
-                    cy.get("#noteTitle").clear().type("Edited note by test user");
-                    cy.get("#noteContent").clear().type("Edited note content");
+                    cy.get("#noteTitle").clear().type("Edited memory by test user");
+                    cy.get("#noteContent").clear().type("Edited memory content");
                     cy.get("#editNoteButton").click();
 
                     cy.visit("/");
 
-                    cy.contains("You have 1 notes", { timeout: 10000 });
-                    cy.contains("Edited note by test user");
-                    cy.contains("Edited note content");
+                    cy.contains("You have 1 memories", { timeout: 10000 });
+                    cy.contains("Edited memory by test user");
+                    cy.contains("Edited memory content");
                 });
 
-                it("you can delete the note", () => {
+                it("you can delete the memory", () => {
                     cy.get('[id^="toNoteButton"]').click();
                     cy.contains("Delete").click();
                     // cy.contains("Are you sure you want to delete this note?");
                     // cy.contains("Yes").click();
-                    cy.contains("Note deleted successfully", { timeout: 6000 }).should(
+                    cy.contains("Memory deleted successfully", { timeout: 6000 }).should(
                         "be.visible"
                     );
-                    cy.contains("No notes yet");
+                    cy.contains("No memories yet");
                 });
 
-                it("notes don't show after user logs out", () => {
+                it("memories don't show after user logs out", () => {
                     logoutUser();
-                    cy.contains("Create an account to start taking notes with location data");
+                    cy.contains("Create an account to start saving your memories");
                     cy.contains("Sign in");
                     cy.contains("Create an account");
                     cy.get("#addNoteButton").should("not.exist");
@@ -343,7 +347,7 @@ describe("Note app", function () {
                 cy.contains("Account deleted successfully.", { timeout: 6000 }).should(
                     "be.visible"
                 );
-                cy.contains("Create an account to start taking notes with location data");
+                cy.contains("Create an account to start saving your memories");
                 cy.contains("Sign in");
                 cy.contains("Create an account");
                 cy.get("#addNoteButton").should("not.exist");
@@ -375,7 +379,7 @@ describe("Note app", function () {
     describe("Redirected to front page when not logged in", () => {
         it("note page redirects to front page", () => {
             cy.visit("/notes");
-            cy.contains("Create an account to start taking notes with location data");
+            cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
             cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
@@ -383,7 +387,7 @@ describe("Note app", function () {
 
         it("add note page redirects to front page", () => {
             cy.visit("/notes/add");
-            cy.contains("Create an account to start taking notes with location data");
+            cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
             cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
@@ -391,7 +395,7 @@ describe("Note app", function () {
 
         it("profile page redirects to front page", () => {
             cy.visit("/profile");
-            cy.contains("Create an account to start taking notes with location data");
+            cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
             cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
@@ -399,7 +403,7 @@ describe("Note app", function () {
 
         it("settings page redirects to front page", () => {
             cy.visit("/settings");
-            cy.contains("Create an account to start taking notes with location data");
+            cy.contains("Create an account to start saving your memories");
             cy.contains("Sign in");
             cy.contains("Create an account");
             cy.get("#addNoteButton").should("not.exist");
