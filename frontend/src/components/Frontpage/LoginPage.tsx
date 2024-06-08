@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FirebaseError } from "firebase/app";
+import { Link } from "react-router-dom";
 
 import { auth } from "../../firebase";
 import { FireBaseUserInterface } from "../../types";
@@ -170,12 +171,12 @@ const LoginPage = ({ firebaseAuth, setFirebaseAuth }: props) => {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         {t("dontHaveAnAccount")}{" "}
-                        <a
-                            href="/register"
+                        <Link
+                            to="/register"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                         >
                             {t("signUp")}
-                        </a>
+                        </Link>
                     </p>
                     <p className="mt-1 text-center text-sm text-gray-500">
                         {t("forgotPassword")}{" "}
