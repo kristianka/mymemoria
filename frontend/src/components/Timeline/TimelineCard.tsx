@@ -38,7 +38,6 @@ const TimelineCard = ({ note, index }: TimelineCardProps) => {
     const timeDifference = currentTimestamp - noteTimestamp;
     const timeDifferenceInDays = timeDifference / (1000 * 3600 * 24);
 
-    console.log(`Time difference in days: ${timeDifferenceInDays}`);
     return (
         <li key={note.id}>
             <hr />

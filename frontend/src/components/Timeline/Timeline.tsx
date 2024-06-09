@@ -33,7 +33,10 @@ const Timeline = ({ firebaseAuth }: TimelineProps) => {
 
     return (
         <div>
-            <h2 className="text-3xl font-bold text-center m-5">{t("timeline")}</h2>
+            <h2 className="text-3xl font-bold text-center m-5" data-tip={t("timelineInfo")}>
+                {t("timeline")}
+            </h2>
+            {/* <p className="text-center text-md m-5">{t("timelineInfo")}</p> */}
             <ul className="timeline timeline-vertical">
                 {userStatus === "pending" ||
                     (notesStatus === "pending" &&

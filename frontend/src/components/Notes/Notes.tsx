@@ -19,6 +19,7 @@ import ErrorPage from "../ErrorPage";
 import NewNoteButton from "./NewNoteButton";
 import NewNoteLoadingSkeleton from "./NewNoteButtonLoadingSkeleton";
 import { useTranslation } from "react-i18next";
+import AnnouncementBanner from "../AnnouncementBanner";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -32,6 +33,7 @@ const Notes = ({ firebaseAuth }: props) => {
     const { data: notes, status: notesStatus } = useNotes(user || null);
     const [sortedNotes, setSortedNotes] = useState<NoteInterface[] | null>(null);
     const navigate = useNavigate();
+    const [showAnnouncement, setShowAnnouncement] = useState<boolean>(false);
 
     // if user is not logged in, redirect to front page
     // useEffect to prevent infinite loop if server is down
@@ -76,13 +78,10 @@ const Notes = ({ firebaseAuth }: props) => {
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
-                <div className="divide-y m-3">
-                    <div className="pt-5 pb-5 bg-white">
+                <div className="divide-y m-3 bg-white rounded-lg">
+                    {/* <div className="pt-3 pb-3 bg-white rounded-lg">
                         <h1 className="text-center normal-case text-2xl">{t("yourNotes")}</h1>
-                        <p className="mt-1 text-gray-600 text-center normal-case text-md">
-                            {t("youHave")} {notes?.length} {t("notesHeader")}
-                        </p>
-                    </div>
+                    </div> */}
                     {/* render three loading skeletons */}
                     {firebaseAuth &&
                         notesStatus === "pending" &&
@@ -108,6 +107,10 @@ const Notes = ({ firebaseAuth }: props) => {
                                 <SortNotesDropdown notes={notes} setSortedNotes={setSortedNotes} />
                                 <NewNoteButton />
                             </div>
+                            <p className="m-5 text-gray-600 text-center normal-case text-md">
+                                {t("youHave")} {notes?.length} {t("notesHeader")}
+                            </p>
+                            {showAnnouncement && <AnnouncementBanner />}
                         </>
                     )}
                 </div>
