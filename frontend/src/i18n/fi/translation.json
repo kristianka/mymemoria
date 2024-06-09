@@ -117,5 +117,12 @@
     "cancelChanges": "Peruuta muutokset",
     "new": "Uusi",
     "openNote": "Avaa muisto",
-    "timeline": "Aikajana"
+    "timeline": "Aikajana",
+    "timelineInfo": "Tässä näet kaikki muistosi aikajärjestyksessä.",
+    "timeLineError": "Virhe aikajanan hakemisessa. Yritä myöhemmin uudelleen.",
+    "timelineEmpty": "Ei muistoja vielä. Luo muisto nähdäksesi sen täällä!",
+    "cookieTitle": "Käytämme evästeitä. Käyttämällä tätä sivustoa hyväksyt evästeiden käytön.",
+    "cookieInfo": "Firebase Auth tarvitsee evästeitä toimiakseen. Emme käytä evästeitä seurantaan tai markkinointiin. Voit poistaa kaikki tietosi milloin tahansa poistamalla tilisi asetuksista.",
+    "cookieAccept": "Ymmärrän"
+
 }

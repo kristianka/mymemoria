@@ -23,6 +23,7 @@ import EditNote from "./components/Notes/EditNote";
 import NotFound from "./components/NotFound";
 import InfoPage from "./components/Footer/InfoPage";
 import Timeline from "./components/Timeline/Timeline";
+import CookiePopUp from "./components/CookiePopup";
 
 const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
@@ -43,6 +44,7 @@ const App = () => {
     return (
         <div className="flex flex-col min-h-screen bg-slate-50">
             <NavBar firebaseAuth={firebaseAuth} setFirebaseAuth={setFirebaseAuth}></NavBar>
+
             <Routes>
                 {firebaseAuth && !loading ? (
                     <Route path="/" element={<Notes firebaseAuth={firebaseAuth} />} />
@@ -85,6 +87,7 @@ const App = () => {
                 {/* unknown or unauthorized note will show to 404 from component */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <CookiePopUp />
             <Footer />
         </div>
     );
