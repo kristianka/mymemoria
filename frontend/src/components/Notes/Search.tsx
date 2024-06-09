@@ -7,7 +7,6 @@ interface props {
 
 const Search = ({ setSearch }: props) => {
     const { t } = useTranslation();
-    const location = useLocation(); // Get current location
 
     const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
@@ -18,9 +17,6 @@ const Search = ({ setSearch }: props) => {
         e.preventDefault();
     };
 
-    console.log("search component rendered");
-    const isDisabled = location.pathname !== "/notes" && location.pathname !== "/";
-
     return (
         <form className="relative m-1" onSubmit={handleSubmit}>
             <div className="">
@@ -30,7 +26,6 @@ const Search = ({ setSearch }: props) => {
                         type="text"
                         className="grow"
                         placeholder={t("search")}
-                        disabled={isDisabled}
                     />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
