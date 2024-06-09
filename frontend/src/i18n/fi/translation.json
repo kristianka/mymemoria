@@ -116,5 +116,6 @@
     "noteUpdateError": "Virhe muiston päivittämisessä. Yritä myöhemmin uudelleen.",
     "cancelChanges": "Peruuta muutokset",
     "new": "Uusi",
-    "openNote": "Avaa muisto"
+    "openNote": "Avaa muisto",
+    "timeline": "Aikajana"
 }

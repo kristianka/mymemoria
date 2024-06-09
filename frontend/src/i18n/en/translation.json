@@ -117,5 +117,6 @@
     "noteUpdateError": "Error updating memory. Please try again later.",
     "cancelChanges": "Cancel changes",
     "new": "New",
-    "openNote": "Open memory"
+    "openNote": "Open memory",
+    "timeline": "Timeline"
 }

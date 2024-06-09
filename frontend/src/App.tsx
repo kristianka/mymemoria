@@ -22,6 +22,7 @@ import useAuthEffect from "./hooks/useAuthEffect";
 import EditNote from "./components/Notes/EditNote";
 import NotFound from "./components/NotFound";
 import InfoPage from "./components/Footer/InfoPage";
+import Timeline from "./components/Timeline/Timeline";
 
 const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
@@ -64,6 +65,10 @@ const App = () => {
                     path="/notes/add"
                     element={<AddNote firebaseAuth={firebaseAuth}></AddNote>}
                 />
+                <Route
+                    path="/notes/timeline"
+                    element={<Timeline firebaseAuth={firebaseAuth} />}
+                ></Route>
                 <Route
                     path="/profile"
                     element={

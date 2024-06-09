@@ -8,6 +8,7 @@ const savedLanguage = localStorage.getItem("i18nextLng") || "en";
 
 export default i18next.use(initReactI18next).init({
     lng: savedLanguage,
+    debug: true,
     resources: {
         en: {
             translation: EnTranslation
