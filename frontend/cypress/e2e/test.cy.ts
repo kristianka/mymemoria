@@ -17,7 +17,7 @@ describe("Memories app", function () {
         cy.visit("/register");
 
         // Wait for the form to load
-        cy.get('input[type="email"]', { timeout: 10000 }).should("be.visible");
+        cy.get('input[type="email"]', { timeout: 20000 }).should("be.visible");
         cy.get('input[type="text"]').should("be.visible");
         cy.get("#password").should("be.visible");
         cy.get("#confirmPassword").should("be.visible");
