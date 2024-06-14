@@ -91,7 +91,9 @@ const Notes = ({ firebaseAuth }: props) => {
                         <h1 className="m-auto text-center normal-case text-2xl">
                             {t("yourNotes")}
                         </h1>
-                        <Search disableSearch={disableSearch} setSearch={setSearch} />
+                        <div className="ml-5">
+                            <Search disableSearch={disableSearch} setSearch={setSearch} />
+                        </div>
                     </div>
                     {/* render three loading skeletons */}
                     {firebaseAuth &&
