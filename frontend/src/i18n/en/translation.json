@@ -124,5 +124,7 @@
     "timelineEmpty": "No memories yet. Create a memory to see it here!",
     "cookieTitle": "This website uses cookies. By using this website you agree to the use of cookies.",
     "cookieInfo": "Firebase Auth needs cookies to work. We don't use cookies for tracking or marketing. You can delete all of your data anytime by deleting your account in settings.",
-    "cookieAccept": "I understand"
+    "cookieAccept": "I understand",
+    "announcementBannerMain": "Hey, welcome back! We have released some exciting new features.",
+    "announcementBannerSub": "Click here to see the full changelog!"
 }
