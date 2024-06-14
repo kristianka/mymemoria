@@ -86,7 +86,7 @@ const Map = ({ firebaseAuth }: props) => {
             });
         };
         initializeMap();
-    }, [defaultCoordinates, notes]);
+    }, [defaultCoordinates, notes, t]);
 
     if (!notes) {
         return null;
