@@ -17,40 +17,40 @@ describe("Memories app", function () {
         cy.visit("/register");
 
         // Wait for the form to load
-        cy.get('input[type="email"]', { timeout: 20000 }).should("be.visible");
-        cy.get('input[type="text"]').should("be.visible");
+        cy.get("#email", { timeout: 20000 }).should("be.visible");
+        cy.get("#name").should("be.visible");
         cy.get("#password").should("be.visible");
         cy.get("#confirmPassword").should("be.visible");
 
         // clear the form
-        cy.get('input[type="email"]').clear();
-        cy.get('input[type="text"]').clear();
+        cy.get("#email").clear();
+        cy.get("#name").clear();
         cy.get("#password").clear();
         cy.get("#confirmPassword").clear();
 
         // Fill in the form
-        if (email) cy.get('input[type="email"]').type(email);
-        if (name) cy.get('input[type="text"]').type(name);
+        if (email) cy.get("#email").type(email);
+        if (name) cy.get("#name").type(name);
         if (password) {
             cy.get("#password").type(password);
             cy.get("#confirmPassword").type(password);
         }
 
         // Click the register button
-        cy.get("button").contains("Register").click();
+        cy.get("#register").click();
     }
 
     function loginUser(email: string, password: string) {
         // clear the form
-        cy.get('input[type="email"]', { timeout: 10000 }).clear();
-        cy.get('input[type="password"]').clear();
+        cy.get("#email", { timeout: 10000 }).clear();
+        cy.get("#password").clear();
 
         // Fill in the form
-        if (email) cy.get('input[type="email"]').type(email);
-        if (password) cy.get('input[type="password"]').type(password);
+        if (email) cy.get("#email").type(email);
+        if (password) cy.get("#password").type(password);
 
         // Click the login button
-        cy.get("button").contains("Sign in").click();
+        cy.get("#signin").click();
     }
 
     function logoutUser() {
