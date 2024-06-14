@@ -19,6 +19,9 @@ import ErrorPage from "../ErrorPage";
 import NewNoteButton from "./NewNoteButton";
 import NewNoteLoadingSkeleton from "./NewNoteButtonLoadingSkeleton";
 import { useTranslation } from "react-i18next";
+import AnnouncementBanner from "../AnnouncementBanner";
+import Search from "./Search";
+import { searchNotes } from "../../misc";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -31,7 +34,10 @@ const Notes = ({ firebaseAuth }: props) => {
     // pass user to useNotes. If user is null, useNotes will return null
     const { data: notes, status: notesStatus } = useNotes(user || null);
     const [sortedNotes, setSortedNotes] = useState<NoteInterface[] | null>(null);
+
     const navigate = useNavigate();
+    const [search, setSearch] = useState<string>("");
+    const [disableSearch, setDisableSearch] = useState<boolean>(true);
 
     // if user is not logged in, redirect to front page
     // useEffect to prevent infinite loop if server is down
@@ -45,14 +51,18 @@ const Notes = ({ firebaseAuth }: props) => {
         // set notes from react query to state
         if (notes) {
             const sorted = sortNotesByLastModified(notes, "desc");
-            setSortedNotes(sorted || null);
+            const sortedAndSearched = searchNotes(sorted, search);
+            setSortedNotes(sortedAndSearched || null);
+            setDisableSearch(false);
         }
         // reset sortedNotes if notesStatus changes to pending
         if (notesStatus === "pending") {
             setSortedNotes(null);
+            setDisableSearch(true);
         }
-    }, [notes, notesStatus]);
-    document.title = t("yourNotes") + " | " + t("notes");
+    }, [notes, notesStatus, search]);
+
+    document.title = t("yourNotes") + " | " + t("appName");
 
     if (notesStatus === "error" || userStatus === "error") {
         toast.error(t("errorGettingNotes"));
@@ -76,12 +86,12 @@ const Notes = ({ firebaseAuth }: props) => {
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
-                <div className="divide-y m-3">
-                    <div className="pt-5 pb-5 bg-white">
-                        <h1 className="text-center normal-case text-2xl">{t("yourNotes")}</h1>
-                        <p className="mt-1 text-gray-600 text-center normal-case text-md">
-                            {t("youHave")} {notes?.length} {t("notesHeader")}
-                        </p>
+                <div className="divide-y m-3 bg-white rounded-lg">
+                    <div className="m-1 p-3 bg-white rounded-lg grid grid-cols-2">
+                        <h1 className="m-auto text-center normal-case text-2xl">
+                            {t("yourNotes")}
+                        </h1>
+                        <Search disableSearch={disableSearch} setSearch={setSearch} />
                     </div>
                     {/* render three loading skeletons */}
                     {firebaseAuth &&
@@ -103,11 +113,22 @@ const Notes = ({ firebaseAuth }: props) => {
                     )}
                     {notes && notes.length !== 0 && (
                         <>
-                            <Map firebaseAuth={firebaseAuth} />
-                            <div className="flex">
-                                <SortNotesDropdown notes={notes} setSortedNotes={setSortedNotes} />
+                            {/* not using sortedCoordinates to save api calls  */}
+                            <Map
+                                notes={notes}
+                                userDefaultCoordinates={user?.defaultLocation.coordinates}
+                            />
+                            <div className="flex mt-3">
+                                <SortNotesDropdown
+                                    notes={sortedNotes}
+                                    setSortedNotes={setSortedNotes}
+                                />
                                 <NewNoteButton />
+                                <p className="m-auto text-gray-600 text-center normal-case text-md">
+                                    {t("youHave")} {notes?.length} {t("notesHeader")}
+                                </p>
                             </div>
+                            <AnnouncementBanner />
                         </>
                     )}
                 </div>

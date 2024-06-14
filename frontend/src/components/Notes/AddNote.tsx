@@ -37,7 +37,7 @@ const AddNote = ({ firebaseAuth }: AddNoteProps) => {
         }
     }, [firebaseAuth, navigate]);
 
-    document.title = `${t("addNote")} | ${t("notes")}`;
+    document.title = `${t("addNote")} | ${t("appName")}`;
 
     const createNoteMutation = useMutation({
         mutationFn: notesService.create,

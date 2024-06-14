@@ -4,19 +4,16 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { FireBaseUserInterface, GeocoderResultInterface } from "../../types";
-import useNotes from "../../hooks/useNotes";
-import useUser from "../../hooks/useUser";
+import { GeocoderResultInterface, NoteInterface } from "../../types";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
 interface props {
-    firebaseAuth: FireBaseUserInterface | null;
+    notes: NoteInterface[] | null;
+    userDefaultCoordinates?: LngLatLike;
 }
 
-const Map = ({ firebaseAuth }: props) => {
-    const { data: user } = useUser(firebaseAuth);
-    const { data: notes } = useNotes(user || null);
+const Map = ({ notes, userDefaultCoordinates }: props) => {
     const mapContainer = useRef<HTMLDivElement>(null);
     // if there are no notes, zoom to user's default location
     const defaultCoordinates =
@@ -24,7 +21,7 @@ const Map = ({ firebaseAuth }: props) => {
         notes.length > 0 &&
         (notes[0].location.coordinates[0] !== 0 || notes[0].location.coordinates[1] !== 0)
             ? notes[0].location?.coordinates
-            : user?.defaultLocation.coordinates;
+            : userDefaultCoordinates;
 
     useEffect(() => {
         const initializeMap = async () => {

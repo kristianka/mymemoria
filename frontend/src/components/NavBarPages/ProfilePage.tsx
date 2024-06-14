@@ -36,7 +36,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
         return <ErrorPage />;
     }
 
-    document.title = t("profile") + " | " + t("notes");
+    document.title = t("profile") + " | " + t("appName");
 
     const deleteAccount = async () => {
         // double check

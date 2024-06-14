@@ -68,13 +68,15 @@ const SingleNote = ({ firebaseAuth }: props) => {
         navigate(`/notes/${note.id}/edit`);
     };
 
-    document.title = `${note.title} | ${t("notes")}`;
+    const goBack = () => navigate(-1);
+
+    document.title = `${note.title} | ${t("appName")}`;
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 md:grid-rows-1">
                 <div className="m-3">
                     <div key={note.id} className="card bg-base-100">
-                        <div className="card-body">
+                        <div className="card-body rounded-lg">
                             <h2 className="card-title text-3xl">{note.title}</h2>
                             <p className="trunacte text-ellipsis text-xl whitespace-pre-line">
                                 {note.content}
@@ -84,7 +86,8 @@ const SingleNote = ({ firebaseAuth }: props) => {
                                     id={"toNotesButton"}
                                     className="tooltip"
                                     data-tip={t("backToNotes")}
-                                    to={"/"}
+                                    onClick={goBack}
+                                    to={""}
                                 >
                                     <ChevronLeftIcon className="h-10 w-10 text-blue-500" />
                                 </Link>
