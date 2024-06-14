@@ -6,7 +6,7 @@ import { sortNotesByCreationTime, sortNotesByLastModified } from "./sortingNotes
 import { useTranslation } from "react-i18next";
 
 interface props {
-    notes: NoteInterface[];
+    notes: NoteInterface[] | null;
     setSortedNotes: (notes: NoteInterface[]) => void;
 }
 
@@ -17,7 +17,7 @@ const SortNotesDropdown = ({ notes, setSortedNotes }: props) => {
     const [sortType, setSortType] = useState<sortType>("lastModified");
 
     return (
-        <div className="dropdown dropdown-start mt-3">
+        <div className="dropdown dropdown-start">
             <label tabIndex={0} className="btn bg-base-100 rounded-lg">
                 <AdjustmentsHorizontalIcon className="w-5 h-5" />
                 <p>{t(sortType)}</p>

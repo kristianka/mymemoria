@@ -23,7 +23,7 @@ import EditNote from "./components/Notes/EditNote";
 import NotFound from "./components/NotFound";
 import InfoPage from "./components/Footer/InfoPage";
 import Timeline from "./components/Timeline/Timeline";
-import CookiePopUp from "./components/CookiePopup";
+import CookiePopUp from "./components/CookiePopUp";
 
 const App = () => {
     const [firebaseAuth, setFirebaseAuth] = useState<FireBaseUserInterface | null>(null);
