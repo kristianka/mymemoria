@@ -13,6 +13,7 @@ const CookiePopUp = () => {
                     padding: "1rem",
                     borderRadius: "0.50rem"
                 }}
+                buttonId="cookieAcceptButton"
                 buttonStyle={{
                     backgroundColor: "black",
                     color: "white",

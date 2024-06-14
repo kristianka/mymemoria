@@ -42,6 +42,7 @@ const AnnouncementBanner = () => {
                     <div className="ml-3 text-center md:text-left md:flex md:justify-end md:items-center">
                         <button
                             onClick={dismissBanner}
+                            id="dismissBannerButton"
                             className="py-3 px-6 inline-flex justify-center items-center gap-2 rounded-full font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm"
                         >
                             {t("close")}

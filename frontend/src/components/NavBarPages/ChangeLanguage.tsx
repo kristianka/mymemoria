@@ -22,7 +22,7 @@ const ChangeLanguageDropdown = () => {
 
     return (
         <>
-            <div className="m-1 dropdown dropdown-start">
+            <div className="m-1 dropdown dropdown-start" id="changeLanguageButton">
                 <label tabIndex={0} className="btn bg-base-100 rounded-lg">
                     <span className={`fi fi-${selectedLanguage}`}></span>
                     <p className="hidden sm:block">{t("changeLanguage")}</p>
