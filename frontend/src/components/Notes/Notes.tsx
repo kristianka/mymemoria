@@ -113,11 +113,7 @@ const Notes = ({ firebaseAuth }: props) => {
                     )}
                     {notes && notes.length !== 0 && (
                         <>
-                            {/* not using sortedCoordinates to save api calls  */}
-                            <Map
-                                notes={notes}
-                                userDefaultCoordinates={user?.defaultLocation.coordinates}
-                            />
+                            <Map firebaseAuth={firebaseAuth} />
                             <div className="flex mt-3">
                                 <SortNotesDropdown
                                     notes={sortedNotes}
