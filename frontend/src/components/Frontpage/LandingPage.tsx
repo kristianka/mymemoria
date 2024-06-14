@@ -7,7 +7,7 @@ const LandingPage = () => {
     document.title = t("appName");
     return (
         <>
-            <div className="m-3 ml-auto rounded-lg w-1/3">
+            <div className="m-3 rounded-lg sm:ml-auto sm:w-1/3">
                 <AnnouncementBanner />
             </div>
             <div className="flex flex-col mt-auto min-h-full place-items-center">
