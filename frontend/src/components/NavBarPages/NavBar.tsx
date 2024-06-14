@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,6 @@ import { auth } from "../../firebase";
 import useUser from "../../hooks/useUser";
 import { FireBaseUserInterface } from "../../types";
 import ChangeLanguageDropdown from "./ChangeLanguage";
-import Search from "../Notes/Search";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -19,10 +18,6 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
     const { data: user } = useUser(firebaseAuth);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const location = useLocation(); // Get current location
-
-    // show search only in / or /notes
-    const isEnabled = location.pathname === "/notes" || location.pathname === "/";
 
     const logout = () => {
         const handleLogout = async () => {
@@ -84,7 +79,6 @@ const NavBar = ({ firebaseAuth, setFirebaseAuth }: props) => {
             {user ? (
                 <div className="flex-none">
                     <div className="flex">
-                        {isEnabled && <Search />}
                         <Link id="addNoteButton" to="/notes/add/">
                             <label tabIndex={0} className="btn btn-ghost btn-circle m-1">
                                 +

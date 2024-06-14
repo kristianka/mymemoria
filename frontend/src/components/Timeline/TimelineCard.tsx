@@ -33,11 +33,6 @@ const formatDate = (dateString: string) => {
 };
 
 const TimelineCard = ({ note, index }: TimelineCardProps) => {
-    const currentTimestamp = new Date().getDate();
-    const noteTimestamp = new Date(note.createdAt).getDate();
-    const timeDifference = currentTimestamp - noteTimestamp;
-    const timeDifferenceInDays = timeDifference / (1000 * 3600 * 24);
-
     return (
         <li key={note.id}>
             <hr />
