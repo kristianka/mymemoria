@@ -116,5 +116,14 @@
     "noteUpdateError": "Virhe muiston päivittämisessä. Yritä myöhemmin uudelleen.",
     "cancelChanges": "Peruuta muutokset",
     "new": "Uusi",
-    "openNote": "Avaa muisto"
+    "openNote": "Avaa muisto",
+    "timeline": "Aikajana",
+    "timelineInfo": "Tässä näet kaikki muistosi aikajärjestyksessä.",
+    "timeLineError": "Virhe aikajanan hakemisessa. Yritä myöhemmin uudelleen.",
+    "timelineEmpty": "Ei muistoja vielä. Luo muisto nähdäksesi sen täällä!",
+    "cookieTitle": "Käytämme evästeitä. Käyttämällä tätä sivustoa hyväksyt evästeiden käytön.",
+    "cookieInfo": "Firebase Auth tarvitsee evästeitä toimiakseen. Emme käytä evästeitä seurantaan tai markkinointiin. Voit poistaa kaikki tietosi milloin tahansa poistamalla tilisi asetuksista.",
+    "cookieAccept": "Ymmärrän",
+    "announcementBannerMain": "Hei, tervetuloa takaisin! Olemme julkaisseet uusia ominaisuuksia.",
+    "announcementBannerSub": "Klikkaa tästä nähdäksesi mikä on uutta! (vain englanniksi)"
 }

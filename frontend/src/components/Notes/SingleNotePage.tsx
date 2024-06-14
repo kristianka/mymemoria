@@ -68,6 +68,8 @@ const SingleNote = ({ firebaseAuth }: props) => {
         navigate(`/notes/${note.id}/edit`);
     };
 
+    const goBack = () => navigate(-1);
+
     document.title = `${note.title} | ${t("appName")}`;
     return (
         <div>
@@ -84,7 +86,8 @@ const SingleNote = ({ firebaseAuth }: props) => {
                                     id={"toNotesButton"}
                                     className="tooltip"
                                     data-tip={t("backToNotes")}
-                                    to={"/"}
+                                    onClick={goBack}
+                                    to={""}
                                 >
                                     <ChevronLeftIcon className="h-10 w-10 text-blue-500" />
                                 </Link>

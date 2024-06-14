@@ -12,7 +12,7 @@ const NewNoteButton = () => {
 
     return (
         // can't use button, won't show where it will navigate in browser bottom left
-        <div className="dropdown dropdown-start mt-3 ml-3">
+        <div className="dropdown dropdown-start ml-3">
             <Link to={"/notes/add"}>
                 <label onClick={newNote} tabIndex={0} className="btn bg-base-100 rounded-lg">
                     <DocumentPlusIcon className="w-5 h-5" />

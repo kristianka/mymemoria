@@ -94,6 +94,16 @@ describe("Memories app", function () {
             cy.get("#addNoteButton").should("not.exist");
         });
 
+        it("you can dismiss the announcement banner", () => {
+            cy.get("#dismissBannerButton").click();
+            cy.get("#dismissBannerButton").should("not.exist");
+        });
+
+        it("you can dismiss the cookies banner", () => {
+            cy.get("#cookieAcceptButton").click();
+            cy.get("#cookieAcceptButton").should("not.exist");
+        });
+
         describe("RegisterPage", () => {
             beforeEach(() => {
                 // Visit the register page before each test
@@ -354,6 +364,37 @@ describe("Memories app", function () {
             });
         });
 
+        describe("TimelinePage", () => {
+            beforeEach(() => {
+                cy.get("#addNoteButton").click();
+
+                cy.get("#noteTitle").type("Test memory by test user");
+                cy.get("#noteContent").type("Test memory content");
+                // has to wait for the search results to load
+                cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
+                cy.get("#saveNoteButton").click();
+
+                cy.contains("You have 1 memories", { timeout: 10000 });
+                cy.contains("Test memory by test user");
+                cy.contains("Test memory content");
+
+                cy.visit("/notes/timeline");
+            });
+
+            it("it renders", () => {
+                cy.contains("Timeline");
+            });
+
+            it("user can see their memories in timeline", () => {
+                cy.contains("Test memory by test user");
+            });
+
+            it("user can open the memory", () => {
+                cy.contains("Test memory by test user").click();
+                cy.contains("Test memory content");
+            });
+        });
+
         // SettingsPage has user's settings, like language and default location
         describe("SettingsPage", () => {
             beforeEach(() => {
@@ -373,6 +414,12 @@ describe("Memories app", function () {
                 cy.contains("Default map location updated successfully!", { timeout: 6000 }).should(
                     "be.visible"
                 );
+            });
+
+            it("user can change their language", () => {
+                cy.get("#changeLanguageButton").click();
+                cy.contains("button", "Finnish").click();
+                cy.contains("Vaihda kieli").should("be.visible");
             });
         });
     });
