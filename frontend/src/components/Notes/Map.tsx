@@ -7,6 +7,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { FireBaseUserInterface, GeocoderResultInterface } from "../../types";
 import useUser from "../../hooks/useUser";
 import useNotes from "../../hooks/useNotes";
+import { useTranslation } from "react-i18next";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API;
 
@@ -15,6 +16,7 @@ interface props {
 }
 
 const Map = ({ firebaseAuth }: props) => {
+    const { t } = useTranslation();
     const mapContainer = useRef<HTMLDivElement>(null);
     // if there are no notes, zoom to user's default location
 
@@ -53,7 +55,8 @@ const Map = ({ firebaseAuth }: props) => {
                 // Add geocoder
                 const geocoder = new MapboxGeocoder({
                     accessToken: mapboxgl.accessToken as string,
-                    mapboxgl: mapboxgl
+                    mapboxgl: mapboxgl,
+                    placeholder: t("search")
                 });
 
                 geocoder.on("result", (e: GeocoderResultInterface) => {
