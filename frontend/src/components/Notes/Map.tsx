@@ -13,7 +13,7 @@ interface props {
     userDefaultCoordinates?: LngLatLike;
 }
 
-const Map = ({ notes, userDefaultCoordinates }: props) => {
+const Map = ({ notes, userDefaultCoordinates = [24.94146985205316, 60.17110699565623] }: props) => {
     const mapContainer = useRef<HTMLDivElement>(null);
     // if there are no notes, zoom to user's default location
     const defaultCoordinates =
