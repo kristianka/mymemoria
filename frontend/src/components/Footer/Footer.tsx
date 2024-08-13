@@ -32,6 +32,9 @@ const Footer = () => {
                 >
                     {t("sendFeedback")}
                 </a>
+                <a className="link link-hover" target="_blank" href="https://kristiankahkonen.com/">
+                    kristiankahkonen.com
+                </a>
             </nav>
             <nav>
                 <header className="footer-title">{t("sourceCode")}</header>
