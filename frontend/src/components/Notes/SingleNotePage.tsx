@@ -12,6 +12,7 @@ import MapLoadingSkeleton from "./MapLoadingSkeleton";
 import SingleNoteMap from "./SingleNoteMap";
 import ErrorPage from "../ErrorPage";
 import { useTranslation } from "react-i18next";
+import { formatDate } from "../../misc";
 
 interface props {
     firebaseAuth: FireBaseUserInterface | null;
@@ -120,12 +121,12 @@ const SingleNote = ({ firebaseAuth }: props) => {
                         <div className="grid grid-cols-2">
                             <div className="tooltip" data-tip={t("createdAt")}>
                                 <InboxArrowDownIcon className="m-auto h-7 w-7 text-blue-500" />
-                                <p>{new Date(note.createdAt).toLocaleString()} </p>
+                                <p>{formatDate(note.createdAt)}</p>
                             </div>
                             {note?.modifiedAt && (
                                 <div className="tooltip" data-tip={t("lastModified")}>
                                     <PencilSquareIcon className="m-auto h-7 w-7 text-blue-500" />
-                                    <p>{new Date(note?.modifiedAt).toLocaleString()}</p>
+                                    <p>{formatDate(note.modifiedAt)}</p>
                                 </div>
                             )}
                         </div>

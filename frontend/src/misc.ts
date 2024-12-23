@@ -22,3 +22,17 @@ export const searchNotes = (sortedNotes: NoteInterface[], search: string) => {
         return search === "" || titleMatch || contentMatch;
     });
 };
+
+/*
+    Remove seconds from the date    
+*/
+export const formatDate = (date: string) => {
+    if (!date) return "";
+    return new Date(date).toLocaleString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    });
+};
