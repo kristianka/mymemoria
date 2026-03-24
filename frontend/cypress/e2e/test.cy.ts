@@ -243,6 +243,7 @@ describe("Memories app", function () {
                 cy.get("#noteTitle").type("Test memory");
                 cy.get("#noteContent").type("Test memory content");
                 // has to wait for the search results to load
+                cy.wait(1000);
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
@@ -258,6 +259,7 @@ describe("Memories app", function () {
                     cy.get("#noteTitle").type("Test memory by test user");
                     cy.get("#noteContent").type("Test memory content");
                     // has to wait for the search results to load
+                    cy.wait(1000);
                     cy.get(".mapboxgl-ctrl-geocoder--input")
                         .type("Tampere")
                         .wait(1000)
@@ -275,6 +277,7 @@ describe("Memories app", function () {
                     cy.get("#noteTitle").type("Another memory by test user");
                     cy.get("#noteContent").type("Another memory content");
                     // has to wait for the search results to load
+                    cy.wait(1000);
                     cy.get(".mapboxgl-ctrl-geocoder--input")
                         .type("Tampere")
                         .wait(1000)
@@ -295,6 +298,7 @@ describe("Memories app", function () {
                 it("you can edit the memory", () => {
                     cy.get('[id^="toNoteButton"]').click();
                     cy.contains("Edit").click();
+                    cy.wait(1000);
 
                     cy.get("#noteTitle").clear().type("Edited memory by test user");
                     cy.get("#noteContent").clear().type("Edited memory content");
@@ -371,6 +375,7 @@ describe("Memories app", function () {
                 cy.get("#noteTitle").type("Test memory by test user");
                 cy.get("#noteContent").type("Test memory content");
                 // has to wait for the search results to load
+                cy.wait(1000);
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveNoteButton").click();
 
@@ -404,11 +409,13 @@ describe("Memories app", function () {
             it("it renders", () => {
                 cy.contains("Settings");
                 // has to wait for the search results to load
+                cy.wait(1000);
                 cy.get(".mapboxgl-ctrl-geocoder--input").should("be.visible");
                 cy.get("#saveLocationButton").should("be.visible");
             });
 
             it("user can change their default location", () => {
+                cy.wait(1000);
                 cy.get(".mapboxgl-ctrl-geocoder--input").type("Tampere").wait(1000).type("{enter}");
                 cy.get("#saveLocationButton").click();
                 cy.contains("Default map location updated successfully!", { timeout: 6000 }).should(
