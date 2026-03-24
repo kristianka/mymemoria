@@ -84,6 +84,7 @@ jobs:
           working-directory: frontend
           command: npm run cy:e2e
           wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+          browser: chrome
         env:
           CYPRESS_TEST_EMAIL: ${{ secrets.CYPRESS_TEST_EMAIL }}
           CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
