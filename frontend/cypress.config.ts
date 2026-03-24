@@ -6,9 +6,16 @@ export default defineConfig({
         // use software rendering for WebGL in CI without GPU
         setupNodeEvents(on, config) {
             on("before:browser:launch", (browser, launchOptions) => {
-                if (process.env.CI && (browser.name === "chrome" || browser.name === "chromium")) {
+                if (browser.name === "chrome" || browser.name === "chromium") {
+                    // force headless, mapbox js causes erros otherwise in CI
+                    launchOptions.args = launchOptions.args.filter(
+                        (arg) => arg !== "--headless=new"
+                    );
+                    launchOptions.args.push("--headless=old");
                     launchOptions.args.push("--use-gl=swiftshader");
-                    launchOptions.args.push("--disable-gpu-sandbox");
+                    launchOptions.args.push("--disable-gpu");
+                    launchOptions.args.push("--no-sandbox");
+                    launchOptions.args.push("--disable-dev-shm-usage");
                 }
                 return launchOptions;
             });
@@ -16,5 +23,6 @@ export default defineConfig({
     },
     env: {
         CYPRESS_TEST_EMAIL: process.env.CYPRESS_TEST_EMAIL
-    }
+    },
+    chromeWebSecurity: false
 });
