@@ -61,6 +61,7 @@ const SingleNote = ({ firebaseAuth }: props) => {
             toast.success(t("noteDeletedSuccessfully"));
             navigate("/notes");
         } catch (error) {
+            console.log("Error deleting note:", error);
             toast.error(t("noteDeletedError"));
         }
     };

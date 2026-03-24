@@ -4,10 +4,10 @@ import { ServiceAccount } from "firebase-admin";
 
 dotenv.config();
 
-// Limit requests to 300 per 10 minutes
+// Limit requests to 3000 per 10 minutes
 const limiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 min
-    limit: 300, // 300 requests
+    limit: 3000, // 3000 requests
     standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
     legacyHeaders: false // Disable the `X-RateLimit-*` headers.
 });

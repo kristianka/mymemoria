@@ -1,111 +1,114 @@
 name: Lint, build, test, deploy and tag
 
 on:
-    push:
-        branches:
-            - main
-        paths-ignore:
-            - "documentation/**"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "documentation/**"
 
-    pull_request:
-        branches: [main]
-        types: [opened, synchronize]
-        paths-ignore:
-            - "documentation/**"
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+    paths-ignore:
+      - "documentation/**"
 jobs:
-    Lint-Build-Test:
-        runs-on: ubuntu-22.04
-        environment: testing
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: "20"
+  Lint-Build-Test:
+    runs-on: ubuntu-22.04
+    environment: testing
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
-            - name: Install dependencies for frontend
-              run: cd frontend && npm install && cd ..
+      - name: Install dependencies for frontend
+        run: cd frontend && npm install && cd ..
 
-            - name: Install dependencies for backend
-              run: cd backend && npm install && cd ..
+      - name: Install dependencies for backend
+        run: cd backend && npm install && cd ..
 
-            - name: Lint frontend
-              run: cd frontend && npm run lint && cd ..
+      - name: Lint frontend
+        run: cd frontend && npm run lint && cd ..
 
-            - name: Lint backend
-              run: cd backend && npm run lint && cd ..
+      - name: Lint backend
+        run: cd backend && npm run lint && cd ..
 
-            - name: Build frontend
-              run: cd frontend && npm run build:testing
-              env:
-                  VITE_MAPBOX_API: ${{ secrets.VITE_MAPBOX_API }}
-                  VITE_FIREBASE_TESTING_API_KEY: ${{ secrets.VITE_FIREBASE_TESTING_API_KEY }}
-                  VITE_FIREBASE_TESTING_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_TESTING_AUTH_DOMAIN }}
-                  VITE_FIREBASE_TESTING_PROJECT_ID: ${{ secrets.VITE_FIREBASE_TESTING_PROJECT_ID }}
-                  VITE_FIREBASE_TESTING_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_TESTING_STORAGE_BUCKET }}
-                  VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID }}
-                  VITE_FIREBASE_TESTING_APP_ID: ${{ secrets.VITE_FIREBASE_TESTING_APP_ID }}
-                  MODE: testing
+      - name: Build frontend
+        run: cd frontend && npm run build:testing
+        env:
+          VITE_MAPBOX_API: ${{ secrets.VITE_MAPBOX_API }}
+          VITE_FIREBASE_TESTING_API_KEY: ${{ secrets.VITE_FIREBASE_TESTING_API_KEY }}
+          VITE_FIREBASE_TESTING_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_TESTING_AUTH_DOMAIN }}
+          VITE_FIREBASE_TESTING_PROJECT_ID: ${{ secrets.VITE_FIREBASE_TESTING_PROJECT_ID }}
+          VITE_FIREBASE_TESTING_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_TESTING_STORAGE_BUCKET }}
+          VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_TESTING_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_TESTING_APP_ID: ${{ secrets.VITE_FIREBASE_TESTING_APP_ID }}
+          MODE: testing
 
-            - name: Build backend
-              run: cd backend && npm run build:testing
-              env:
-                  NODE_ENV: test
-                  MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
-                  SECRET: ${{ secrets.SECRET }}
-                  PORT: ${{ secrets.PORT }}
-                  FIREBASE_TESTING_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
-                  FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
-                  FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      - name: Build backend
+        run: cd backend && npm run build:testing
+        env:
+          NODE_ENV: test
+          MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
+          SECRET: ${{ secrets.SECRET }}
+          PORT: ${{ secrets.PORT }}
+          FIREBASE_TESTING_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
-            - name: Start backend
-              run: |
-                  cd backend && npm run start:built-testing &
-                  for i in {1..50}; do
-                    if curl --silent --fail http://localhost:${{ secrets.PORT }}/api/testing/reset > /dev/null; then
-                      sleep 1
-                      echo "Backend started"
-                      break
-                    fi
-                    echo "Waiting for backend..."
-                    sleep 1
-                  done
-              env:
-                  NODE_ENV: testing
-                  MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
-                  SECRET: ${{ secrets.SECRET }}
-                  PORT: ${{ secrets.PORT }}
-                  FIREBASE_TESTING_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
-                  FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
-                  FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      - name: Start backend
+        run: |
+          cd backend && npm run start:built-testing &
+          for i in {1..50}; do
+            if curl --silent --fail http://localhost:${{ secrets.PORT }}/api/testing/reset > /dev/null; then
+              sleep 1
+              echo "Backend started"
+              break
+            fi
+            echo "Waiting for backend..."
+            sleep 1
+          done
+        env:
+          NODE_ENV: testing
+          MONGODB_TESTING_URI: ${{secrets.MONGODB_TEST_URI}}
+          SECRET: ${{ secrets.SECRET }}
+          PORT: ${{ secrets.PORT }}
+          FIREBASE_TESTING_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_TESTING_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_TESTING_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
 
-            - name: Cypress E2E tests
-              uses: cypress-io/github-action@v5
-              with:
-                  working-directory: frontend
-                  command: npm run cy:e2e
-                  wait-on: ${{ secrets.CYPRESS_BASE_URL }}
-              env:
-                  CYPRESS_TEST_EMAIL: ${{ secrets.CYPRESS_TEST_EMAIL }}
-                  CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
-    Deploy:
-        name: Deploy to Render
-        needs: Lint-Build-Test
-        runs-on: ubuntu-latest
-        environment: testing
-        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#DEPLOY') }}
-        steps:
-            - name: Trigger deployment
-              run: curl ${{ secrets.RENDER_DEPLOY_URL }}
+      - name: Cypress E2E tests
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: frontend
+          command: npm run cy:e2e
+          wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+          browser: chrome
+        env:
+          CYPRESS_TEST_EMAIL: ${{ secrets.CYPRESS_TEST_EMAIL }}
+          CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
 
-    Tag:
-        runs-on: ubuntu-latest
-        needs: Lint-Build-Test
-        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#RELEASE') }}
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-            - uses: anothrNick/github-tag-action@1.67.0
-              name: Bump version and push tag
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  DEFAULT_BUMP: patch
+  # now in our own VPS :)
+  # Deploy:
+  #     name: Deploy to Render
+  #     needs: Lint-Build-Test
+  #     runs-on: ubuntu-latest
+  #     environment: testing
+  #     if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#DEPLOY') }}
+  #     steps:
+  #         - name: Trigger deployment
+  #           run: curl ${{ secrets.RENDER_DEPLOY_URL }}
+
+  Tag:
+    runs-on: ubuntu-latest
+    needs: Lint-Build-Test
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '#RELEASE') }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: anothrNick/github-tag-action@1.67.0
+        name: Bump version and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
