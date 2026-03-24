@@ -19,12 +19,7 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-// cypress/support/e2e.js
-// we can ignore this
-if (Cypress.env("CI")) {
-    Cypress.on("uncaught:exception", (err) => {
-        if (err.message.includes("WebGL") || err.message.includes("Failed to initialize")) {
-            return false;
-        }
-    });
-}
+Cypress.on("uncaught:exception", (err) => {
+    console.log("=== UNCAUGHT EXCEPTION ===", err.message);
+    return false;
+});
