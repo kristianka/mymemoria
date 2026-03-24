@@ -49,7 +49,7 @@ const ProfilePage = ({ firebaseAuth, setFirebaseAuth }: props) => {
             toast.success(t("accountDeletedSuccessfully") + " " + t("accountDeletedGoodbye"));
             navigate("/");
         } catch (error) {
-            console.error("Error deleting account:", error);
+            console.log("Error deleting account:", error);
             toast.error(t("errorDeletingAccount"));
         }
     };
