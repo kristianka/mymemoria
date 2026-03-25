@@ -83,6 +83,8 @@ describe("Memories app", function () {
             .clearLocalStorage()
             .clearAllSessionStorage()
             .reload();
+        // wait for page to fully reload before next test, github cicd is slow
+        cy.contains("Using testing environment", { timeout: 6000 }).should("be.visible");
     });
 
     describe("LandingPage", () => {
@@ -256,7 +258,7 @@ describe("Memories app", function () {
                 beforeEach(() => {
                     cy.get("#addNoteButton").click();
 
-                    cy.get("#noteTitle").type("Test memory by test user");
+                    cy.get("#noteTitle", { timeout: 10000 }).type("Test memory by test user");
                     cy.get("#noteContent").type("Test memory content");
                     // has to wait for the search results to load
                     cy.wait(1000);
@@ -269,6 +271,8 @@ describe("Memories app", function () {
                     cy.contains("You have 1 memories", { timeout: 10000 });
                     cy.contains("Test memory by test user");
                     cy.contains("Test memory content");
+                    // qait for the note card button to be ready, github cicd is slow
+                    cy.get('[id^="toNoteButton"]', { timeout: 10000 }).should("be.visible");
                 });
 
                 it("you can add another memory", () => {
@@ -290,13 +294,13 @@ describe("Memories app", function () {
                 });
 
                 it("you can open the memory", () => {
-                    cy.get('[id^="toNoteButton"]').click();
+                    cy.get('[id^="toNoteButton"]').should("be.visible").click();
                     cy.contains("Test memory by test user");
                     cy.contains("Test memory content");
                 });
 
                 it("you can edit the memory", () => {
-                    cy.get('[id^="toNoteButton"]').click();
+                    cy.get('[id^="toNoteButton"]').should("be.visible").click();
                     cy.contains("Edit").click();
                     cy.wait(1000);
 
@@ -312,7 +316,7 @@ describe("Memories app", function () {
                 });
 
                 it("you can delete the memory", () => {
-                    cy.get('[id^="toNoteButton"]').click();
+                    cy.get('[id^="toNoteButton"]').should("be.visible").click();
                     cy.contains("Delete").click();
                     // cy.contains("Are you sure you want to delete this memory?");
                     // cy.contains("Yes").click();
@@ -372,7 +376,7 @@ describe("Memories app", function () {
             beforeEach(() => {
                 cy.get("#addNoteButton").click();
 
-                cy.get("#noteTitle").type("Test memory by test user");
+                cy.get("#noteTitle", { timeout: 10000 }).type("Test memory by test user");
                 cy.get("#noteContent").type("Test memory content");
                 // has to wait for the search results to load
                 cy.wait(1000);
@@ -382,6 +386,8 @@ describe("Memories app", function () {
                 cy.contains("You have 1 memories", { timeout: 10000 });
                 cy.contains("Test memory by test user");
                 cy.contains("Test memory content");
+                // ensure the memory card is fully rendered before navigating, github cicd is slow
+                cy.get('[id^="toNoteButton"]', { timeout: 5000 }).should("exist");
 
                 cy.visit("/notes/timeline");
             });
@@ -395,7 +401,7 @@ describe("Memories app", function () {
             });
 
             it("user can open the memory", () => {
-                cy.contains("Test memory by test user").click();
+                cy.contains("Test memory by test user").should("be.visible").click();
                 cy.contains("Test memory content");
             });
         });
