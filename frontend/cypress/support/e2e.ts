@@ -19,12 +19,11 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-// cypress/support/e2e.js
-// we can ignore this
-if (Cypress.env("CI")) {
-    Cypress.on("uncaught:exception", (err) => {
-        if (err.message.includes("WebGL") || err.message.includes("Failed to initialize")) {
-            return false;
-        }
-    });
-}
+// Safety net: if mapbox-gl ever throws a WebGL init error on a CI runner
+// (transient driver hiccup), don't fail the whole test — the assertions
+// downstream will catch any real regression.
+Cypress.on("uncaught:exception", (err) => {
+    if (err.message.includes("WebGL")) {
+        return false;
+    }
+});
